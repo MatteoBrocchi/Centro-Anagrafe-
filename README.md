@@ -150,3 +150,21 @@ Risposta:
 ```
 Utente registrato!
 ```
+
+> https://late-frost-5190.getsandbox.com/anagrafiche/add
+
+Usando jQuery:
+```javascript
+$.ajax({
+      type: "POST",
+      data: {"username": "username", "password": "password"}, /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+      contentType: "application/json",
+      url: "https://late-frost-5190.getsandbox.com/anagrafiche/add",
+      dataType: "json"
+});
+```
+
+Risposta:
+```
+Utente aggiunto!
+```
