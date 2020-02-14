@@ -5,6 +5,8 @@
 I seguenti sono gli endpoint del server, i dati che restituiscono e i modi per accedere
 ad essi tramite jQuery.
 
+### Ottenere la lista anagrafiche.
+
 > https://late-frost-5190.getsandbox.com/anagrafiche
 
 Usando jQuery:
@@ -49,6 +51,8 @@ Risposta:
   ...
 ]
 ```
+
+### Ottenere la lista anagrafiche in una specifica regione.
 
 > https://late-frost-5190.getsandbox.com/anagrafiche/{regione}
 
@@ -115,6 +119,8 @@ Risposta:
 ]
 ```
 
+### Autenticarsi sul server.
+
 > https://late-frost-5190.getsandbox.com/users/login
 
 Usando jQuery:
@@ -132,6 +138,8 @@ Risposta:
 ```
 Utente autenticato! - Header di sessione settato: 963101c2-0f60-63e0-f66a-3a961e0ae6ac
 ```
+
+### Registrarsi sul server.
 
 > https://late-frost-5190.getsandbox.com/users/register
 
@@ -151,13 +159,16 @@ Risposta:
 Utente registrato!
 ```
 
+### Aggiungere anagrafiche sul server.
+
 > https://late-frost-5190.getsandbox.com/anagrafiche/add
 
 Usando jQuery:
 ```javascript
 $.ajax({
       type: "POST",
-      data: {"username": "username", "password": "password"}, /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+      data: {"nome": "NomeUtente", "cognome": "CognomeUtente", "regione": "Emilia-Romagna", "provincia": "Rimini", "comune": "Rimini", "anno": 2020},
+      /* Per poter aggiungere una entry bisogna prima autenticarsi. */
       contentType: "application/json",
       url: "https://late-frost-5190.getsandbox.com/anagrafiche/add",
       dataType: "json"
