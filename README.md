@@ -179,3 +179,25 @@ Risposta:
 ```
 Utente aggiunto!
 ```
+
+### Rimuovere un'anagrafica dal server.
+
+> https://late-frost-5190.getsandbox.com/anagrafiche/remove/{id}
+
+Usando jQuery:
+```javascript
+var id = 1; /* Utente con id 1. */
+$.ajax({
+      type: "DELETE",
+      data: {"id": id},
+      /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+      contentType: "application/json",
+      url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + id,
+      dataType: "json"
+});
+```
+
+Risposta:
+```
+Utente rimosso!
+```
