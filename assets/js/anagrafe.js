@@ -89,6 +89,20 @@ $(function() {
             c = persone.length;
         }
     });
+    $(".regioni").on("click", function() {
+        $(".regioni").css("color", "black");
+    })
+    $(".province").on("click", function() {
+        $(".province").css("color", "black");
+    })
+    $(".comuni").on("click", function() {
+        $(".comuni").css("color", "black");
+    })
+    $(".anno").on("click", function() {
+        $(".anno").css("color", "black");
+    })
+
+    for (let i = 1940; i < (new Date).getFullYear(); i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
     //creazione carta d'identità
     $('#form1 button').on('click', function() {
         var check = true;
@@ -203,7 +217,12 @@ $(function() {
             regSelected = $(this).text().toString();
             downloadDataBar();
         });
+        $(".province").attr("disabled", false);
     });
+    $(".province").on("change", function() {
+        $(".comuni").attr("disabled", false);
+    });
+
     $(".anno").on("change", function() {
         $(".anno option:selected").each(function() {
             annoSelected = parseInt($(this).text());
@@ -379,7 +398,7 @@ function addPieChart() {
             },
             layout: {
                 padding: {
-                    left: 50,
+                    left: 0,
                     right: 0,
                     bottom: 0,
                     top: 0
