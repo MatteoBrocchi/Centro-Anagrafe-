@@ -208,7 +208,7 @@ $(function () {
             /* Per poter aggiungere una entry bisogna prima autenticarsi. */
             contentType: "application/json",
             crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza",
             dataType: "json",
             success: function (data) {
                 $(".chiudi").click();
