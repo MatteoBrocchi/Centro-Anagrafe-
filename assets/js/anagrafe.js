@@ -77,6 +77,7 @@ var provSelected = "";
 var comSelected = "";
 var annoSelected = 0;
 var chartBar;
+
 $(function () {
     $.ajax({
         type: "GET",
@@ -106,7 +107,7 @@ $(function () {
 
     for (let i = 1940; i < (new Date).getFullYear() + 1; i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
     //creazione carta d'identità
-    $('#form1 button').on('click', function () { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
+    $('.btnAddID').on('click', function () { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
         var check = true;
         //controllo che il form sia stato completato
         $('#form1 input').each(function () {
@@ -114,8 +115,12 @@ $(function () {
                 check = false;
         });
         if (check) {
-            persone[c] = new Persona(new cartaIdentita([$('#nome').val().toString(), $('#cognome').val().toString(), [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], $('#indirizzo').val().toString(), new Date($('#data').val().toString()), new Date($('#rilascio').val().toString()), c]));
-            var dt = '{"nome": "' + $("#nome").val().toString() + '", "cognome": "' + $('#cognome').val().toString() + '", "anno_nascita": "' + $('#data').val().toString() + '", "regione": "' + $('#regione').val().toString() + '","provincia": "' + $('#provincia').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "indirizzo": "' + $('#indirizzo').val().toString() + '", "anno": "' + $('#rilascio').val().toString() + '", "codice": "' + persone[c].carta.id.toString() + '"}';
+            persone[c] = new Persona(new cartaIdentita([$('#nome').val().toString(), $('#cognome').val().toString(), [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], $('#indirizzo').val().toString(), new Date($('#anno').val().toString()), new Date($('#rilascio').val().toString()), c]));
+            var dt = '{"nome": "' + $("#nome").val().toString() + '", "cognome": "' + $('#cognome').val().toString()
+                + '", "anno_nascita": "' + $('#anno').val().toString() + '", "regione": "' + $('#regione').val().toString()
+                + '","provincia": "' + $('#provincia').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio').val().toString()
+                + '", "indirizzo": "' + $('#indirizzo').val().toString() + '", "anno_rilascio": "' + $('#rilascio').val().toString()
+                + '", "codice": "' + persone[c].carta.id.toString() + '"}';
             $.ajax({
                 type: "POST",
                 headers: { "Access-Control-Allow-Origin": "*" },
