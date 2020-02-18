@@ -61,44 +61,64 @@ $(function() {
                 $.each(data, function(i, value) {
                     arrayTerritory.push(Object.assign({}, value))
                     arrayTerritory = arrayTerritory[0];
-                    for (let i = 0; i < 20; i++) {
-                        $(".regioni").append(new Option(arrayTerritory[i].nome, arrayTerritory[i].nome));
+                    for (let h = 0; h < 20; h++) {
+                        $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
+                        for (let j = 0; j < arrayTerritory[h].province.length; j++) {
+                            $(".province").append(new Option(arrayTerritory[h].province[j].nome));
+                            for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
+                                $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                            }
+                        }
                     }
                 });
             }
         })
-        /*FILTRO PROVINCE*/
-    $(document).on("change", ".regioni", function() {
-            $(".province").empty();
-            $(".comuni").empty();
-            var selectedRegion = $(".regioni").val();
-            for (var i = 0; i < 20; i++) {
-                if (arrayTerritory[i].nome == selectedRegion) {
-                    for (let j = 0; j < arrayTerritory[i].province.length; j++) {
-                        $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
-                        for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                            $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                        }
-                    }
+/*FILTRO REGIONI*/
+$(document).on("change", ".regioni", function () {
+    $(".province").empty();
+    $(".comuni").empty();
+    var selectedRegion = $(".regioni").val();
+    for (var i = 0; i < 20; i++) {
+        if (arrayTerritory[i].nome == selectedRegion) {
+            for (let j = 0; j < arrayTerritory[i].province.length; j++) {
+                $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
+                for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                    $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
                 }
             }
-        })
-        /*FILTRO COMUNI*/
-    $(document).on("change", ".regioni", function() {
-            $(".province").empty();
-            $(".comuni").empty();
-            var selectedRegion = $(".regioni").val();
-            for (var i = 0; i < 20; i++) {
-                if (arrayTerritory[i].nome == selectedRegion) {
-                    for (let j = 0; j < arrayTerritory[i].province.length; j++) {
-                        $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
-                        for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                            $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                        }
-                    }
+        }
+    }
+})
+/*FILTRO PROVINCE*/
+$(document).on("change", ".province", function () {
+    $(".comuni").empty();
+    var selectedProvince = $(".province").val();
+    for (var i = 0; i < 20; i++) {
+        for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+            if (arrayTerritory[i].province[j].nome == selectedProvince) {
+                $(".regioni").val(arrayTerritory[i].nome);
+                for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                    $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
                 }
             }
-        })
+        }
+    }
+})
+/*FILTRO COMUNI*/
+$(document).on("change", ".comuni", function () {
+    var selectedDistrict = $(".comuni").val();
+    for (var i = 0; i < 20; i++) {
+        for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+            for(var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++){
+                if(arrayTerritory[i].province[j].comuni[o] == selectedDistrict){
+                    $(".regioni").val(arrayTerritory[i].nome);
+                    $(".province").val(arrayTerritory[i].province[j].nome);
+                    $(".comuni").val(selectedDistrict);
+                }
+            }
+        }
+    }
+})
         /*CERCA*/
     $(document).on("keyup", "#search", function() {
         cercaList.length = 0;
