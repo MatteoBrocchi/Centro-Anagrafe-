@@ -3,7 +3,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-$(function() {
+$(function () {
     var posizioneCorrente = 1;
     var numeropagine;
     var persone = new Array();
@@ -18,9 +18,9 @@ $(function() {
         provinciaorder = false,
         comuneorder = false,
         annoorder = false;
-    var siteScroll = function() {
+    var siteScroll = function () {
         var title = false;
-        $(window).scroll(function() {
+        $(window).scroll(function () {
 
             var st = $(this).scrollTop();
 
@@ -45,69 +45,69 @@ $(function() {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
-        success: function(data) {
-            $.each(data, function(i, value) {
+        success: function (data) {
+            $.each(data, function (i, value) {
                 persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
         }
     });
     $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/territorio",
-            dataType: "json",
-            success: function(data) {
-                $.each(data, function(i, value) {
-                    arrayTerritory.push(Object.assign({}, value))
-                    arrayTerritory = arrayTerritory[0];
-                    for (let i = 0; i < 20; i++) {
-                        $(".regioni").append(new Option(arrayTerritory[i].nome, arrayTerritory[i].nome));
-                    }
-                });
-            }
-        })
-        /*FILTRO PROVINCE*/
-    $(document).on("change", ".regioni", function() {
-            $(".province").empty();
-            $(".comuni").empty();
-            var selectedRegion = $(".regioni").val();
-            for (var i = 0; i < 20; i++) {
-                if (arrayTerritory[i].nome == selectedRegion) {
-                    for (let j = 0; j < arrayTerritory[i].province.length; j++) {
-                        $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
-                        for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                            $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                        }
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/territorio",
+        dataType: "json",
+        success: function (data) {
+            $.each(data, function (i, value) {
+                arrayTerritory.push(Object.assign({}, value))
+                arrayTerritory = arrayTerritory[0];
+                for (let i = 0; i < 20; i++) {
+                    $(".regioni").append(new Option(arrayTerritory[i].nome, arrayTerritory[i].nome));
+                }
+            });
+        }
+    })
+    /*FILTRO PROVINCE*/
+    $(document).on("change", ".regioni", function () {
+        $(".province").empty();
+        $(".comuni").empty();
+        var selectedRegion = $(".regioni").val();
+        for (var i = 0; i < 20; i++) {
+            if (arrayTerritory[i].nome == selectedRegion) {
+                for (let j = 0; j < arrayTerritory[i].province.length; j++) {
+                    $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
+                    for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                        $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
                     }
                 }
             }
-        })
-        /*FILTRO COMUNI*/
-    $(document).on("change", ".regioni", function() {
-            $(".province").empty();
-            $(".comuni").empty();
-            var selectedRegion = $(".regioni").val();
-            for (var i = 0; i < 20; i++) {
-                if (arrayTerritory[i].nome == selectedRegion) {
-                    for (let j = 0; j < arrayTerritory[i].province.length; j++) {
-                        $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
-                        for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                            $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                        }
+        }
+    })
+    /*FILTRO COMUNI*/
+    $(document).on("change", ".regioni", function () {
+        $(".province").empty();
+        $(".comuni").empty();
+        var selectedRegion = $(".regioni").val();
+        for (var i = 0; i < 20; i++) {
+            if (arrayTerritory[i].nome == selectedRegion) {
+                for (let j = 0; j < arrayTerritory[i].province.length; j++) {
+                    $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
+                    for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                        $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
                     }
                 }
             }
-        })
-        /*CERCA*/
-    $(document).on("keyup", "#search", function() {
+        }
+    })
+    /*CERCA*/
+    $(document).on("keyup", "#search", function () {
         cercaList.length = 0;
         AggiornaTabella();
         var i = 0;
         var val = $(this).val();
         if (val) {
             val = val.toLowerCase();
-            $.each(persone, function(_, obj) {
+            $.each(persone, function (_, obj) {
                 // console.log(val,obj.name.toLowerCase().indexOf(val),obj)
                 if (obj.nome.toLowerCase().indexOf(val) != -1 || obj.cognome.toLowerCase().indexOf(val) != -1 || obj.luogo_residenza.regione.toLowerCase().indexOf(val) != -1 || obj.luogo_residenza.provincia.toLowerCase().indexOf(val) != -1 || obj.luogo_residenza.comune.toLowerCase().indexOf(val) != -1 || obj.anno.toString().indexOf(val) > -1) {
                     cercaList[i] = obj;
@@ -135,17 +135,20 @@ $(function() {
     }
     /*STAMPA*/
     function StampaTabella(indicePartenza, numShow) {
+        let arrivo = 0;
         AggiornaTabella();
-        for (let i = ((indicePartenza * numShow) - numShow); i < (numShow * indicePartenza); i++) {
+        if (persone.length < numShow) arrivo = persone.length;
+        else arrivo = (numShow * indicePartenza);
+        for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
             if ($("#search").val()) {
-                $("#persone").append("<tr><td scope='row'>" + (i + 1) + "</td><td>" + cercaList[i].nome + "</td><td>" + cercaList[i].cognome + "</td><td>" + cercaList[i].luogo_residenza.regione + "</td><td>" + cercaList[i].luogo_residenza.provincia + "</td><td>" + cercaList[i].luogo_residenza.comune + "</td><td>" + cercaList[i].anno + "</td><td class=\"d-flex justify-content-center\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + persone[i].id + "\"data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
+                $("#persone").append("<tr><td>" + cercaList[i].nome + "</td><td>" + cercaList[i].cognome + "</td><td>" + cercaList[i].luogo_residenza.regione + "</td><td>" + cercaList[i].luogo_residenza.provincia + "</td><td>" + cercaList[i].luogo_residenza.comune + "</td><td>" + cercaList[i].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + persone[i].id + "\"data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
             } else {
-                $("#persone").append("<tr><td scope='row'>" + (i + 1) + "</td><td>" + persone[i].nome + "</td><td>" + persone[i].cognome + "</td><td>" + persone[i].luogo_residenza.regione + "</td><td>" + persone[i].luogo_residenza.provincia + "</td><td>" + persone[i].luogo_residenza.comune + "</td><td>" + persone[i].anno + "</td><td class=\"d-flex justify-content-center\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
+                $("#persone").append("<tr><td>" + persone[i].nome + "</td><td>" + persone[i].cognome + "</td><td>" + persone[i].luoghi_residenza[0].regione + "</td><td>" + persone[i].luoghi_residenza[0].provincia + "</td><td>" + persone[i].luoghi_residenza[0].comune + "</td><td>" + persone[i].anno_nascita + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
             }
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
-    $("#shownumber").change(function() {
+    $("#shownumber").change(function () {
         CalcPag(persone);
     });
     /*COMPARA*/
@@ -159,7 +162,7 @@ $(function() {
         return comparison;
     }
     /*EDIT*/
-    $(document).on("click", ".edit", function() {
+    $(document).on("click", ".edit", function () {
         var dt = '{"nome": "' + $("#nomemod").val().toString() + '", "cognome": "' + $('#cognomemod').val().toString() + '", "anno_nascita": "' + $('#annomod').val().toString() + '", "regione": "' + $('#regionemod').val().toString() + '","provincia": "' + $('#provinciamod').val().toString() + '", "comune": "' + $('#comunemod').val().toString() + '", "anno": 2020}';
         persone[c] = new Persona(new cartaIdentita([$('#nome').val().toString(), $('#cognome').val().toString(), [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], $('#indirizzo').val().toString(), new Date($('#data').val().toString()), $('#rilascio').val().toString()]), c);
         $.ajax({
@@ -172,7 +175,7 @@ $(function() {
             dataType: "json",
         });
     });
-    $(document).on("click", ".inviaModifica", function() {
+    $(document).on("click", ".inviaModifica", function () {
         dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luogo_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' + persone[parseInt(idedit) - 1].indirizzo + '","codice":"' + persone[parseInt(idedit) - 1].codice + '"}';
         $("#nomemod").val(persone[idedit]);
         $.ajax({
@@ -184,10 +187,10 @@ $(function() {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 $(".chiudi").click();
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 let x = 0;
                 alert(jqXHR.responseText);
             }
@@ -195,10 +198,10 @@ $(function() {
     });
 
     /*DELETE*/
-    $(document).on("click", ".delete", function() {
+    $(document).on("click", ".delete", function () {
         selectedID = $(this).attr("id");
     });
-    $(document).on("click", ".btnElimina", function() {
+    $(document).on("click", ".btnElimina", function () {
         $.ajax({
             type: "DELETE",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -206,243 +209,236 @@ $(function() {
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + selectedID + "/",
             dataType: "json",
-        }).then(function(data) {
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "https://late-frost-5190.getsandbox.com/anagrafiche",
-                dataType: "json",
-                success: function(data) {
-                    $.each(data, function(i, value) {
-                        persone.push(Object.assign({}, value))
-                    });
-                    CalcPag(persone);
-                }
+        }).then(function (data) {
+            $(".bottoni .delete").each( function(){
+                if($(this).attr("id")==selectedID)$(this).parent().parent().remove();
             });
+        }, function (jqXHR, textStatus, errorThrown) {
+            let x = 0;
+            alert(jqXHR.responseText);
         })
-
     });
-    $(document).on("click", ".decesso", function() {
+$(document).on("click", ".decesso", function () {
 
-        })
-        /*ORDINA*/
-    $(document).on("click", ".order", function() {
-        var temp = new Array();
-        var f = $(this).attr("id");
-        switch (f) {
-            case "nome":
-                for (let j = 0; j < persone.length; j++) {
-                    for (let i = j + 1; i < persone.length; i++) {
-                        // comparing adjacent strings
-                        if (!nomeorder) {
-                            if (compare(persone[i].nome, persone[j].nome) < 0) {
-                                temp = persone[j];
-                                persone[j] = persone[i]
-                                persone[i] = temp;
-                            }
-                        } else {
-                            if (compare(persone[i].nome, persone[j].nome) > 0) {
-                                temp = persone[i];
-                                persone[i] = persone[j];
-                                persone[j] = temp;
-                            }
+})
+/*ORDINA*/
+$(document).on("click", ".order", function () {
+    var temp = new Array();
+    var f = $(this).attr("id");
+    switch (f) {
+        case "nome":
+            for (let j = 0; j < persone.length; j++) {
+                for (let i = j + 1; i < persone.length; i++) {
+                    // comparing adjacent strings
+                    if (!nomeorder) {
+                        if (compare(persone[i].nome, persone[j].nome) < 0) {
+                            temp = persone[j];
+                            persone[j] = persone[i]
+                            persone[i] = temp;
+                        }
+                    } else {
+                        if (compare(persone[i].nome, persone[j].nome) > 0) {
+                            temp = persone[i];
+                            persone[i] = persone[j];
+                            persone[j] = temp;
                         }
                     }
-                    CalcPag(persone);
                 }
-                if (!nomeorder) nomeorder = true;
-                else nomeorder = false;
-                break;
-            case "cognome":
-                for (let j = 0; j < persone.length; j++) {
-                    for (let i = j + 1; i < persone.length; i++) {
-                        // comparing adjacent strings
-                        if (!cognomeorder) {
-                            if (compare(persone[i].cognome, persone[j].cognome) < 0) {
-                                temp = persone[j];
-                                persone[j] = persone[i]
-                                persone[i] = temp;
-                            }
-                        } else {
-                            if (compare(persone[i].cognome, persone[j].cognome) > 0) {
-                                temp = persone[i];
-                                persone[i] = persone[j];
-                                persone[j] = temp;
-                            }
+                CalcPag(persone);
+            }
+            if (!nomeorder) nomeorder = true;
+            else nomeorder = false;
+            break;
+        case "cognome":
+            for (let j = 0; j < persone.length; j++) {
+                for (let i = j + 1; i < persone.length; i++) {
+                    // comparing adjacent strings
+                    if (!cognomeorder) {
+                        if (compare(persone[i].cognome, persone[j].cognome) < 0) {
+                            temp = persone[j];
+                            persone[j] = persone[i]
+                            persone[i] = temp;
+                        }
+                    } else {
+                        if (compare(persone[i].cognome, persone[j].cognome) > 0) {
+                            temp = persone[i];
+                            persone[i] = persone[j];
+                            persone[j] = temp;
                         }
                     }
-                    CalcPag(persone);
                 }
-                if (!cognomeorder) cognomeorder = true;
-                else cognomeorder = false;
-                break;
-            case "regione":
-                for (let j = 0; j < persone.length; j++) {
-                    for (let i = j + 1; i < persone.length; i++) {
-                        // comparing adjacent strings
-                        if (!regioneorder) {
-                            if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) < 0) {
-                                temp = persone[j];
-                                persone[j] = persone[i]
-                                persone[i] = temp;
-                            }
-                        } else {
-                            if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) > 0) {
-                                temp = persone[i];
-                                persone[i] = persone[j];
-                                persone[j] = temp;
-                            }
+                CalcPag(persone);
+            }
+            if (!cognomeorder) cognomeorder = true;
+            else cognomeorder = false;
+            break;
+        case "regione":
+            for (let j = 0; j < persone.length; j++) {
+                for (let i = j + 1; i < persone.length; i++) {
+                    // comparing adjacent strings
+                    if (!regioneorder) {
+                        if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) < 0) {
+                            temp = persone[j];
+                            persone[j] = persone[i]
+                            persone[i] = temp;
+                        }
+                    } else {
+                        if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) > 0) {
+                            temp = persone[i];
+                            persone[i] = persone[j];
+                            persone[j] = temp;
                         }
                     }
-                    CalcPag(persone);
                 }
-                if (!regioneorder) regioneorder = true;
-                else regioneorder = false;
-                break;
-            case "provincia":
-                for (let j = 0; j < persone.length; j++) {
-                    for (let i = j + 1; i < persone.length; i++) {
-                        // comparing adjacent strings
-                        if (!provinciaorder) {
-                            if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) < 0) {
-                                temp = persone[j];
-                                persone[j] = persone[i]
-                                persone[i] = temp;
-                            }
-                        } else {
-                            if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) > 0) {
-                                temp = persone[i];
-                                persone[i] = persone[j];
-                                persone[j] = temp;
-                            }
+                CalcPag(persone);
+            }
+            if (!regioneorder) regioneorder = true;
+            else regioneorder = false;
+            break;
+        case "provincia":
+            for (let j = 0; j < persone.length; j++) {
+                for (let i = j + 1; i < persone.length; i++) {
+                    // comparing adjacent strings
+                    if (!provinciaorder) {
+                        if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) < 0) {
+                            temp = persone[j];
+                            persone[j] = persone[i]
+                            persone[i] = temp;
+                        }
+                    } else {
+                        if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) > 0) {
+                            temp = persone[i];
+                            persone[i] = persone[j];
+                            persone[j] = temp;
                         }
                     }
-                    CalcPag(persone);
                 }
-                if (!provinciaorder) provinciaorder = true;
-                else provinciaorder = false;
-                break;
-            case "comune":
-                for (let j = 0; j < persone.length; j++) {
-                    for (let i = j + 1; i < persone.length; i++) {
-                        // comparing adjacent strings
-                        if (!comuneorder) {
-                            if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) < 0) {
-                                temp = persone[j];
-                                persone[j] = persone[i]
-                                persone[i] = temp;
-                            }
-                        } else {
-                            if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) > 0) {
-                                temp = persone[i];
-                                persone[i] = persone[j];
-                                persone[j] = temp;
-                            }
+                CalcPag(persone);
+            }
+            if (!provinciaorder) provinciaorder = true;
+            else provinciaorder = false;
+            break;
+        case "comune":
+            for (let j = 0; j < persone.length; j++) {
+                for (let i = j + 1; i < persone.length; i++) {
+                    // comparing adjacent strings
+                    if (!comuneorder) {
+                        if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) < 0) {
+                            temp = persone[j];
+                            persone[j] = persone[i]
+                            persone[i] = temp;
+                        }
+                    } else {
+                        if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) > 0) {
+                            temp = persone[i];
+                            persone[i] = persone[j];
+                            persone[j] = temp;
                         }
                     }
-                    CalcPag(persone);
                 }
-                if (!comuneorder) comuneorder = true;
-                else comuneorder = false;
-                break;
-            case "anno":
-                for (let j = 0; j < persone.length; j++) {
-                    for (let i = j + 1; i < persone.length; i++) {
-                        // comparing adjacent strings
-                        if (!annoorder) {
-                            if (compare(persone[i].anno, persone[j].anno) < 0) {
-                                temp = persone[j];
-                                persone[j] = persone[i]
-                                persone[i] = temp;
-                            }
-                        } else {
-                            if (compare(persone[i].anno, persone[j].anno) > 0) {
-                                temp = persone[i];
-                                persone[i] = persone[j];
-                                persone[j] = temp;
-                            }
+                CalcPag(persone);
+            }
+            if (!comuneorder) comuneorder = true;
+            else comuneorder = false;
+            break;
+        case "anno":
+            for (let j = 0; j < persone.length; j++) {
+                for (let i = j + 1; i < persone.length; i++) {
+                    // comparing adjacent strings
+                    if (!annoorder) {
+                        if (compare(persone[i].anno, persone[j].anno) < 0) {
+                            temp = persone[j];
+                            persone[j] = persone[i]
+                            persone[i] = temp;
+                        }
+                    } else {
+                        if (compare(persone[i].anno, persone[j].anno) > 0) {
+                            temp = persone[i];
+                            persone[i] = persone[j];
+                            persone[j] = temp;
                         }
                     }
-                    CalcPag(persone);
                 }
-                if (!annoorder) annoorder = true;
-                else annoorder = false;
-                break;
-            default:
-                break;
-        }
-    });
-    /*CLICK PRECEDENTE*/
-    $(document).on("click", "#previous", function() {
-        if (posizioneCorrente == 1) posizioneCorrente++;
-        posizioneCorrente--;
-        StampaTabella(posizioneCorrente, $("#shownumber").val());
-    });
-    /*CLICK SUCCESSIVO*/
-    $(document).on("click", "#next", function() {
-        if (posizioneCorrente == numeropagine) posizioneCorrente--;
-        posizioneCorrente++;
-        StampaTabella(posizioneCorrente, $("#shownumber").val());
-    });
-    /*CLICK NUMERO PAGINA*/
-    $(document).on("click", ".numeri>.page-link", function() {
-        var testo = $(this).text();
-        posizioneCorrente = testo;
-        StampaTabella(testo, $("#shownumber").val());
-    });
-    siteScroll();
-    var $window = $(window),
-        $body = $('body');
+                CalcPag(persone);
+            }
+            if (!annoorder) annoorder = true;
+            else annoorder = false;
+            break;
+        default:
+            break;
+    }
+});
+/*CLICK PRECEDENTE*/
+$(document).on("click", "#previous", function () {
+    if (posizioneCorrente == 1) posizioneCorrente++;
+    posizioneCorrente--;
+    StampaTabella(posizioneCorrente, $("#shownumber").val());
+});
+/*CLICK SUCCESSIVO*/
+$(document).on("click", "#next", function () {
+    if (posizioneCorrente == numeropagine) posizioneCorrente--;
+    posizioneCorrente++;
+    StampaTabella(posizioneCorrente, $("#shownumber").val());
+});
+/*CLICK NUMERO PAGINA*/
+$(document).on("click", ".numeri>.page-link", function () {
+    var testo = $(this).text();
+    posizioneCorrente = testo;
+    StampaTabella(testo, $("#shownumber").val());
+});
+siteScroll();
+var $window = $(window),
+    $body = $('body');
 
-    // Breakpoints.
-    breakpoints({
-        xlarge: ['1281px', '1680px'],
-        large: ['981px', '1280px'],
-        medium: ['737px', '980px'],
-        small: [null, '736px']
+// Breakpoints.
+breakpoints({
+    xlarge: ['1281px', '1680px'],
+    large: ['981px', '1280px'],
+    medium: ['737px', '980px'],
+    small: [null, '736px']
+});
+
+// Play initial animations on page load.
+$window.on('load', function () {
+    window.setTimeout(function () {
+        $body.removeClass('is-preload');
+    }, 100);
+});
+
+// Dropdowns.
+$('#nav > ul').dropotron({
+    mode: 'fade',
+    noOpenerFade: true,
+    alignment: 'center'
+});
+
+// Nav.
+
+// Title Bar.
+$(
+    '<div id="titleBar">' +
+    '<a href="#navPanel" class="toggle"></a>' +
+    '</div>'
+)
+    .appendTo($body);
+
+// Panel.
+$(
+    '<div id="navPanel">' +
+    '<nav>' +
+    $('#nav').navList() +
+    '</nav>' +
+    '</div>'
+)
+    .appendTo($body)
+    .panel({
+        delay: 500,
+        hideOnClick: true,
+        hideOnSwipe: true,
+        resetScroll: true,
+        resetForms: true,
+        side: 'left',
+        target: $body,
+        visibleClass: 'navPanel-visible'
     });
-
-    // Play initial animations on page load.
-    $window.on('load', function() {
-        window.setTimeout(function() {
-            $body.removeClass('is-preload');
-        }, 100);
-    });
-
-    // Dropdowns.
-    $('#nav > ul').dropotron({
-        mode: 'fade',
-        noOpenerFade: true,
-        alignment: 'center'
-    });
-
-    // Nav.
-
-    // Title Bar.
-    $(
-            '<div id="titleBar">' +
-            '<a href="#navPanel" class="toggle"></a>' +
-            '</div>'
-        )
-        .appendTo($body);
-
-    // Panel.
-    $(
-            '<div id="navPanel">' +
-            '<nav>' +
-            $('#nav').navList() +
-            '</nav>' +
-            '</div>'
-        )
-        .appendTo($body)
-        .panel({
-            delay: 500,
-            hideOnClick: true,
-            hideOnSwipe: true,
-            resetScroll: true,
-            resetForms: true,
-            side: 'left',
-            target: $body,
-            visibleClass: 'navPanel-visible'
-        });
 });
