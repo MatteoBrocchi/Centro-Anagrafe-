@@ -199,7 +199,7 @@ $(function () {
         $("#viamod").val(persone[$(this).attr("id") - 1].indirizzo);
     });
     $(document).on("click", ".inviaModifica", function () {
-        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luoghi_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod'z).val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' +$('#viamod').val().toString()+'"}';
+        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luoghi_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' +$('#viamod').val().toString()+'"}';
         $("#nomemod").val(persone[idedit]);
         $.ajax({
             type: "POST",
