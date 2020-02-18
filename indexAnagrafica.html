@@ -79,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-4"></div>
-                                <div class="col-md-1 col-1">
+                                <div class="col-md-1 col-1 d-flex justify-content-center align-item-center">
                                     <button type="button" class="btn btn-success rounded-circle" data-toggle="modal"
                                         data-target="#exampleModalCenter"><i class="fas fa-plus"></i></button>
                                 </div>
@@ -97,7 +97,6 @@
                             <table class="table table-hover shadow">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
                                         <th scope="col">Nome <i class="fas fa-sort pl-3 order" id="nome"></i></th>
                                         <th scope="col">Cognome <i class="fas fa-sort pl-3 order" id="cognome"></i></th>
                                         <th scope="col">Regione <i class="fas fa-sort pl-3 order" id="regione"></i></th>
@@ -284,11 +283,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Inserisci i dati</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="form1">
                         <div class="row pb-3">
                             <div class="col-4 text-left">
                                 <label>Nome</label>
@@ -307,7 +304,15 @@
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Comune</label>
+                                <label>Indirizzo</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" placeholder="Indirizzo">
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-4 text-left">
+                                <label>Residenza</label>
                             </div>
                             <div class="col-8">
                                 <select class="comuni text-center rounded">
@@ -337,7 +342,7 @@
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Data di Nascita</label>
+                                <label>Data di nascita</label>
                             </div>
                             <div class="col-8">
                                 <input type="date" class="form-control">
@@ -345,19 +350,27 @@
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Luogo di Nascita</label>
+                                <label>Luogo di nascita</label>
                             </div>
                             <div class="col-8">
-                                <select class="text-center rounded">
-                                    <option value="" hidden>Seleziona comune</option>
+                                <select class="text-center rounded" id="birthPlace">
+                                    <option value="" hidden>Seleziona luogo</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-4 text-left">
+                                <label>Data di rilascio</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="date" class="form-control">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary chiudi" data-dismiss="modal">Chiudi</button>
-                    <button type="button" class="btn btn-success">Aggiungi</button>
+                    <button type="button" class="btn btn-success btnAddID">Aggiungi</button>
                 </div>
             </div>
         </div>
@@ -367,9 +380,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Inserisci i dati</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modifica i dati</h5>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -419,6 +430,14 @@
                             </div>
                             <div class="col-8">
                                 <input id="annomod" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-4 text-left">
+                                <label>Indirizzo</label>
+                            </div>
+                            <div class="col-8">
+                                <input id="viamod" type="text" class="form-control" placeholder="Via Girgio Pascoli">
                             </div>
                         </div>
                     </form>
