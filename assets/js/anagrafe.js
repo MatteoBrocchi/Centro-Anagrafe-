@@ -102,7 +102,7 @@ $(function() {
         $(".anno").css("color", "black");
     })
 
-    for (let i = 1940; i < (new Date).getFullYear(); i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
+    for (let i = 1940; i < (new Date).getFullYear() + 1; i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
     //creazione carta d'identità
     $('#form1 button').on('click', function() { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
         var check = true;
