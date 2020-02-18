@@ -77,6 +77,7 @@ var provSelected = "";
 var comSelected = "";
 var annoSelected = 0;
 var chartBar;
+
 $(function () {
     $.ajax({
         type: "GET",
@@ -106,7 +107,7 @@ $(function () {
 
     for (let i = 1940; i < (new Date).getFullYear() + 1; i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
     //creazione carta d'identità
-    $('#form1 button').on('click', function () { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
+    $('.btnAddID').on('click', function () { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
         var check = true;
         //controllo che il form sia stato completato
         $('#form1 input').each(function () {
@@ -114,8 +115,12 @@ $(function () {
                 check = false;
         });
         if (check) {
-            persone[c] = new Persona(new cartaIdentita([$('#nome').val().toString(), $('#cognome').val().toString(), [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], $('#indirizzo').val().toString(), new Date($('#data').val().toString()), new Date($('#rilascio').val().toString()), c]));
-            var dt = '{"nome": "' + $("#nome").val().toString() + '", "cognome": "' + $('#cognome').val().toString() + '", "anno_nascita": "' + $('#data').val().toString() + '", "regione": "' + $('#regione').val().toString() + '","provincia": "' + $('#provincia').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "indirizzo": "' + $('#indirizzo').val().toString() + '", "anno": "' + $('#rilascio').val().toString() + '", "codice": "' + persone[c].carta.id.toString() + '"}';
+            persone[c] = new Persona(new cartaIdentita([$('#nome').val().toString(), $('#cognome').val().toString(), [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], $('#indirizzo').val().toString(), new Date($('#anno').val().toString()), new Date($('#rilascio').val().toString()), c]));
+            var dt = '{"nome": "' + $("#nome").val().toString() + '", "cognome": "' + $('#cognome').val().toString()
+                + '", "anno_nascita": "' + $('#anno').val().toString() + '", "regione": "' + $('#regione').val().toString()
+                + '","provincia": "' + $('#provincia').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio').val().toString()
+                + '", "indirizzo": "' + $('#indirizzo').val().toString() + '", "anno_rilascio": "' + $('#rilascio').val().toString()
+                + '", "codice": "' + persone[c].carta.id.toString() + '"}';
             $.ajax({
                 type: "POST",
                 headers: { "Access-Control-Allow-Origin": "*" },
@@ -287,14 +292,18 @@ function downloadDataBar() {
     //controlal se è stato selezionato anno e regione 
     if (annoSelected != 0 && regSelected != "" && provSelected == "") {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        //scorre tutte le persone
         for (var persona in persone) {
-            //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
-            if (persone[persona].luoghi_residenza[0].regione == regSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] < annoSelected)
-                for (var i = 0; i < 12; i++) datiBar[i]++;
-            //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
-            if (persone[persona].luoghi_residenza[0].regione == regSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] == annoSelected) {
-                var mese = persone[persona].luoghi_residenza[0].anno.split("-")[1];
-                addDataBar(mese);
+            //scorre tutte le residenze della persona
+            for (var residenza in persone[persona].luoghi_residenza) {
+                //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
+                if (persone[persona].luoghi_residenza[residenza].regione == regSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected)
+                    for (var i = 0; i < 12; i++) datiBar[i]++;
+                //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
+                if (persone[persona].luoghi_residenza[residenza].regione == regSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected) {
+                    var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
+                    addDataBar(mese);
+                }
             }
         }
         addBarChart(regSelected);
