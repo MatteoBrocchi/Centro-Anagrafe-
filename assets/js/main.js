@@ -77,6 +77,8 @@ $(function () {
     $(document).on("change", ".regioni", function () {
         $(".province").empty();
         $(".comuni").empty();
+        $(".province").append(new Option("Seleziona provincia"));
+        $(".comuni").append(new Option("Seleziona comune"));
         var selectedRegion = $(".regioni").val();
         for (var i = 0; i < 20; i++) {
             if (arrayTerritory[i].nome == selectedRegion) {
@@ -88,11 +90,6 @@ $(function () {
                 }
             }
         }
-        $(".regioni option").addClass("regionOptions");
-    })
-    $(document).on("click", ".regionOptions", function(){
-        $(".province").append(new Option("Seleziona provincia"));
-        $(".comuni").append(new Option("Seleziona comune"));
     })
     $(document).on("click",)
     /*FILTRO PROVINCE*/
