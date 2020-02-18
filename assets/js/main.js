@@ -61,16 +61,25 @@ $(function () {
             $.each(data, function (i, value) {
                 arrayTerritory.push(Object.assign({}, value))
                 arrayTerritory = arrayTerritory[0];
-                for (let i = 0; i < 20; i++) {
-                    $(".regioni").append(new Option(arrayTerritory[i].nome, arrayTerritory[i].nome));
+                for (let h = 0; h < 20; h++) {
+                    $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
+                    for (let j = 0; j < arrayTerritory[h].province.length; j++) {
+                        $(".province").append(new Option(arrayTerritory[h].province[j].nome));
+                        for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
+                            $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                            $("#birthPlace").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                        }
+                    }
                 }
             });
         }
     })
-    /*FILTRO PROVINCE*/
+    /*FILTRO REGIONI*/
     $(document).on("change", ".regioni", function () {
         $(".province").empty();
         $(".comuni").empty();
+        $(".province").append(new Option("Seleziona provincia"));
+        $(".comuni").append(new Option("Seleziona comune"));
         var selectedRegion = $(".regioni").val();
         for (var i = 0; i < 20; i++) {
             if (arrayTerritory[i].nome == selectedRegion) {
@@ -83,17 +92,33 @@ $(function () {
             }
         }
     })
-    /*FILTRO COMUNI*/
-    $(document).on("change", ".regioni", function () {
-        $(".province").empty();
+    $(document).on("click")
+    /*FILTRO PROVINCE*/
+    $(document).on("change", ".province", function () {
         $(".comuni").empty();
-        var selectedRegion = $(".regioni").val();
+        $(".comuni").append(new Option("Seleziona comune"));
+        var selectedProvince = $(".province").val();
         for (var i = 0; i < 20; i++) {
-            if (arrayTerritory[i].nome == selectedRegion) {
-                for (let j = 0; j < arrayTerritory[i].province.length; j++) {
-                    $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
-                    for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                if (arrayTerritory[i].province[j].nome == selectedProvince) {
+                    $(".regioni").val(arrayTerritory[i].nome);
+                    for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
                         $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
+                    }
+                }
+            }
+        }
+    })
+    /*FILTRO COMUNI*/
+    $(document).on("change", ".comuni", function () {
+        var selectedDistrict = $(".comuni").val();
+        for (var i = 0; i < 20; i++) {
+            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                    if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+                        $(".regioni").val(arrayTerritory[i].nome);
+                        $(".province").val(arrayTerritory[i].province[j].nome);
+                        $(".comuni").val(selectedDistrict);
                     }
                 }
             }
@@ -163,20 +188,16 @@ $(function () {
     }
     /*EDIT*/
     $(document).on("click", ".edit", function () {
-        var dt = '{"nome": "' + $("#nomemod").val().toString() + '", "cognome": "' + $('#cognomemod').val().toString() + '", "anno_nascita": "' + $('#annomod').val().toString() + '", "regione": "' + $('#regionemod').val().toString() + '","provincia": "' + $('#provinciamod').val().toString() + '", "comune": "' + $('#comunemod').val().toString() + '", "anno": 2020}';
-        persone[c] = new Persona(new cartaIdentita([$('#nome').val().toString(), $('#cognome').val().toString(), [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], $('#indirizzo').val().toString(), new Date($('#data').val().toString()), $('#rilascio').val().toString()]), c);
-        $.ajax({
-            type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
-            data: dt,
-            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
-            contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/" + $(this).attr("id"),
-            dataType: "json",
-        });
+        idedit = $(this).attr("id");
+        $("#nomemod").val(persone[$(this).attr("id") - 1].nome);
+        $("#cognomemod").val(persone[$(this).attr("id") - 1].cognome);
+        let lunghezzaResidenze = persone[$(this).attr("id") - 1].luoghi_residenza.length;
+        $("#comunemod").val(persone[$(this).attr("id") - 1].luoghi_residenza[lunghezzaResidenze - 1].comune);
+        $("#annomod").val(persone[$(this).attr("id") - 1].anno_nascita);
+        $("#viamod").val(persone[$(this).attr("id") - 1].indirizzo);
     });
     $(document).on("click", ".inviaModifica", function () {
-        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luogo_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' + persone[parseInt(idedit) - 1].indirizzo + '","codice":"' + persone[parseInt(idedit) - 1].codice + '"}';
+        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luogo_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' +$('#viamod').val().toString()+'"}';
         $("#nomemod").val(persone[idedit]);
         $.ajax({
             type: "POST",
@@ -210,235 +231,235 @@ $(function () {
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + selectedID + "/",
             dataType: "json",
         }).then(function (data) {
-            $(".bottoni .delete").each( function(){
-                if($(this).attr("id")==selectedID)$(this).parent().parent().remove();
+            $(".bottoni .delete").each(function () {
+                if ($(this).attr("id") == selectedID) $(this).parent().parent().remove();
             });
         }, function (jqXHR, textStatus, errorThrown) {
             let x = 0;
             alert(jqXHR.responseText);
         })
     });
-$(document).on("click", ".decesso", function () {
+    $(document).on("click", ".decesso", function () {
 
-})
-/*ORDINA*/
-$(document).on("click", ".order", function () {
-    var temp = new Array();
-    var f = $(this).attr("id");
-    switch (f) {
-        case "nome":
-            for (let j = 0; j < persone.length; j++) {
-                for (let i = j + 1; i < persone.length; i++) {
-                    // comparing adjacent strings
-                    if (!nomeorder) {
-                        if (compare(persone[i].nome, persone[j].nome) < 0) {
-                            temp = persone[j];
-                            persone[j] = persone[i]
-                            persone[i] = temp;
-                        }
-                    } else {
-                        if (compare(persone[i].nome, persone[j].nome) > 0) {
-                            temp = persone[i];
-                            persone[i] = persone[j];
-                            persone[j] = temp;
+    })
+    /*ORDINA*/
+    $(document).on("click", ".order", function () {
+        var temp = new Array();
+        var f = $(this).attr("id");
+        switch (f) {
+            case "nome":
+                for (let j = 0; j < persone.length; j++) {
+                    for (let i = j + 1; i < persone.length; i++) {
+                        // comparing adjacent strings
+                        if (!nomeorder) {
+                            if (compare(persone[i].nome, persone[j].nome) < 0) {
+                                temp = persone[j];
+                                persone[j] = persone[i]
+                                persone[i] = temp;
+                            }
+                        } else {
+                            if (compare(persone[i].nome, persone[j].nome) > 0) {
+                                temp = persone[i];
+                                persone[i] = persone[j];
+                                persone[j] = temp;
+                            }
                         }
                     }
+                    CalcPag(persone);
                 }
-                CalcPag(persone);
-            }
-            if (!nomeorder) nomeorder = true;
-            else nomeorder = false;
-            break;
-        case "cognome":
-            for (let j = 0; j < persone.length; j++) {
-                for (let i = j + 1; i < persone.length; i++) {
-                    // comparing adjacent strings
-                    if (!cognomeorder) {
-                        if (compare(persone[i].cognome, persone[j].cognome) < 0) {
-                            temp = persone[j];
-                            persone[j] = persone[i]
-                            persone[i] = temp;
-                        }
-                    } else {
-                        if (compare(persone[i].cognome, persone[j].cognome) > 0) {
-                            temp = persone[i];
-                            persone[i] = persone[j];
-                            persone[j] = temp;
+                if (!nomeorder) nomeorder = true;
+                else nomeorder = false;
+                break;
+            case "cognome":
+                for (let j = 0; j < persone.length; j++) {
+                    for (let i = j + 1; i < persone.length; i++) {
+                        // comparing adjacent strings
+                        if (!cognomeorder) {
+                            if (compare(persone[i].cognome, persone[j].cognome) < 0) {
+                                temp = persone[j];
+                                persone[j] = persone[i]
+                                persone[i] = temp;
+                            }
+                        } else {
+                            if (compare(persone[i].cognome, persone[j].cognome) > 0) {
+                                temp = persone[i];
+                                persone[i] = persone[j];
+                                persone[j] = temp;
+                            }
                         }
                     }
+                    CalcPag(persone);
                 }
-                CalcPag(persone);
-            }
-            if (!cognomeorder) cognomeorder = true;
-            else cognomeorder = false;
-            break;
-        case "regione":
-            for (let j = 0; j < persone.length; j++) {
-                for (let i = j + 1; i < persone.length; i++) {
-                    // comparing adjacent strings
-                    if (!regioneorder) {
-                        if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) < 0) {
-                            temp = persone[j];
-                            persone[j] = persone[i]
-                            persone[i] = temp;
-                        }
-                    } else {
-                        if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) > 0) {
-                            temp = persone[i];
-                            persone[i] = persone[j];
-                            persone[j] = temp;
+                if (!cognomeorder) cognomeorder = true;
+                else cognomeorder = false;
+                break;
+            case "regione":
+                for (let j = 0; j < persone.length; j++) {
+                    for (let i = j + 1; i < persone.length; i++) {
+                        // comparing adjacent strings
+                        if (!regioneorder) {
+                            if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) < 0) {
+                                temp = persone[j];
+                                persone[j] = persone[i]
+                                persone[i] = temp;
+                            }
+                        } else {
+                            if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) > 0) {
+                                temp = persone[i];
+                                persone[i] = persone[j];
+                                persone[j] = temp;
+                            }
                         }
                     }
+                    CalcPag(persone);
                 }
-                CalcPag(persone);
-            }
-            if (!regioneorder) regioneorder = true;
-            else regioneorder = false;
-            break;
-        case "provincia":
-            for (let j = 0; j < persone.length; j++) {
-                for (let i = j + 1; i < persone.length; i++) {
-                    // comparing adjacent strings
-                    if (!provinciaorder) {
-                        if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) < 0) {
-                            temp = persone[j];
-                            persone[j] = persone[i]
-                            persone[i] = temp;
-                        }
-                    } else {
-                        if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) > 0) {
-                            temp = persone[i];
-                            persone[i] = persone[j];
-                            persone[j] = temp;
+                if (!regioneorder) regioneorder = true;
+                else regioneorder = false;
+                break;
+            case "provincia":
+                for (let j = 0; j < persone.length; j++) {
+                    for (let i = j + 1; i < persone.length; i++) {
+                        // comparing adjacent strings
+                        if (!provinciaorder) {
+                            if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) < 0) {
+                                temp = persone[j];
+                                persone[j] = persone[i]
+                                persone[i] = temp;
+                            }
+                        } else {
+                            if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) > 0) {
+                                temp = persone[i];
+                                persone[i] = persone[j];
+                                persone[j] = temp;
+                            }
                         }
                     }
+                    CalcPag(persone);
                 }
-                CalcPag(persone);
-            }
-            if (!provinciaorder) provinciaorder = true;
-            else provinciaorder = false;
-            break;
-        case "comune":
-            for (let j = 0; j < persone.length; j++) {
-                for (let i = j + 1; i < persone.length; i++) {
-                    // comparing adjacent strings
-                    if (!comuneorder) {
-                        if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) < 0) {
-                            temp = persone[j];
-                            persone[j] = persone[i]
-                            persone[i] = temp;
-                        }
-                    } else {
-                        if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) > 0) {
-                            temp = persone[i];
-                            persone[i] = persone[j];
-                            persone[j] = temp;
+                if (!provinciaorder) provinciaorder = true;
+                else provinciaorder = false;
+                break;
+            case "comune":
+                for (let j = 0; j < persone.length; j++) {
+                    for (let i = j + 1; i < persone.length; i++) {
+                        // comparing adjacent strings
+                        if (!comuneorder) {
+                            if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) < 0) {
+                                temp = persone[j];
+                                persone[j] = persone[i]
+                                persone[i] = temp;
+                            }
+                        } else {
+                            if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) > 0) {
+                                temp = persone[i];
+                                persone[i] = persone[j];
+                                persone[j] = temp;
+                            }
                         }
                     }
+                    CalcPag(persone);
                 }
-                CalcPag(persone);
-            }
-            if (!comuneorder) comuneorder = true;
-            else comuneorder = false;
-            break;
-        case "anno":
-            for (let j = 0; j < persone.length; j++) {
-                for (let i = j + 1; i < persone.length; i++) {
-                    // comparing adjacent strings
-                    if (!annoorder) {
-                        if (compare(persone[i].anno, persone[j].anno) < 0) {
-                            temp = persone[j];
-                            persone[j] = persone[i]
-                            persone[i] = temp;
-                        }
-                    } else {
-                        if (compare(persone[i].anno, persone[j].anno) > 0) {
-                            temp = persone[i];
-                            persone[i] = persone[j];
-                            persone[j] = temp;
+                if (!comuneorder) comuneorder = true;
+                else comuneorder = false;
+                break;
+            case "anno":
+                for (let j = 0; j < persone.length; j++) {
+                    for (let i = j + 1; i < persone.length; i++) {
+                        // comparing adjacent strings
+                        if (!annoorder) {
+                            if (compare(persone[i].anno, persone[j].anno) < 0) {
+                                temp = persone[j];
+                                persone[j] = persone[i]
+                                persone[i] = temp;
+                            }
+                        } else {
+                            if (compare(persone[i].anno, persone[j].anno) > 0) {
+                                temp = persone[i];
+                                persone[i] = persone[j];
+                                persone[j] = temp;
+                            }
                         }
                     }
+                    CalcPag(persone);
                 }
-                CalcPag(persone);
-            }
-            if (!annoorder) annoorder = true;
-            else annoorder = false;
-            break;
-        default:
-            break;
-    }
-});
-/*CLICK PRECEDENTE*/
-$(document).on("click", "#previous", function () {
-    if (posizioneCorrente == 1) posizioneCorrente++;
-    posizioneCorrente--;
-    StampaTabella(posizioneCorrente, $("#shownumber").val());
-});
-/*CLICK SUCCESSIVO*/
-$(document).on("click", "#next", function () {
-    if (posizioneCorrente == numeropagine) posizioneCorrente--;
-    posizioneCorrente++;
-    StampaTabella(posizioneCorrente, $("#shownumber").val());
-});
-/*CLICK NUMERO PAGINA*/
-$(document).on("click", ".numeri>.page-link", function () {
-    var testo = $(this).text();
-    posizioneCorrente = testo;
-    StampaTabella(testo, $("#shownumber").val());
-});
-siteScroll();
-var $window = $(window),
-    $body = $('body');
-
-// Breakpoints.
-breakpoints({
-    xlarge: ['1281px', '1680px'],
-    large: ['981px', '1280px'],
-    medium: ['737px', '980px'],
-    small: [null, '736px']
-});
-
-// Play initial animations on page load.
-$window.on('load', function () {
-    window.setTimeout(function () {
-        $body.removeClass('is-preload');
-    }, 100);
-});
-
-// Dropdowns.
-$('#nav > ul').dropotron({
-    mode: 'fade',
-    noOpenerFade: true,
-    alignment: 'center'
-});
-
-// Nav.
-
-// Title Bar.
-$(
-    '<div id="titleBar">' +
-    '<a href="#navPanel" class="toggle"></a>' +
-    '</div>'
-)
-    .appendTo($body);
-
-// Panel.
-$(
-    '<div id="navPanel">' +
-    '<nav>' +
-    $('#nav').navList() +
-    '</nav>' +
-    '</div>'
-)
-    .appendTo($body)
-    .panel({
-        delay: 500,
-        hideOnClick: true,
-        hideOnSwipe: true,
-        resetScroll: true,
-        resetForms: true,
-        side: 'left',
-        target: $body,
-        visibleClass: 'navPanel-visible'
+                if (!annoorder) annoorder = true;
+                else annoorder = false;
+                break;
+            default:
+                break;
+        }
     });
+    /*CLICK PRECEDENTE*/
+    $(document).on("click", "#previous", function () {
+        if (posizioneCorrente == 1) posizioneCorrente++;
+        posizioneCorrente--;
+        StampaTabella(posizioneCorrente, $("#shownumber").val());
+    });
+    /*CLICK SUCCESSIVO*/
+    $(document).on("click", "#next", function () {
+        if (posizioneCorrente == numeropagine) posizioneCorrente--;
+        posizioneCorrente++;
+        StampaTabella(posizioneCorrente, $("#shownumber").val());
+    });
+    /*CLICK NUMERO PAGINA*/
+    $(document).on("click", ".numeri>.page-link", function () {
+        var testo = $(this).text();
+        posizioneCorrente = testo;
+        StampaTabella(testo, $("#shownumber").val());
+    });
+    siteScroll();
+    var $window = $(window),
+        $body = $('body');
+
+    // Breakpoints.
+    breakpoints({
+        xlarge: ['1281px', '1680px'],
+        large: ['981px', '1280px'],
+        medium: ['737px', '980px'],
+        small: [null, '736px']
+    });
+
+    // Play initial animations on page load.
+    $window.on('load', function () {
+        window.setTimeout(function () {
+            $body.removeClass('is-preload');
+        }, 100);
+    });
+
+    // Dropdowns.
+    $('#nav > ul').dropotron({
+        mode: 'fade',
+        noOpenerFade: true,
+        alignment: 'center'
+    });
+
+    // Nav.
+
+    // Title Bar.
+    $(
+        '<div id="titleBar">' +
+        '<a href="#navPanel" class="toggle"></a>' +
+        '</div>'
+    )
+        .appendTo($body);
+
+    // Panel.
+    $(
+        '<div id="navPanel">' +
+        '<nav>' +
+        $('#nav').navList() +
+        '</nav>' +
+        '</div>'
+    )
+        .appendTo($body)
+        .panel({
+            delay: 500,
+            hideOnClick: true,
+            hideOnSwipe: true,
+            resetScroll: true,
+            resetForms: true,
+            side: 'left',
+            target: $body,
+            visibleClass: 'navPanel-visible'
+        });
 });
