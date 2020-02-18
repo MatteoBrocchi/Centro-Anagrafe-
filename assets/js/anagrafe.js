@@ -73,6 +73,7 @@ var datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var regioni = new Array();
 var chartPie;
 var regSelected = "";
+var provSelected = "";
 var annoSelected = 0;
 var chartBar;
 $(function() {
@@ -102,9 +103,9 @@ $(function() {
         $(".anno").css("color", "black");
     })
 
-    for (let i = 1940; i < (new Date).getFullYear(); i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
+    for (let i = 1940; i < (new Date).getFullYear() + 1; i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
     //creazione carta d'identità
-    $('#form1 button').on('click', function() {
+    $('#form1 button').on('click', function() { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
         var check = true;
         //controllo che il form sia stato completato
         $('#form1 input').each(function() {
@@ -212,6 +213,7 @@ $(function() {
             alert("Compila tutti i campi");
         $('#form6').trigger("reset");
     });
+
     $(".regioni").on("change", function() {
         $(".regioni option:selected").each(function() {
             regSelected = $(this).text().toString();
@@ -220,9 +222,12 @@ $(function() {
         $(".province").attr("disabled", false);
     });
     $(".province").on("change", function() {
+        $(".province option:selected").each(function() {
+            provSelected = $(this).text().toString();
+            downloadDataBar();
+        });
         $(".comuni").attr("disabled", false);
     });
-
     $(".anno").on("change", function() {
         $(".anno option:selected").each(function() {
             annoSelected = parseInt($(this).text());
@@ -268,68 +273,87 @@ function downloadDataPie() {
 }
 
 function downloadDataBar() {
+    //controlal se è stato selezionato anno e regione 
     if (annoSelected != 0 && regSelected != "") {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         for (var persona in persone) {
             //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
             if (persone[persona].luogo_residenza.regione == regSelected && persone[persona].anno.split("-")[0] < annoSelected)
-                for (var i = 0; i < 12; i++)
-                    datiBar[i]++;
+                for (var i = 0; i < 12; i++) datiBar[i]++;
             //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
             if (persone[persona].luogo_residenza.regione == regSelected && persone[persona].anno.split("-")[0] == annoSelected) {
                 var mese = persone[persona].anno.split("-")[1];
-                switch (mese) {
-                    case "01":
-                        datiBar[0]++;
-                        break;
-                    case "02":
-                        for (var i = 1; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "03":
-                        for (var i = 2; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "04":
-                        for (var i = 3; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "05":
-                        for (var i = 4; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "06":
-                        for (var i = 5; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "07":
-                        for (var i = 6; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "08":
-                        for (var i = 7; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "09":
-                        for (var i = 8; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "10":
-                        for (var i = 9; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "11":
-                        for (var i = 10; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                    case "12":
-                        for (var i = 11; i < 12; i++)
-                            datiBar[i]++;
-                        break;
-                }
+                addDataBar(mese);
             }
         }
         addBarChart();
+    }
+    //oppure anno e provincia
+    else if(annoSelected != 0 && provSelected != ""){
+        datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for (var persona in persone) {
+            //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
+            if (persone[persona].luogo_residenza.province == provSelected && persone[persona].anno.split("-")[0] < annoSelected)
+                for (var i = 0; i < 12; i++) datiBar[i]++;
+            //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
+            if (persone[persona].luogo_residenza.province == provSelected && persone[persona].anno.split("-")[0] == annoSelected) {
+                var mese = persone[persona].anno.split("-")[1];
+                addDataBar(mese);
+            }
+        }
+        addBarChart();
+    }
+}
+
+function addDataBar(mese){
+    switch (mese) {
+        case "01":
+            datiBar[0]++;
+            break;
+        case "02":
+            for (var i = 1; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "03":
+            for (var i = 2; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "04":
+            for (var i = 3; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "05":
+            for (var i = 4; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "06":
+            for (var i = 5; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "07":
+            for (var i = 6; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "08":
+            for (var i = 7; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "09":
+            for (var i = 8; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "10":
+            for (var i = 9; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "11":
+            for (var i = 10; i < 12; i++)
+                datiBar[i]++;
+            break;
+        case "12":
+            for (var i = 11; i < 12; i++)
+                datiBar[i]++;
+            break;
     }
 }
 
