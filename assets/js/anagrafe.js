@@ -348,14 +348,25 @@ function downloadDataBar() {
             //scorre tutte le residenze della persona
             for (var residenza in persone[persona].luoghi_residenza) {
                 //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
-                if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected && !controllo)
-                    for (var i = 0; i < 12; i++) datiBar[i]++;
-                //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
-                if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && !controllo) {
-                    var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
-                    addDataBar(mese);
+                if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected && !controllo) {
+                    if (persone[persona].luoghi_residenza.length > 1) {
+                        if (annoSelected == persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[0]) {
+                            var mese = persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[1];
+                            if (persone[persona].luoghi_residenza.length > 1 && residenza != 0)
+                                addDataBarResidenza(mese);
+                        }
+                        else
+                            for (var i = 0; i < 12; i++) { datiBar[i]++; controllo = true; }
+                    }
                 }
-                controllo = true;
+                //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
+                else if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && !controllo) {
+                    var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
+                    if (persone[persona].luoghi_residenza.length > 1 && residenza == 0) addDataBarResidenza(mese);
+                    else {
+                        addDataBar(mese);
+                    }
+                }
             }
         }
         addBarChart(comSelected);
@@ -413,7 +424,57 @@ function addDataBar(mese) {
             break;
     }
 }
-
+function addDataBarResidenza(mese) {
+    switch (mese) {
+        case "01":
+            datiBar[0]++;
+            break;
+        case "02":
+            for (var i = 0; i < 1; i++)
+                datiBar[i]++;
+            break;
+        case "03":
+            for (var i = 0; i < 2; i++)
+                datiBar[i]++;
+            break;
+        case "04":
+            for (var i = 0; i < 3; i++)
+                datiBar[i]++;
+            break;
+        case "05":
+            for (var i = 0; i < 4; i++)
+                datiBar[i]++;
+            break;
+        case "06":
+            for (var i = 0; i < 5; i++)
+                datiBar[i]++;
+            break;
+        case "07":
+            for (var i = 0; i < 6; i++)
+                datiBar[i]++;
+            break;
+        case "08":
+            for (var i = 0; i < 7; i++)
+                datiBar[i]++;
+            break;
+        case "09":
+            for (var i = 0; i < 8; i++)
+                datiBar[i]++;
+            break;
+        case "10":
+            for (var i = 0; i < 9; i++)
+                datiBar[i]++;
+            break;
+        case "11":
+            for (var i = 0; i < 10; i++)
+                datiBar[i]++;
+            break;
+        case "12":
+            for (var i = 0; i < 11; i++)
+                datiBar[i]++;
+            break;
+    }
+}
 function addPieChart() {
     if (chartPie != undefined)
         chartPie.destroy();
