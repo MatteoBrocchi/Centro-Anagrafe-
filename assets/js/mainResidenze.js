@@ -11,6 +11,7 @@ $(function() {
     var arrayTerritory = new Array();
     var idedit;
     var selectedID;
+    var numero=localStorage.getItem("idprova");
     /*FALSE ORDINATO CRESCENTE TRUE DECRESCENTE*/
     var nomeorder = false,
         cognomeorder = false,
