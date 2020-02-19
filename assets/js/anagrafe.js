@@ -280,7 +280,7 @@ function downloadDataPie() {
             $.each(data.regioni, function (i, value) {
                 regioni.push(value.nome);
             });
-            /*for (var reg in regioni) {
+            for (var reg in regioni) {
                 var regione = regioni[reg];
                 var i = 0;
                 for (var persona in persone) {
@@ -292,7 +292,7 @@ function downloadDataPie() {
                 datiBar.push(i);
             }
             //avvio creazione grafico a torta
-            addPieChart();*/
+            addPieChart();
         },
         error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
