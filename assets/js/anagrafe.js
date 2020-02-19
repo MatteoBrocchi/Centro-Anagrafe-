@@ -263,6 +263,74 @@ $(function () {
             downloadDataBar();
         });
     });
+    //
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/nome",
+        dataType: "json",
+        success: function (data) {
+            var arrNome = lines.split('\n');
+        }
+    });  
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/cognome",
+        dataType: "json",
+        success: function (data) {
+            var arrCognome = lines.split('\n');
+        }
+    });  
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/territorio",
+        dataType: "json",
+        success: function(data) {
+            var jsonRegioni=data;
+        }
+    })
+    for (var i = c; i < 200; i++) {
+        var nascita=Math.floor(Math.random() * (2020 - 1850 + 1) + 1850);
+        var dt = '{"nome": "' + nomi[Math.floor(Math.random()*nomi.length-1)] +'", "cognome": "' + cognomi[Math.floor(Math.random()*nomi.length-1)]
+                    + '", "anno_nascita": "' +
+                    nascita+"-"+Math.floor(Math.random() * 12)+"-"+Math.floor(Math.random() * 12);
+                     + '", "regione": "' + jsonRegioni.regioni[Math.random()*jsonRegioni.regioni]
+            + '","provincia": "' + jsonRegioni.regioni.provincia[Math.random()*jsonRegioni.regioni.provincia] + '", "comune": "' + jsonRegioni.regioni.provincia.comune[Math.random()*jsonRegioni.regioni.provincia.comune] + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
+            + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
+            + '", "codice": "' + "AU" + c + '"}';
+
+        $.ajax({
+            type: "POST",
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: dt,
+            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+            contentType: "application/json",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
+            dataType: "json",
+            success: function (data) {
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json",
+                    url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                    dataType: "json",
+                    success: function (data) {
+                        $.each(data, function (i, value) {
+                            persone.push(Object.assign({}, value));
+                        }); //Object.assign({}, value)
+                        downloadDataPie();
+                        c = persone.length;
+                    }
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var a = 0;
+                alert(jqXHR.responseText);
+            }
+        });
+        c++;
+    }
 });
 
 function downloadDataPie() {
