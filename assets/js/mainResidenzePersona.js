@@ -179,6 +179,26 @@ $(function() {
             $("#persone").append("<tr><td>" + array.luoghi_residenza[i].regione + "</td><td>" + array.luoghi_residenza[i].provincia + "</td><td>" + array.luoghi_residenza[i].comune + "</td><td>" + array.luoghi_residenza[i].indirizzo + "</td><td>" + array.luoghi_residenza[i].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
         }
     }
+
+    /*AGGIUNTA RESIDENZA*/
+    $(document).on("click", ".btnAggiungiResidenza", function(){
+        dt = '{"regione":"' + $('#regioneNuovaRes').val().toString() + '","provincia":"' + $('#provinciaNuovaRes').val().toString() + '","comune":"' + $('#comuneNuovaRes').val().toString() +'","indirizzo":"'+ $('#indirizzoNuovaRes').val().toString() +'","anno_residenza":"'+ $('#dataNuovaRes').val().toString() + '"}';
+        $.ajax({
+            type: "POST",
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: dt,
+            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+            contentType: "application/json",
+            crossDomain: true,
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/" + localStorage.getItem("idprova") + "/residenza/",
+            dataType: "json",
+            success: function(data) {
+            },
+            error: function (xhr, status, error) {
+                alert("ciao");
+            }
+        })
+    });
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
     $("#shownumber").change(function() {
         CalcPag(persone);
