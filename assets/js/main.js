@@ -50,7 +50,6 @@ $(function() {
                 persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
-            document.getElementById("loading_screen").style.display = 'none';
         }
     });
     $.ajax({
@@ -168,9 +167,8 @@ $(function() {
         if (array.length < (numShow * indicePartenza)) arrivo = array.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            let arrayData = array[i].anno_nascita.split("-")[2] + "-" +  array[i].anno_nascita.split("-")[1] + "-" +  array[i].anno_nascita.split("-")[0];
             let lunghezzaResidenze = array[i].luoghi_residenza.length;
-            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
+            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + array[i].anno_nascita + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
@@ -203,10 +201,10 @@ $(function() {
         $("#provinciamod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].provincia);
         $("#regionemod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].regione);
         $("#annomod").val(trovato.anno_nascita);
-        $("#viamod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].indirizzo);
+        $("#viamod").val(trovato.indirizzo);
     });
     $(document).on("click", ".inviaModifica", function() {
-        dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() +'","indirizzo":"'+ $('#viamod').val().toString() + '"}';
+        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luoghi_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' + $('#viamod').val().toString() + '"}';
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -214,39 +212,14 @@ $(function() {
             /* Per poter aggiungere una entry bisogna prima autenticarsi. */
             contentType: "application/json",
             crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza/",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza",
             dataType: "json",
             success: function(data) {
+                $(".chiudi").click();
             },
-        });
-        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
-        $.ajax({
-            type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
-            data: dt,
-            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
-            contentType: "application/json",
-            crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
-            dataType: "json",
-            success: function(data) {
-            },
-        });
-        $('#exampleModalEdit').modal('toggle');
-        document.getElementById("loading_screen").style.display = 'block';
-        AggiornaTabella();
-        persone=[];
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche",
-            dataType: "json",
-            success: function(data) {
-                $.each(data, function(i, value) {
-                    persone.push(Object.assign({}, value))
-                    document.getElementById("loading_screen").style.display = 'none';
-                });
-                CalcPag(persone);
+            error: function(jqXHR, textStatus, errorThrown) {
+                let x = 0;
+                alert(jqXHR.responseText);
             }
         });
     });
