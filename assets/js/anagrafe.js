@@ -237,7 +237,6 @@ $(function () {
             alert("Compila tutti i campi");
         $('#form6').trigger("reset");
     });
-
     $(".regioni").on("change", function () {
         provSelected = "";
         comSelected = "";
