@@ -79,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-4"></div>
-                                <div class="col-md-1 col-1">
+                                <div class="col-md-1 col-1 d-flex justify-content-center align-item-center">
                                     <button type="button" class="btn btn-success rounded-circle" data-toggle="modal"
                                         data-target="#exampleModalCenter"><i class="fas fa-plus"></i></button>
                                 </div>
@@ -284,17 +284,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Inserisci i dati</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="form1">
                         <div class="row pb-3">
                             <div class="col-4 text-left">
                                 <label>Nome</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control" placeholder="Nome">
+                                <input id="nome" type="text" class="form-control" placeholder="Nome">
                             </div>
                         </div>
                         <div class="row pb-3">
@@ -302,15 +300,23 @@
                                 <label>Cognome</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control" placeholder="Cognome">
+                                <input id="cognome" type="text" class="form-control" placeholder="Cognome">
                             </div>
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Comune</label>
+                                <label>Indirizzo</label>
                             </div>
                             <div class="col-8">
-                                <select class="comuni text-center rounded">
+                                <input id="indirizzo" type="text" class="form-control" placeholder="Indirizzo">
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-4 text-left">
+                                <label>Residenza</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="comuni text-center rounded" id="residenza">
                                     <option value="" hidden>Seleziona comune</option>
                                 </select>
                             </div>
@@ -320,7 +326,7 @@
                                 <label>Provincia</label>
                             </div>
                             <div class="col-8">
-                                <select class="province text-center rounded">
+                                <select class="province text-center rounded" id="provincia">
                                     <option value="" hidden>Seleziona provincia</option>
                                 </select>
                             </div>
@@ -330,34 +336,42 @@
                                 <label>Regione</label>
                             </div>
                             <div class="col-8">
-                                <select class="regioni text-center rounded">
+                                <select class="regioni text-center rounded" id="regione">
                                     <option value="" hidden>Seleziona regione</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Data di Nascita</label>
+                                <label>Data di nascita</label>
                             </div>
                             <div class="col-8">
-                                <input type="date" class="form-control">
+                                <input type="date" class="form-control" id="anno">
                             </div>
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Luogo di Nascita</label>
+                                <label>Luogo di nascita</label>
                             </div>
                             <div class="col-8">
-                                <select class="text-center rounded">
-                                    <option value="" hidden>Seleziona comune</option>
+                                <select class="text-center rounded" id="birthPlace">
+                                    <option value="" hidden>Seleziona luogo</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-4 text-left">
+                                <label>Data di rilascio</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="date" class="form-control" id="rilascio">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary chiudi" data-dismiss="modal">Chiudi</button>
-                    <button type="button" class="btn btn-success">Aggiungi</button>
+                    <button type="button" class="btn btn-success btnAddID">Aggiungi</button>
                 </div>
             </div>
         </div>
@@ -368,8 +382,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Inserisci i dati</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -486,7 +498,7 @@
     <script src="assets/js/browser.min.js "></script>
     <script src="assets/js/breakpoints.min.js "></script>
     <script src="assets/js/util.js "></script>
-    <script src="assets/js/grafici.js "></script>
+    <script src="assets/js/anagrafe.js "></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
