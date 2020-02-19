@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="it">
+
 <head>
     <title>Ufficio Anagrafe</title>
     <meta charset="utf-8" />
@@ -19,8 +20,8 @@
             <!-- Nav -->
             <nav id="nav">
                 <ul>
-                  
-                    <li class="current" id="dropdownMenuButton"><a href="index.html"class="button" >Home</a></li>
+
+                    <li class="current" id="dropdownMenuButton"><a href="index.html" class="button">Home</a></li>
                     <li class="current">
                         <div class="dropright">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -64,25 +65,19 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-2 col-sm-4">
-                                    <div class="dataTables_length row" id="example_length"><label id="mostra"
-                                            class="col-5">Mostra</label><select name="example_length"
-                                            class="custom-select custom-select-sm form-control form-control-sm col-7"
-                                            id="shownumber">
+                                    <div class="dataTables_length row" id="example_length"><label id="mostra" class="col-5">Mostra</label><select name="example_length" class="custom-select custom-select-sm form-control form-control-sm col-7" id="shownumber">
                                             <option value="10">10</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-4"></div>
-                                <div class="col-md-1 col-1 d-flex justify-content-center align-item-center">
-                                    <button type="button" class="btn btn-success rounded-circle" data-toggle="modal"
-                                        data-target="#modalAddMatrimonio"><i class="fas fa-plus"></i></button>
+                                <div class="col-md-1 offset-md-6 d-flex justify-content-center align-item-center">
+                                    <button type="button" class="btn btn-success rounded-circle" data-toggle="modal" data-target="#modalAddMatrimonio"><i class="fas fa-plus"></i></button>
                                 </div>
                                 <div class="col-md-3 col-sm-3">
                                     <div class="input-group md-form form-sm form-2 pl-0">
-                                        <input class="form-control my-0 py-1 amber-border" id="search" type="text"
-                                            placeholder="Cerca" aria-label="Search">
+                                        <input class="form-control my-0 py-1 amber-border" id="search" type="text" placeholder="Cerca" aria-label="Search">
                                         <div class="input-group-append">
                                             <span class="input-group-text amber lighten-3" id="basic-text1"><i
                                                     class="fas fa-search text-grey" aria-hidden="true"></i></span>
@@ -110,6 +105,13 @@
                         </section>
                         <!---->
                     </div>
+                </div>
+                <div class="row justify-content-center mt-3">
+                    <nav aria-label="...">
+                        <ul class="pagination">
+
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </section>
@@ -250,87 +252,86 @@
                 </div>
             </div>
         </section>
-        <div class="modal fade" id="modalAddMatrimonio" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Inserisci i dati</h5>
-            </div>
-            <div class="modal-body">
-                <form id="form1">
-                    <div class="row pb-3">
-                        <div class="col-4 text-left">
-                            <label>Nome marito</label>
-                        </div>
-                        <div class="col-8">
-                            <input id="nomeMarito-input" type="text" class="form-control" placeholder="Nome">
-                        </div>
+        <div class="modal fade" id="modalAddMatrimonio" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Inserisci i dati</h5>
                     </div>
-                    <div class="row pb-3">
-                        <div class="col-4 text-left">
-                            <label>Cognome marito</label>
-                        </div>
-                        <div class="col-8">
-                            <input id="cognomeMarito-input" type="text" class="form-control" placeholder="Cognome">
-                        </div>
-                    </div>
-                    <div class="row pb-3">
-                        <div class="col-4 text-left">
-                            <label>Nome moglie</label>
-                        </div>
-                        <div class="col-8">
-                            <input id="nomeMoglie-input" type="text" class="form-control" placeholder="Nome">
-                        </div>
-                    </div>
-                    <div class="row pb-3">
-                        <div class="col-4 text-left">
-                            <label>Cognome moglie</label>
-                        </div>
-                        <div class="col-8">
-                            <input id="cognomeMoglie-input" type="text" class="form-control" placeholder="Cognome">
-                        </div>
-                    </div>
-                    <div class="row pb-3">
-                        <div class="col-4 text-left">
-                            <label>Data</label>
-                        </div>
-                        <div class="col-8">
-                            <input type="date" class="form-control" id="dataMatrimonio-input">
-                        </div>
-                    </div>
-                    <div class="row pb-3">
-                        <div class="col-4 text-left">
-                            <label>Comune</label>
-                        </div>
-                        <div class="col-8">
-                            <select class="comuni text-center rounded" id="comuneMatrimonio-input">
+                    <div class="modal-body">
+                        <form id="form1">
+                            <div class="row pb-3">
+                                <div class="col-4 text-left">
+                                    <label>Nome marito</label>
+                                </div>
+                                <div class="col-8">
+                                    <input id="nomeMarito-input" type="text" class="form-control" placeholder="Nome">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-4 text-left">
+                                    <label>Cognome marito</label>
+                                </div>
+                                <div class="col-8">
+                                    <input id="cognomeMarito-input" type="text" class="form-control" placeholder="Cognome">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-4 text-left">
+                                    <label>Nome moglie</label>
+                                </div>
+                                <div class="col-8">
+                                    <input id="nomeMoglie-input" type="text" class="form-control" placeholder="Nome">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-4 text-left">
+                                    <label>Cognome moglie</label>
+                                </div>
+                                <div class="col-8">
+                                    <input id="cognomeMoglie-input" type="text" class="form-control" placeholder="Cognome">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-4 text-left">
+                                    <label>Data</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="date" class="form-control" id="dataMatrimonio-input">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-4 text-left">
+                                    <label>Comune</label>
+                                </div>
+                                <div class="col-8">
+                                    <select class="comuni text-center rounded" id="comuneMatrimonio-input">
                                 <option value="" hidden>Seleziona comune</option>
                             </select>
-                        </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary chiudi" data-dismiss="modal">Chiudi</button>
+                        <button type="button" class="btn btn-success btnAddMatrimonio">Aggiungi</button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary chiudi" data-dismiss="modal">Chiudi</button>
-                <button type="button" class="btn btn-success btnAddMatrimonio">Aggiungi</button>
-            </div>
+
         </div>
-    </div>
-
-    </div>
 
 
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js "></script>
-    <script src="assets/js/jquery.dropotron.min.js "></script>
-    <script src="assets/js/browser.min.js "></script>
-    <script src="assets/js/breakpoints.min.js "></script>
-    <script src="assets/js/util.js "></script>
-    <script src="assets/js/anagrafe.js "></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="assets/js/mainMatrimoni.js "></script>
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js "></script>
+        <script src="assets/js/jquery.dropotron.min.js "></script>
+        <script src="assets/js/browser.min.js "></script>
+        <script src="assets/js/breakpoints.min.js "></script>
+        <script src="assets/js/util.js "></script>
+        <script src="assets/js/anagrafe.js "></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="assets/js/mainMatrimoni.js "></script>
 </body>
 
 </html>

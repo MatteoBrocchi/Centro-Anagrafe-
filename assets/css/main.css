@@ -1978,19 +1978,18 @@ a.button {
     text-decoration: none;
     color: initial;
 }
-#loading_img{
+
+#loading_img {
     height: 150px;
     width: 150px;
 }
 
-@media only screen and (max-width: 1200px) {}
-
-@media only screen and (max-width: 992px) {}
-
-@media only screen and (max-width: 768px) {}
+#nomePersonaSelezionata {
+    color: #212529;
+}
 
 @media only screen and (max-width: 576px) {
     .fas {
-        font-size: .875em;
+        font-size: 10px;
     }
 }
