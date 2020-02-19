@@ -86,10 +86,10 @@ $(function () {
         dataType: "json",
         success: function (data) {
             $.each(data, function (i, value) {
+                c = value.id + 1;
                 persone.push(Object.assign({}, value));
             }); //Object.assign({}, value)
             downloadDataPie();
-            c = persone.length;
         }
     });
     $(".regioni").on("click", function () {
@@ -115,12 +115,12 @@ $(function () {
                 check = false;
         });
         if (check) {
-            persone[c] = new Persona(new cartaIdentita([$('#nome').val().toString(), $('#cognome').val().toString(), [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], $('#indirizzo').val().toString(), new Date($('#anno').val().toString()), new Date($('#rilascio').val().toString()), c]));
-            var dt = '{"nome": "' + $("#nome").val().toString() + '", "cognome": "' + $('#cognome').val().toString()
-                + '", "anno_nascita": "' + $('#anno').val().toString() + '", "regione": "' + $('#regione').val().toString()
-                + '","provincia": "' + $('#provincia').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio').val().toString()
-                + '", "indirizzo": "' + $('#indirizzo').val().toString() + '", "anno_rilascio": "' + $('#rilascio').val().toString()
-                + '", "codice": "' + persone[c].carta.id.toString() + '"}';
+            //regione provincia e codice
+            var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString()
+                + '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione-input').val().toString()
+                + '","provincia": "' + $('#provincia-input').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
+                + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
+                + '", "codice": "' + "AU" + c + '"}';
             $.ajax({
                 type: "POST",
                 headers: { "Access-Control-Allow-Origin": "*" },
@@ -129,6 +129,21 @@ $(function () {
                 contentType: "application/json",
                 url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
                 dataType: "json",
+                success: function (data) {
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json",
+                        url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                        dataType: "json",
+                        success: function (data) {
+                            $.each(data, function (i, value) {
+                                persone.push(Object.assign({}, value));
+                            }); //Object.assign({}, value)
+                            downloadDataPie();
+                            c = persone.length;
+                        }
+                    });
+                },
                 error: function (jqXHR, textStatus, errorThrown) {
                     var a = 0;
                     alert(jqXHR.responseText);
@@ -219,7 +234,6 @@ $(function () {
             alert("Compila tutti i campi");
         $('#form6').trigger("reset");
     });
-
     $(".regioni").on("change", function () {
         provSelected = "";
         comSelected = "";
@@ -468,9 +482,18 @@ function addPieChart() {
             }
         },
     });
+    // Ridimensiono la torta
+    $("#myChartPie").css("width", "1000px");
+    $("#myChartPie").css("height", "");
 }
 
 function addBarChart(luogo) {
+    // Ridimensionamento dei grafici
+    $("#myChart").parent().removeClass("d-none");
+    $("#myChart").parent().addClass("d-flex");
+    $("#myChartPie").parent().removeClass("col-md-12");
+    $("#myChartPie").parent().addClass("col-md-6");
+
     luogo = "Popolazione " + luogo;
     if (chartBar != undefined)
         chartBar.destroy();
