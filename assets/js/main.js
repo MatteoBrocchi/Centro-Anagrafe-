@@ -50,6 +50,7 @@ $(function() {
                 persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
+            document.getElementById("loading_screen").style.display = 'none';
         }
     });
     $.ajax({
@@ -201,10 +202,10 @@ $(function() {
         $("#provinciamod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].provincia);
         $("#regionemod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].regione);
         $("#annomod").val(trovato.anno_nascita);
-        $("#viamod").val(trovato.indirizzo);
+        $("#viamod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].indirizzo);
     });
     $(document).on("click", ".inviaModifica", function() {
-        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luoghi_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' + $('#viamod').val().toString() + '"}';
+        dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() +'","indirizzo":"'+ $('#viamod').val().toString() + '"}';
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -212,14 +213,39 @@ $(function() {
             /* Per poter aggiungere una entry bisogna prima autenticarsi. */
             contentType: "application/json",
             crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza/",
             dataType: "json",
             success: function(data) {
-                $(".chiudi").click();
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                let x = 0;
-                alert(jqXHR.responseText);
+        });
+        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
+        $.ajax({
+            type: "POST",
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: dt,
+            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+            contentType: "application/json",
+            crossDomain: true,
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
+            dataType: "json",
+            success: function(data) {
+            },
+        });
+        $('#exampleModalEdit').modal('toggle');
+        document.getElementById("loading_screen").style.display = 'block';
+        AggiornaTabella();
+        persone=[];
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+            dataType: "json",
+            success: function(data) {
+                $.each(data, function(i, value) {
+                    persone.push(Object.assign({}, value))
+                    document.getElementById("loading_screen").style.display = 'none';
+                });
+                CalcPag(persone);
             }
         });
     });

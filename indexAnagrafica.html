@@ -64,8 +64,11 @@
                             <div class="row justify-content-center text-center">
                                 <div class="col-md-5 aos-init aos-animate" data-aos="fade-up">
                                     <h2 class="section-heading animated fadeIn delay-1s mb-0">Tabella </h2>
-                                </div>
+                                </div>                                
                             </div>
+                            <div id="loading_screen" class="row justify-content-center text-center">
+                                <div style="position:relative;"><img src="/assets/css/images/gif.gif" id="loadign_img"></div>
+                            </div>  
                             <div class="row my-3">
                                 <div class="col-md-2 col-4">
                                     <div class="dataTables_length row" id="example_length"><label id="mostra"
@@ -94,7 +97,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table table-hover shadow">
+                            <table class="table table-hover shadow"id="provaTabella">
                                 <thead>
                                     <tr>
                                         <th scope="col">Nome <i class="fas fa-sort pl-3 order" id="nome"></i></th>
@@ -482,7 +485,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-secondary chiudi" data-dismiss="modal">Chiudi</button>
                     <button type="button" class="btn btn-success btnCofirmDeath">Conferma</button>
                 </div>
             </div>
