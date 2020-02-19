@@ -272,7 +272,7 @@ $(function () {
         success: function (data) {
             var arrNome = lines.split('\n');
         }
-    });  
+    });
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -281,23 +281,23 @@ $(function () {
         success: function (data) {
             var arrCognome = lines.split('\n');
         }
-    });  
+    });
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/territorio",
         dataType: "json",
-        success: function(data) {
-            var jsonRegioni=data;
+        success: function (data) {
+            var jsonRegioni = data;
         }
     })
     for (var i = c; i < 200; i++) {
-        var nascita=Math.floor(Math.random() * (2020 - 1850 + 1) + 1850);
-        var dt = '{"nome": "' + nomi[Math.floor(Math.random()*nomi.length-1)] +'", "cognome": "' + cognomi[Math.floor(Math.random()*nomi.length-1)]
-                    + '", "anno_nascita": "' +
-                    nascita+"-"+Math.floor(Math.random() * 12)+"-"+Math.floor(Math.random() * 12);
-                     + '", "regione": "' + jsonRegioni.regioni[Math.random()*jsonRegioni.regioni]
-            + '","provincia": "' + jsonRegioni.regioni.provincia[Math.random()*jsonRegioni.regioni.provincia] + '", "comune": "' + jsonRegioni.regioni.provincia.comune[Math.random()*jsonRegioni.regioni.provincia.comune] + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
+        var nascita = Math.floor(Math.random() * (2020 - 1850 + 1) + 1850);
+        var dt = '{"nome": "' + nomi[Math.floor(Math.random() * nomi.length - 1)] + '", "cognome": "' + cognomi[Math.floor(Math.random() * nomi.length - 1)]
+            + '", "anno_nascita": "' +
+            nascita + "-" + Math.floor(Math.random() * 12) + "-" + Math.floor(Math.random() * 12);
+        + '", "regione": "' + jsonRegioni.regioni[Math.random() * jsonRegioni.regioni]
+            + '","provincia": "' + jsonRegioni.regioni.provincia[Math.random() * jsonRegioni.regioni.provincia] + '", "comune": "' + jsonRegioni.regioni.provincia.comune[Math.random() * jsonRegioni.regioni.provincia.comune] + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
             + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
             + '", "codice": "' + "AU" + c + '"}';
 
@@ -422,8 +422,7 @@ function downloadDataBar() {
                             if (persone[persona].luoghi_residenza.length > 1 && residenza != 0)
                                 addDataBarResidenza(mese);
                         }
-                        else
-                            for (var i = 0; i < 12; i++) { datiBar[i]++; controllo = true; }
+                        else if (persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[0] > annoSelected) for (var i = 0; i < 12; i++) { datiBar[i]++; controllo = true; }
                     }
                 }
                 //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
