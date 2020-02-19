@@ -3,7 +3,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-$(function () {
+$(function() {
     var posizioneCorrente = 1;
     var numeropagine;
     var persone = new Array();
@@ -18,9 +18,9 @@ $(function () {
         provinciaorder = false,
         comuneorder = false,
         annoorder = false;
-    var siteScroll = function () {
+    var siteScroll = function() {
         var title = false;
-        $(window).scroll(function () {
+        $(window).scroll(function() {
 
             var st = $(this).scrollTop();
 
@@ -45,37 +45,37 @@ $(function () {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
-        success: function (data) {
-            $.each(data, function (i, value) {
+        success: function(data) {
+            $.each(data, function(i, value) {
                 persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
         }
     });
     $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "https://late-frost-5190.getsandbox.com/territorio",
-        dataType: "json",
-        success: function (data) {
-            $.each(data, function (i, value) {
-                arrayTerritory.push(Object.assign({}, value))
-                arrayTerritory = arrayTerritory[0];
-                for (let h = 0; h < 20; h++) {
-                    $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
-                    for (let j = 0; j < arrayTerritory[h].province.length; j++) {
-                        $(".province").append(new Option(arrayTerritory[h].province[j].nome));
-                        for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
-                            $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
-                            $("#birthPlace").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+            type: "GET",
+            contentType: "application/json",
+            url: "https://late-frost-5190.getsandbox.com/territorio",
+            dataType: "json",
+            success: function(data) {
+                $.each(data, function(i, value) {
+                    arrayTerritory.push(Object.assign({}, value))
+                    arrayTerritory = arrayTerritory[0];
+                    for (let h = 0; h < 20; h++) {
+                        $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
+                        for (let j = 0; j < arrayTerritory[h].province.length; j++) {
+                            $(".province").append(new Option(arrayTerritory[h].province[j].nome));
+                            for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
+                                $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                                $("#birthPlace").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                            }
                         }
                     }
-                }
-            });
-        }
-    })
-    /*FILTRO REGIONI*/
-    $(document).on("change", ".regioni", function () {
+                });
+            }
+        })
+        /*FILTRO REGIONI*/
+    $(document).on("change", ".regioni", function() {
         $(".province").empty();
         $(".comuni").empty();
         $(".province").append(new Option("Seleziona provincia"));
@@ -93,54 +93,56 @@ $(function () {
         }
     })
     $(document).on("click")
-    /*FILTRO PROVINCE*/
-    $(document).on("change", ".province", function () {
-        $(".comuni").empty();
-        $(".comuni").append(new Option("Seleziona comune"));
-        var selectedProvince = $(".province").val();
-        for (var i = 0; i < 20; i++) {
-            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
-                if (arrayTerritory[i].province[j].nome == selectedProvince) {
-                    $(".regioni").val(arrayTerritory[i].nome);
-                    for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                        $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                    }
-                }
-            }
-        }
-    })
-    /*FILTRO COMUNI*/
-    $(document).on("change", ".comuni", function () {
-        var selectedDistrict = $(".comuni").val();
-        for (var i = 0; i < 20; i++) {
-            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
-                for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                    if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+        /*FILTRO PROVINCE*/
+    $(document).on("change", ".province", function() {
+            $(".comuni").empty();
+            $(".comuni").append(new Option("Seleziona comune"));
+            var selectedProvince = $(".province").val();
+            for (var i = 0; i < 20; i++) {
+                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                    if (arrayTerritory[i].province[j].nome == selectedProvince) {
                         $(".regioni").val(arrayTerritory[i].nome);
-                        $(".province").val(arrayTerritory[i].province[j].nome);
-                        $(".comuni").val(selectedDistrict);
+                        for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                            $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
+                        }
                     }
                 }
             }
-        }
-    })
-    /*CERCA*/
-    $(document).on("keyup", "#search", function () {
+        })
+        /*FILTRO COMUNI*/
+    $(document).on("change", ".comuni", function() {
+            var selectedDistrict = $(".comuni").val();
+            for (var i = 0; i < 20; i++) {
+                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                    for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                        if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+                            $(".regioni").val(arrayTerritory[i].nome);
+                            $(".province").val(arrayTerritory[i].province[j].nome);
+                            $(".comuni").val(selectedDistrict);
+                        }
+                    }
+                }
+            }
+        })
+        /*CERCA*/
+    $(document).on("keyup", "#search", function() {
         cercaList.length = 0;
         AggiornaTabella();
         var i = 0;
         var val = $(this).val();
         if (val) {
             val = val.toLowerCase();
-            $.each(persone, function (_, obj) {
+            $.each(persone, function(_, obj) {
                 // console.log(val,obj.name.toLowerCase().indexOf(val),obj)
-                if (obj.nome.toLowerCase().indexOf(val) != -1 || obj.cognome.toLowerCase().indexOf(val) != -1 || obj.luogo_residenza.regione.toLowerCase().indexOf(val) != -1 || obj.luogo_residenza.provincia.toLowerCase().indexOf(val) != -1 || obj.luogo_residenza.comune.toLowerCase().indexOf(val) != -1 || obj.anno.toString().indexOf(val) > -1) {
+                let lunghezzaResidenze = obj.luoghi_residenza.length;
+                if (obj.nome.toLowerCase().indexOf(val) != -1 || obj.cognome.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].regione.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].provincia.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].comune.toLowerCase().indexOf(val) != -1 || obj.anno_nascita.toString().indexOf(val) > -1) {
                     cercaList[i] = obj;
                     i++;
                 }
             });
             CalcPag(cercaList);
-        } else CalcPag(persone);
+        } else
+            CalcPag(persone);
     });
     /*CALCOLO NUMERO DELLE PAGINE*/
     function CalcPag(array) {
@@ -152,28 +154,25 @@ $(function () {
             $(".pagination").append('<li class="page-item numeri"><a class="page-link" style="text-decoration:none" href="#main">' + (i + 1) + '</a></li>');
         }
         $(".pagination").append('<li class="page-item" id="next"> <a class="page-link" href="#main" style="text-decoration:none"tabindex="-1" aria-disabled="true">Successivo</a> </li>');
-        StampaTabella(1, $("#shownumber").val());
+        StampaTabella(1, $("#shownumber").val(), array);
     }
     /*SVOTA TABELLA*/
     function AggiornaTabella() {
         $("#persone").empty();
     }
     /*STAMPA*/
-    function StampaTabella(indicePartenza, numShow) {
+    function StampaTabella(indicePartenza, numShow, array) {
         let arrivo = 0;
         AggiornaTabella();
-        if (persone.length < numShow) arrivo = persone.length;
+        if (array.length < (numShow * indicePartenza)) arrivo = array.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            if ($("#search").val()) {
-                $("#persone").append("<tr><td>" + cercaList[i].nome + "</td><td>" + cercaList[i].cognome + "</td><td>" + cercaList[i].luogo_residenza.regione + "</td><td>" + cercaList[i].luogo_residenza.provincia + "</td><td>" + cercaList[i].luogo_residenza.comune + "</td><td>" + cercaList[i].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + persone[i].id + "\"data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
-            } else {
-                $("#persone").append("<tr><td>" + persone[i].nome + "</td><td>" + persone[i].cognome + "</td><td>" + persone[i].luoghi_residenza[0].regione + "</td><td>" + persone[i].luoghi_residenza[0].provincia + "</td><td>" + persone[i].luoghi_residenza[0].comune + "</td><td>" + persone[i].anno_nascita + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + persone[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
-            }
+            let lunghezzaResidenze = array[i].luoghi_residenza.length;
+            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + array[i].anno_nascita + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
-    $("#shownumber").change(function () {
+    $("#shownumber").change(function() {
         CalcPag(persone);
     });
     /*COMPARA*/
@@ -187,20 +186,25 @@ $(function () {
         return comparison;
     }
     /*EDIT*/
-    $(document).on("click", ".edit", function () {
+    $(document).on("click", ".edit", function() {
         idedit = $(this).attr("id");
-        $("#nomemod").val(persone[$(this).attr("id") - 1].nome);
-        $("#cognomemod").val(persone[$(this).attr("id") - 1].cognome);
-        let lunghezzaResidenze = persone[$(this).attr("id") - 1].luoghi_residenza.length;
-        $("#comunemod").val(persone[$(this).attr("id") - 1].luoghi_residenza[lunghezzaResidenze - 1].comune);
-        $("#provinciamod").val(persone[$(this).attr("id") - 1].luoghi_residenza[lunghezzaResidenze - 1].provincia);
-        $("#regionemod").val(persone[$(this).attr("id") - 1].luoghi_residenza[lunghezzaResidenze - 1].regione);
-        $("#annomod").val(persone[$(this).attr("id") - 1].anno_nascita);
-        $("#viamod").val(persone[$(this).attr("id") - 1].indirizzo);
+        for (let i = 0; i < persone.length; i++) {
+            if (persone[i].id == idedit) {
+                var trovato = persone[i];
+                break;
+            }
+        }
+        $("#nomemod").val(trovato.nome);
+        $("#cognomemod").val(trovato.cognome);
+        let lunghezzaResidenze = trovato.luoghi_residenza.length;
+        $("#comunemod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].comune);
+        $("#provinciamod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].provincia);
+        $("#regionemod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].regione);
+        $("#annomod").val(trovato.anno_nascita);
+        $("#viamod").val(trovato.indirizzo);
     });
-    $(document).on("click", ".inviaModifica", function () {
-        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luoghi_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' +$('#viamod').val().toString()+'"}';
-        $("#nomemod").val(persone[idedit]);
+    $(document).on("click", ".inviaModifica", function() {
+        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","luoghi_residenza":{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '"},"anno_nascita":"' + $('#annomod').val().toString() + '","anno":"2020","indirizzo":"' + $('#viamod').val().toString() + '"}';
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -208,12 +212,12 @@ $(function () {
             /* Per poter aggiungere una entry bisogna prima autenticarsi. */
             contentType: "application/json",
             crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza",
             dataType: "json",
-            success: function (data) {
+            success: function(data) {
                 $(".chiudi").click();
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 let x = 0;
                 alert(jqXHR.responseText);
             }
@@ -221,10 +225,10 @@ $(function () {
     });
 
     /*DELETE*/
-    $(document).on("click", ".delete", function () {
+    $(document).on("click", ".delete", function() {
         selectedID = $(this).attr("id");
     });
-    $(document).on("click", ".btnElimina", function () {
+    $(document).on("click", ".btnElimina", function() {
         $.ajax({
             type: "DELETE",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -232,20 +236,20 @@ $(function () {
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + selectedID + "/",
             dataType: "json",
-        }).then(function (data) {
-            $(".bottoni .delete").each(function () {
+        }).then(function(data) {
+            $(".bottoni .delete").each(function() {
                 if ($(this).attr("id") == selectedID) $(this).parent().parent().remove();
             });
-        }, function (jqXHR, textStatus, errorThrown) {
+        }, function(jqXHR, textStatus, errorThrown) {
             let x = 0;
             alert(jqXHR.responseText);
         })
     });
-    $(document).on("click", ".decesso", function () {
+    $(document).on("click", ".decesso", function() {
 
-    })
-    /*ORDINA*/
-    $(document).on("click", ".order", function () {
+        })
+        /*ORDINA*/
+    $(document).on("click", ".order", function() {
         var temp = new Array();
         var f = $(this).attr("id");
         switch (f) {
@@ -299,14 +303,16 @@ $(function () {
                 for (let j = 0; j < persone.length; j++) {
                     for (let i = j + 1; i < persone.length; i++) {
                         // comparing adjacent strings
+                        var lunghezzaResidenze = persone[i].luoghi_residenza.length;
+                        var lunghezzaResidenzej = persone[j].luoghi_residenza.length;
                         if (!regioneorder) {
-                            if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) < 0) {
+                            if (compare(persone[i].luoghi_residenza[lunghezzaResidenze - 1].regione, persone[j].luoghi_residenza[lunghezzaResidenzej - 1].regione) < 0) {
                                 temp = persone[j];
                                 persone[j] = persone[i]
                                 persone[i] = temp;
                             }
                         } else {
-                            if (compare(persone[i].luogo_residenza.regione, persone[j].luogo_residenza.regione) > 0) {
+                            if (compare(persone[i].luoghi_residenza[lunghezzaResidenze - 1].regione, persone[j].luoghi_residenza[lunghezzaResidenzej - 1].regione) > 0) {
                                 temp = persone[i];
                                 persone[i] = persone[j];
                                 persone[j] = temp;
@@ -322,14 +328,16 @@ $(function () {
                 for (let j = 0; j < persone.length; j++) {
                     for (let i = j + 1; i < persone.length; i++) {
                         // comparing adjacent strings
+                        var lunghezzaResidenze = persone[i].luoghi_residenza.length;
+                        var lunghezzaResidenzej = persone[j].luoghi_residenza.length;
                         if (!provinciaorder) {
-                            if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) < 0) {
+                            if (compare(persone[i].luoghi_residenza[lunghezzaResidenze - 1].provincia, persone[j].luoghi_residenza[lunghezzaResidenzej - 1].provincia) < 0) {
                                 temp = persone[j];
                                 persone[j] = persone[i]
                                 persone[i] = temp;
                             }
                         } else {
-                            if (compare(persone[i].luogo_residenza.provincia, persone[j].luogo_residenza.provincia) > 0) {
+                            if (compare(persone[i].luoghi_residenza[lunghezzaResidenze - 1].provincia, persone[j].luoghi_residenza[lunghezzaResidenzej - 1].provincia) > 0) {
                                 temp = persone[i];
                                 persone[i] = persone[j];
                                 persone[j] = temp;
@@ -345,14 +353,16 @@ $(function () {
                 for (let j = 0; j < persone.length; j++) {
                     for (let i = j + 1; i < persone.length; i++) {
                         // comparing adjacent strings
+                        var lunghezzaResidenze = persone[i].luoghi_residenza.length;
+                        var lunghezzaResidenzej = persone[j].luoghi_residenza.length;
                         if (!comuneorder) {
-                            if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) < 0) {
+                            if (compare(persone[i].luoghi_residenza[lunghezzaResidenze - 1].comune, persone[j].luoghi_residenza[lunghezzaResidenzej - 1].comune) < 0) {
                                 temp = persone[j];
                                 persone[j] = persone[i]
                                 persone[i] = temp;
                             }
                         } else {
-                            if (compare(persone[i].luogo_residenza.comune, persone[j].luogo_residenza.comune) > 0) {
+                            if (compare(persone[i].luoghi_residenza[lunghezzaResidenze - 1].comune, persone[j].luoghi_residenza[lunghezzaResidenzej - 1].comune) > 0) {
                                 temp = persone[i];
                                 persone[i] = persone[j];
                                 persone[j] = temp;
@@ -369,13 +379,13 @@ $(function () {
                     for (let i = j + 1; i < persone.length; i++) {
                         // comparing adjacent strings
                         if (!annoorder) {
-                            if (compare(persone[i].anno, persone[j].anno) < 0) {
+                            if (compare(persone[i].anno_nascita, persone[j].anno_nascita) < 0) {
                                 temp = persone[j];
                                 persone[j] = persone[i]
                                 persone[i] = temp;
                             }
                         } else {
-                            if (compare(persone[i].anno, persone[j].anno) > 0) {
+                            if (compare(persone[i].anno_nascita, persone[j].anno_nascita) > 0) {
                                 temp = persone[i];
                                 persone[i] = persone[j];
                                 persone[j] = temp;
@@ -392,22 +402,22 @@ $(function () {
         }
     });
     /*CLICK PRECEDENTE*/
-    $(document).on("click", "#previous", function () {
+    $(document).on("click", "#previous", function() {
         if (posizioneCorrente == 1) posizioneCorrente++;
         posizioneCorrente--;
-        StampaTabella(posizioneCorrente, $("#shownumber").val());
+        StampaTabella(posizioneCorrente, $("#shownumber").val(), persone);
     });
     /*CLICK SUCCESSIVO*/
-    $(document).on("click", "#next", function () {
+    $(document).on("click", "#next", function() {
         if (posizioneCorrente == numeropagine) posizioneCorrente--;
         posizioneCorrente++;
-        StampaTabella(posizioneCorrente, $("#shownumber").val());
+        StampaTabella(posizioneCorrente, $("#shownumber").val(), persone);
     });
     /*CLICK NUMERO PAGINA*/
-    $(document).on("click", ".numeri>.page-link", function () {
+    $(document).on("click", ".numeri>.page-link", function() {
         var testo = $(this).text();
         posizioneCorrente = testo;
-        StampaTabella(testo, $("#shownumber").val());
+        StampaTabella(testo, $("#shownumber").val(), persone);
     });
     siteScroll();
     var $window = $(window),
@@ -422,8 +432,8 @@ $(function () {
     });
 
     // Play initial animations on page load.
-    $window.on('load', function () {
-        window.setTimeout(function () {
+    $window.on('load', function() {
+        window.setTimeout(function() {
             $body.removeClass('is-preload');
         }, 100);
     });
@@ -439,20 +449,20 @@ $(function () {
 
     // Title Bar.
     $(
-        '<div id="titleBar">' +
-        '<a href="#navPanel" class="toggle"></a>' +
-        '</div>'
-    )
+            '<div id="titleBar">' +
+            '<a href="#navPanel" class="toggle"></a>' +
+            '</div>'
+        )
         .appendTo($body);
 
     // Panel.
     $(
-        '<div id="navPanel">' +
-        '<nav>' +
-        $('#nav').navList() +
-        '</nav>' +
-        '</div>'
-    )
+            '<div id="navPanel">' +
+            '<nav>' +
+            $('#nav').navList() +
+            '</nav>' +
+            '</div>'
+        )
         .appendTo($body)
         .panel({
             delay: 500,
