@@ -485,9 +485,18 @@ function addPieChart() {
             }
         },
     });
+    // Ridimensiono la torta
+    $("#myChartPie").css("width", "1000px");
+    $("#myChartPie").css("height", "");
 }
 
 function addBarChart(luogo) {
+    // Ridimensionamento dei grafici
+    $("#myChart").parent().removeClass("d-none");
+    $("#myChart").parent().addClass("d-flex");
+    $("#myChartPie").parent().removeClass("col-md-12");
+    $("#myChartPie").parent().addClass("col-md-6");
+    
     luogo = "Popolazione " + luogo;
     if (chartBar != undefined)
         chartBar.destroy();
