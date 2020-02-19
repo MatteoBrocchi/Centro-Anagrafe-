@@ -115,15 +115,15 @@ $(function () {
                 check = false;
         });
         if (check) {
-            persone[c] = new Persona(new cartaIdentita($('#nome-input').text().toString(), $('#cognome-input').text().toString(), 
+            /*persone[c] = new Persona(new cartaIdentita($('#nome-input').text().toString(), $('#cognome-input').text().toString(), 
             [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], 
-            $('#indirizzo-input').val().toString(), new Date($('#anno-input').val().toString()), new Date($('#rilascio-input').val().toString()), c));
+            $('#indirizzo-input').val().toString(), new Date($('#anno-input').val().toString()), new Date($('#rilascio-input').val().toString()), c));*/
             //regione provincia e codice////////////////
             var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString()
                 + '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione').text().toString()
                 + '","provincia": "' + $('#provincia').text().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
                 + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
-                + '", "codice": "' + persone[c].carta.id.toString() + '"}';
+                + '", "codice": "' + "AU" + persone.length + '"}';
             $.ajax({
                 type: "POST",
                 headers: { "Access-Control-Allow-Origin": "*" },
@@ -132,6 +132,21 @@ $(function () {
                 contentType: "application/json",
                 url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
                 dataType: "json",
+                success: function(data){
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json",
+                        url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                        dataType: "json",
+                        success: function (data) {
+                            $.each(data, function (i, value) {
+                                persone.push(Object.assign({}, value));
+                            }); //Object.assign({}, value)
+                            downloadDataPie();
+                            c = persone.length;
+                        }
+                    });
+                },
                 error: function (jqXHR, textStatus, errorThrown) {
                     var a = 0;
                     alert(jqXHR.responseText);
