@@ -1984,6 +1984,10 @@ a.button {
     width: 150px;
 }
 
+#nomePersonaSelezionata {
+    color: #212529;
+}
+
 @media only screen and (max-width: 576px) {
     .fas {
         font-size: 10px;

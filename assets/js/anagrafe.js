@@ -146,7 +146,6 @@ $(function () {
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     var a = 0;
-                    alert(jqXHR.responseText);
                 }
             });
             c++;
