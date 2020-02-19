@@ -1927,14 +1927,14 @@ h1 span {
     background-color: rgb(15, 172, 20);
 }
 
-.morte{
+.morte {
     background-color: rgb(97, 97, 97);
     padding: 5px;
     color: white;
     margin-right: 3px;
 }
 
-.morte:hover{
+.morte:hover {
     background-color: black;
 }
 
@@ -1963,18 +1963,34 @@ h1 span {
     font-size: 20px;
 }
 
-.btnElimina{
+.btnElimina {
     background-color: #ea3723;
     border-color: #ea3723;
 }
 
-.btnElimina:hover{
+.btnElimina:hover {
     background-color: #c02918;
     border-color: #c02918;
 }
-a.button{
-    appearance: button;
 
+a.button {
+    appearance: button;
     text-decoration: none;
     color: initial;
+}
+#loadign_img{
+    height: 150px;
+    width: 150px;
+}
+
+@media only screen and (max-width: 1200px) {}
+
+@media only screen and (max-width: 992px) {}
+
+@media only screen and (max-width: 768px) {}
+
+@media only screen and (max-width: 576px) {
+    .fas {
+        font-size: .875em;
+    }
 }
