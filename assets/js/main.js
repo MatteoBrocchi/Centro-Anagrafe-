@@ -220,9 +220,15 @@ $(function() {
         if (array.length < (numShow * indicePartenza)) arrivo = array.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            let arrayData = array[i].anno_nascita.split("-")[2] + "-" +  array[i].anno_nascita.split("-")[1] + "-" +  array[i].anno_nascita.split("-")[0];
+            let arrayData = array[i].anno_nascita.split("-")[2] + "-" + array[i].anno_nascita.split("-")[1] + "-" + array[i].anno_nascita.split("-")[0];
             let lunghezzaResidenze = array[i].luoghi_residenza.length;
+<<<<<<< HEAD
+            if (array[i].data_morte == undefined) $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
+            else $("#persone").append("<tr><td style='text-decoration: line-through'>" + array[i].nome + "</td><td style='text-decoration: line-through'>" + array[i].cognome + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td style='text-decoration: line-through'>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\"data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><i class=\"fas fa-home home rounded\" title=\"Add Residenza\"></i><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorteConfermata\"></i></td></tr>");
+
+=======
             $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\" ></i><i class=\"fas fa-church wedding rounded\" id=\"" + array[i].id + "\" title=\"Add Matrimonio\"></i><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
+>>>>>>> dff3cbb3088e3bc7b0b344b2dbeaf4f1b34679c8
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
@@ -260,7 +266,11 @@ $(function() {
 
     });
     $(document).on("click", ".inviaModifica", function() {
+<<<<<<< HEAD
+        dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '","indirizzo":"' + $('#viamod').val().toString() + '"}';
+=======
         dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() +'","indirizzo":"'+ $('#viamod').val().toString() +'","anno":"'+ $('#datadocumentomod').val().toString() + '"}';
+>>>>>>> dff3cbb3088e3bc7b0b344b2dbeaf4f1b34679c8
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -270,8 +280,7 @@ $(function() {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza/",
             dataType: "json",
-            success: function(data) {
-            },
+            success: function(data) {},
         });
         dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
         $.ajax({
@@ -283,13 +292,12 @@ $(function() {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
             dataType: "json",
-            success: function(data) {
-            },
+            success: function(data) {},
         });
         $('#exampleModalEdit').modal('toggle');
         document.getElementById("loading_screen").style.display = 'block';
         AggiornaTabella();
-        persone=[];
+        persone = [];
         $.ajax({
             type: "GET",
             contentType: "application/json",
@@ -347,13 +355,55 @@ $(function() {
             alert(jqXHR.responseText);
         })
     });
-    $(document).on("click", ".decesso", function() {
 
+    /*DECESSO*/
+    $(document).on("click", ".morte", function() {
+        selectedID = $(this).attr("id");
+        selectedEL = $(this);
+        $("#morteText").children().remove();
+        $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
+    });
+    $(document).on("click", ".btnConfirmDeath", function() {
+        selectedEL.parent().siblings().css("text-decoration", "line-through");
+        $(selectedEL.siblings()).each(function(i) {
+            if (i != 0) $(this).attr("data-target", "");
         })
+<<<<<<< HEAD
+        dt = $("#datamorte").val();
+        $.ajax({
+            type: "POST",
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: '{"data_morte":"' + dt + '"}"',
+            /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
+            contentType: "application/json",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + selectedID + "/",
+            dataType: "json",
+        })
+        $('#modalMorte').modal('toggle');
+        selectedEL.attr("data-target", "#modalMorteConfermata");
+        for (let i = 0; i < persone.length; i++) {
+            if (persone[i].id == selectedID) {
+                persone[i].data_morte = dt;
+            }
+        }
+    });
+    /*STAMPA DECESSO MODAL*/
+    function morteText(idPersona) {
+        for (let i = 0; i < persone.length; i++) {
+            if (persone[i].id == idPersona) {
+                let arrayData = persone[i].data_morte.split("-")[2] + "-" + persone[i].data_morte.split("-")[1] + "-" + persone[i].data_morte.split("-")[0];
+                return arrayData;
+            }
+        }
+    }
+
+    /*ORDINA*/
+=======
      $(document).on("click", ".home", function() {
         localStorage.setItem("idprova",$(this).attr("id"))
      });
         /*ORDINA*/
+>>>>>>> dff3cbb3088e3bc7b0b344b2dbeaf4f1b34679c8
     $(document).on("click", ".order", function() {
         var temp = new Array();
         var f = $(this).attr("id");
