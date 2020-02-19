@@ -86,7 +86,7 @@ $(function () {
         dataType: "json",
         success: function (data) {
             $.each(data, function (i, value) {
-                c=value.id;
+                c = value.id + 1;
                 persone.push(Object.assign({}, value));
             }); //Object.assign({}, value)
             downloadDataPie();
@@ -120,7 +120,7 @@ $(function () {
                 + '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione-input').val().toString()
                 + '","provincia": "' + $('#provincia-input').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
                 + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
-                + '", "codice": "' + "AU" + persone.length + '"}';
+                + '", "codice": "' + "AU" + c + '"}';
             $.ajax({
                 type: "POST",
                 headers: { "Access-Control-Allow-Origin": "*" },
@@ -129,7 +129,7 @@ $(function () {
                 contentType: "application/json",
                 url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
                 dataType: "json",
-                success: function(data){
+                success: function (data) {
                     $.ajax({
                         type: "GET",
                         contentType: "application/json",
@@ -493,7 +493,7 @@ function addBarChart(luogo) {
     $("#myChart").parent().addClass("d-flex");
     $("#myChartPie").parent().removeClass("col-md-12");
     $("#myChartPie").parent().addClass("col-md-6");
-    
+
     luogo = "Popolazione " + luogo;
     if (chartBar != undefined)
         chartBar.destroy();
