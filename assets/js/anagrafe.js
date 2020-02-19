@@ -115,11 +115,14 @@ $(function () {
                 check = false;
         });
         if (check) {
-            persone[c] = new Persona(new cartaIdentita([$('#nome').val().toString(), $('#cognome').val().toString(), [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], $('#indirizzo').val().toString(), new Date($('#anno').val().toString()), new Date($('#rilascio').val().toString()), c]));
-            var dt = '{"nome": "' + $("#nome").val().toString() + '", "cognome": "' + $('#cognome').val().toString()
-                + '", "anno_nascita": "' + $('#anno').val().toString() + '", "regione": "' + $('#regione').val().toString()
-                + '","provincia": "' + $('#provincia').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio').val().toString()
-                + '", "indirizzo": "' + $('#indirizzo').val().toString() + '", "anno_rilascio": "' + $('#rilascio').val().toString()
+            persone[c] = new Persona(new cartaIdentita($('#nome-input').text().toString(), $('#cognome-input').text().toString(), 
+            [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], 
+            $('#indirizzo-input').val().toString(), new Date($('#anno-input').val().toString()), new Date($('#rilascio-input').val().toString()), c));
+            //regione provincia e codice////////////////
+            var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString()
+                + '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione').text().toString()
+                + '","provincia": "' + $('#provincia').text().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
+                + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
                 + '", "codice": "' + persone[c].carta.id.toString() + '"}';
             $.ajax({
                 type: "POST",
