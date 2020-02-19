@@ -50,6 +50,7 @@ $(function() {
                 persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
+            document.getElementById("loading_screen").style.display = 'none';
         }
     });
     $.ajax({
