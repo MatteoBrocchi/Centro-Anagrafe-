@@ -1,10 +1,10 @@
-var Residenza = /** @class */ (function () {
-    function Residenza() { }
-    Residenza.cambioResidenza = function (vecchioIndirizzo, nuovoIndirizzo, vecchiaResidenza, nuovaResidenza, persona) {
+var Residenza = /** @class */ (function() {
+    function Residenza() {}
+    Residenza.cambioResidenza = function(vecchioIndirizzo, nuovoIndirizzo, vecchiaResidenza, nuovaResidenza, persona) {
         if (persona.carta != undefined && persona.carta.tuttiDati[2][0] == vecchiaResidenza && persona.carta.tuttiDati[3] == vecchioIndirizzo) {
             var copia = JSON.stringify(persona);
             persona.carta = new cartaIdentita([persona.carta.tuttiDati[0], persona.carta.tuttiDati[1],
-            [nuovaResidenza, persona.carta.tuttiDati[2][1], persona.carta.tuttiDati[2][2]], nuovoIndirizzo, persona.carta.tuttiDati[4], persona.carta.tuttiDati[5], c
+                [nuovaResidenza, persona.carta.tuttiDati[2][1], persona.carta.tuttiDati[2][2]], nuovoIndirizzo, persona.carta.tuttiDati[4], persona.carta.tuttiDati[5], c
             ]);
             var a = JSON.parse(copia);
             a.residenza.a = new Date(Date.now());
@@ -13,17 +13,17 @@ var Residenza = /** @class */ (function () {
     };
     return Residenza;
 }());
-var Persona = /** @class */ (function () {
+var Persona = /** @class */ (function() {
     function Persona(carta) {
         this.carta = carta;
         this.residenza = new certificatoResidenza(new Date(Date.now()));
         this.nome = carta.tuttiDati[0];
         this.cognome = carta.tuttiDati[1];
     }
-    Persona.prototype.Prova = function () { return false; };
+    Persona.prototype.Prova = function() { return false; };
     return Persona;
 }());
-var Matrimonio = /** @class */ (function () {
+var Matrimonio = /** @class */ (function() {
     function Matrimonio(valore3) {
         this.nomeSposo = valore3[0];
         this.cognomeSposo = valore3[1];
@@ -33,7 +33,7 @@ var Matrimonio = /** @class */ (function () {
         this.comune = valore3[5];
     }
     Object.defineProperty(Matrimonio.prototype, "tuttiDati", {
-        get: function () {
+        get: function() {
             return [this.nomeSposo, this.cognomeSposo, this.nomeSposa, this.nomeSposa, this.data, this.comune];
         },
         enumerable: true,
@@ -41,13 +41,13 @@ var Matrimonio = /** @class */ (function () {
     });
     return Matrimonio;
 }());
-var certificatoResidenza = /** @class */ (function () {
+var certificatoResidenza = /** @class */ (function() {
     function certificatoResidenza(da) {
         this.da = da;
     }
     return certificatoResidenza;
 }());
-var cartaIdentita = /** @class */ (function () {
+var cartaIdentita = /** @class */ (function() {
     function cartaIdentita(valore) {
         this.nome = valore[0];
         this.cognome = valore[1];
@@ -58,7 +58,7 @@ var cartaIdentita = /** @class */ (function () {
         this.id = "AU" + valore[6];
     }
     Object.defineProperty(cartaIdentita.prototype, "tuttiDati", {
-        get: function () {
+        get: function() {
             return [this.nome, this.cognome, this.luogoNascita, this.indirizzo, this.annoNascita, this.annoRilascio, this.id];
         },
         enumerable: true,
@@ -78,49 +78,49 @@ var comSelected = "";
 var annoSelected = 0;
 var chartBar;
 
-$(function () {
+$(function() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
-        success: function (data) {
-            $.each(data, function (i, value) {
+        success: function(data) {
+            $.each(data, function(i, value) {
                 c = value.id + 1;
                 persone.push(Object.assign({}, value));
             }); //Object.assign({}, value)
             downloadDataPie();
         }
     });
-    $(".regioni").on("click", function () {
+    $(".regioni").on("click", function() {
         $(".regioni").css("color", "black");
     })
-    $(".province").on("click", function () {
+    $(".province").on("click", function() {
         $(".province").css("color", "black");
     })
-    $(".comuni").on("click", function () {
+    $(".comuni").on("click", function() {
         $(".comuni").css("color", "black");
     })
-    $(".anno").on("click", function () {
+    $(".anno").on("click", function() {
         $(".anno").css("color", "black");
     })
 
     for (let i = 1940; i < (new Date).getFullYear() + 1; i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
     //creazione carta d'identità
-    $('.btnAddID').on('click', function () { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
+    $('.btnAddID').on('click', function() { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
         var check = true;
         //controllo che il form sia stato completato
-        $('#form1 input').each(function () {
+        $('#form1 input').each(function() {
             if ($(this).val() === '')
                 check = false;
         });
         if (check) {
             //regione provincia e codice
-            var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString()
-                + '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione-input').val().toString()
-                + '","provincia": "' + $('#provincia-input').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
-                + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
-                + '", "codice": "' + "AU" + c + '"}';
+            var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString() +
+                '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione-input').val().toString() +
+                '","provincia": "' + $('#provincia-input').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString() +
+                '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString() +
+                '", "codice": "' + "AU" + c + '"}';
             $.ajax({
                 type: "POST",
                 headers: { "Access-Control-Allow-Origin": "*" },
@@ -129,14 +129,14 @@ $(function () {
                 contentType: "application/json",
                 url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     $.ajax({
                         type: "GET",
                         contentType: "application/json",
                         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
                         dataType: "json",
-                        success: function (data) {
-                            $.each(data, function (i, value) {
+                        success: function(data) {
+                            $.each(data, function(i, value) {
                                 persone.push(Object.assign({}, value));
                             }); //Object.assign({}, value)
                             downloadDataPie();
@@ -144,7 +144,7 @@ $(function () {
                         }
                     });
                 },
-                error: function (jqXHR, textStatus, errorThrown) {
+                error: function(jqXHR, textStatus, errorThrown) {
                     var a = 0;
                 }
             });
@@ -154,10 +154,10 @@ $(function () {
         $('#form1').trigger("reset");
     });
     //cambio residenza
-    $('#form2 button').on('click', function () {
+    $('#form2 button').on('click', function() {
         var check = true;
         //controllo che il form sia stato completato
-        $('#form2 input').each(function () {
+        $('#form2 input').each(function() {
             if ($(this).val() === '')
                 check = false;
         });
@@ -177,10 +177,10 @@ $(function () {
             alert("Compila tutti i campi");
         $('#form2').trigger("reset");
     });
-    $('#form3 button').on('click', function () {
+    $('#form3 button').on('click', function() {
         var check = true;
         //controllo che il form sia stato completato
-        $('#form3 input').each(function () {
+        $('#form3 input').each(function() {
             if ($(this).val() === '')
                 check = false;
         });
@@ -214,10 +214,10 @@ $(function () {
             alert("Compila tutti i campi");
         $('#form3').trigger("reset");
     });
-    $('#form6 button').on('click', function () {
+    $('#form6 button').on('click', function() {
         var check = true;
         //controllo che il form sia stato completato
-        $('#form6 input').each(function () {
+        $('#form6 input').each(function() {
             if ($(this).val() === '')
                 check = false;
         });
@@ -233,32 +233,32 @@ $(function () {
             alert("Compila tutti i campi");
         $('#form6').trigger("reset");
     });
-    $(".regioni").on("change", function () {
+    $(".regioni").on("change", function() {
         provSelected = "";
         comSelected = "";
-        $(".regioni option:selected").each(function () {
+        $(".regioni option:selected").each(function() {
             regSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".province").attr("disabled", false);
     });
-    $(".province").on("change", function () {
+    $(".province").on("change", function() {
         comSelected = "";
-        $(".province option:selected").each(function () {
+        $(".province option:selected").each(function() {
             provSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".comuni").attr("disabled", false);
     });
-    $(".comuni").on("change", function () {
-        $(".comuni option:selected").each(function () {
+    $(".comuni").on("change", function() {
+        $(".comuni option:selected").each(function() {
             comSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".comuni").attr("disabled", false);
     });
-    $(".anno").on("change", function () {
-        $(".anno option:selected").each(function () {
+    $(".anno").on("change", function() {
+        $(".anno option:selected").each(function() {
             annoSelected = parseInt($(this).text());
             downloadDataBar();
         });
@@ -269,7 +269,7 @@ $(function () {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/nome",
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
             var arrNome = lines.split('\n');
         }
     });
@@ -278,7 +278,7 @@ $(function () {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/cognome",
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
             var arrCognome = lines.split('\n');
         }
     });
@@ -287,19 +287,19 @@ $(function () {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/territorio",
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
             var jsonRegioni = data;
         }
     })
     for (var i = c; i < 200; i++) {
         var nascita = Math.floor(Math.random() * (2020 - 1850 + 1) + 1850);
-        var dt = '{"nome": "' + nomi[Math.floor(Math.random() * nomi.length - 1)] + '", "cognome": "' + cognomi[Math.floor(Math.random() * nomi.length - 1)]
-            + '", "anno_nascita": "' +
-            nascita + "-" + Math.floor(Math.random() * 12) + "-" + Math.floor(Math.random() * 12);
-        + '", "regione": "' + jsonRegioni.regioni[Math.random() * jsonRegioni.regioni]
-            + '","provincia": "' + jsonRegioni.regioni.provincia[Math.random() * jsonRegioni.regioni.provincia] + '", "comune": "' + jsonRegioni.regioni.provincia.comune[Math.random() * jsonRegioni.regioni.provincia.comune] + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
-            + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
-            + '", "codice": "' + "AU" + c + '"}';
+        var dt = '{"nome": "' + nomi[Math.floor(Math.random() * nomi.length - 1)] + '", "cognome": "' + cognomi[Math.floor(Math.random() * nomi.length - 1)] +
+            '", "anno_nascita": "' +
+            nascita + "-" + Math.floor(Math.random() * 12) + "-" + Math.floor(Math.random() * 12); +
+        '", "regione": "' + jsonRegioni.regioni[Math.random() * jsonRegioni.regioni] +
+            '","provincia": "' + jsonRegioni.regioni.provincia[Math.random() * jsonRegioni.regioni.provincia] + '", "comune": "' + jsonRegioni.regioni.provincia.comune[Math.random() * jsonRegioni.regioni.provincia.comune] + '", "anno_residenza": "' + $('#rilascio-input').val().toString() +
+            '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString() +
+            '", "codice": "' + "AU" + c + '"}';
 
         $.ajax({
             type: "POST",
@@ -309,14 +309,14 @@ $(function () {
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
             dataType: "json",
-            success: function (data) {
+            success: function(data) {
                 $.ajax({
                     type: "GET",
                     contentType: "application/json",
                     url: "https://late-frost-5190.getsandbox.com/anagrafiche",
                     dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (i, value) {
+                    success: function(data) {
+                        $.each(data, function(i, value) {
                             persone.push(Object.assign({}, value));
                         }); //Object.assign({}, value)
                         downloadDataPie();
@@ -324,7 +324,7 @@ $(function () {
                     }
                 });
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 var a = 0;
                 alert(jqXHR.responseText);
             }
@@ -343,8 +343,8 @@ function downloadDataPie() {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/territorio",
         dataType: "json",
-        success: function (data) {
-            $.each(data.regioni, function (i, value) {
+        success: function(data) {
+            $.each(data.regioni, function(i, value) {
                 regioni.push(value.nome);
             });
             for (var reg in regioni) {
@@ -361,7 +361,7 @@ function downloadDataPie() {
             //avvio creazione grafico a torta
             addPieChart();
         },
-        error: function (xhr, status, error) {
+        error: function(xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
             console.log(err.Message);
             return err.Message;
@@ -421,8 +421,11 @@ function downloadDataBar() {
                             var mese = persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[1];
                             if (persone[persona].luoghi_residenza.length > 1 && residenza != 0)
                                 addDataBarResidenza(mese);
-                        }
-                        else if (persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[0] > annoSelected) for (var i = 0; i < 12; i++) { datiBar[i]++; controllo = true; }
+                        } else if (persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[0] > annoSelected)
+                            for (var i = 0; i < 12; i++) {
+                                datiBar[i]++;
+                                controllo = true;
+                            }
                     }
                 }
                 //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
@@ -490,6 +493,7 @@ function addDataBar(mese) {
             break;
     }
 }
+
 function addDataBarResidenza(mese) {
     switch (mese) {
         case "01":
@@ -541,6 +545,7 @@ function addDataBarResidenza(mese) {
             break;
     }
 }
+
 function addPieChart() {
     if (chartPie != undefined)
         chartPie.destroy();
@@ -595,7 +600,7 @@ function addPieChart() {
             title: {
                 display: true,
                 text: "Popolazione regioni",
-                fontSize: 25
+                fontSize: 45
             },
             legend: {
                 display: false,
@@ -618,7 +623,7 @@ function addPieChart() {
         },
     });
     // Ridimensiono la torta
-    $("#myChartPie").css("width", "1000px");
+    $("#myChartPie").css("width", "900px");
     $("#myChartPie").css("height", "");
 }
 

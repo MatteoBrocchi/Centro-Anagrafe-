@@ -268,10 +268,10 @@
                     <form id="form1">
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Nome</label>
+                                <label data-error="wrong" data-success="right">Nome</label>
                             </div>
                             <div class="col-8">
-                                <input id="nome-input" type="text" class="form-control" placeholder="Nome">
+                                <input id="nome-input" pattern="[A-Za-z]" type="text" class="form-control" placeholder="Nome">
                             </div>
                         </div>
                         <div class="row pb-3">
@@ -366,7 +366,7 @@
                                 <label>Cognome</label>
                             </div>
                             <div class="col-8">
-                                <input id="cognomemod" type="text" class="form-control" placeholder="Cognome">
+                                <input id="cognomemod" type="text" pattern="[A-Za-z]{3}" class="form-control" placeholder="Cognome">
                             </div>
                         </div>
                         <div class="row pb-3">
@@ -423,7 +423,7 @@
                                 <input id="datadocumentomod" type="date" class="form-control">
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
                 <div class="modal-footer">
