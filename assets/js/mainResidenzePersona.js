@@ -50,6 +50,12 @@ $(function() {
             $.each(data, function(i, value) {
                 persone.push(Object.assign({}, value))
             });
+            for(let i = 0; i < persone.length; i++){
+                if(persone[i].id == localStorage.getItem("idprova")){
+                    persone = persone[i];
+                    i = persone.length;
+                }
+            }
             CalcPag(persone);
             document.getElementById("loading_screen").style.display = 'none';
         }
@@ -125,12 +131,7 @@ $(function() {
                     }
                 }
             }
-        });
-        /* INVIO ID NELL'ALTRA PAGINA */
-        $(document).on("click", ".home", function() {
-            localStorage.setItem("idprova",$(this).attr("id"))
-         });
-        
+        })
         /*CERCA*/
     $(document).on("keyup", "#search", function() {
         cercaList.length = 0;
@@ -154,8 +155,8 @@ $(function() {
     /*CALCOLO NUMERO DELLE PAGINE*/
     function CalcPag(array) {
         $(".pagination").empty();
-        if (((array.length) % $("#shownumber").val()) == 0) numeropagine = parseInt(array.length / $("#shownumber").val());
-        else numeropagine = parseInt((array.length / $("#shownumber").val()) + 1);
+        if (((array.luoghi_residenza.length) % $("#shownumber").val()) == 0) numeropagine = parseInt(array.luoghi_residenza.length / $("#shownumber").val());
+        else numeropagine = parseInt((array.luoghi_residenza.length / $("#shownumber").val()) + 1);
         $(".pagination").append('<li class="page-item" id="previous"> <a class="page-link" href="#main" tabindex="-1"  style="text-decoration:none"aria-disabled="true">Precedente</a> </li>');
         for (let i = 0; i < numeropagine; i++) {
             $(".pagination").append('<li class="page-item numeri"><a class="page-link" style="text-decoration:none" href="#main">' + (i + 1) + '</a></li>');
@@ -170,15 +171,34 @@ $(function() {
     /*STAMPA*/
     function StampaTabella(indicePartenza, numShow, array) {
         let arrivo = 0;
+        $("#nomePersonaSelezionata").text(array.nome + " " + array.cognome);
         AggiornaTabella();
-        if (array.length < (numShow * indicePartenza)) arrivo = array.length;
+        if (array.luoghi_residenza.length < (numShow * indicePartenza)) arrivo = array.luoghi_residenza.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            let arrayData = array[i].anno_nascita.split("-")[2] + "-" +  array[i].anno_nascita.split("-")[1] + "-" +  array[i].anno_nascita.split("-")[0];
-            let lunghezzaResidenze = array[i].luoghi_residenza.length;
-            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].indirizzo + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a></td></tr>");
+            $("#persone").append("<tr><td>" + array.luoghi_residenza[i].regione + "</td><td>" + array.luoghi_residenza[i].provincia + "</td><td>" + array.luoghi_residenza[i].comune + "</td><td>" + array.luoghi_residenza[i].indirizzo + "</td><td>" + array.luoghi_residenza[i].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
         }
     }
+
+    /*AGGIUNTA RESIDENZA*/
+    $(document).on("click", ".btnAggiungiResidenza", function(){
+        dt = '{"regione":"' + $('#regioneNuovaRes').val().toString() + '","provincia":"' + $('#provinciaNuovaRes').val().toString() + '","comune":"' + $('#comuneNuovaRes').val().toString() +'","indirizzo":"'+ $('#indirizzoNuovaRes').val().toString() +'","anno_residenza":"'+ $('#dataNuovaRes').val().toString() + '"}';
+        $.ajax({
+            type: "POST",
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: dt,
+            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+            contentType: "application/json",
+            crossDomain: true,
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/" + localStorage.getItem("idprova") + "/residenza/",
+            dataType: "json",
+            success: function(data) {
+            },
+            error: function (xhr, status, error) {
+                alert("ciao");
+            }
+        })
+    });
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
     $("#shownumber").change(function() {
         CalcPag(persone);

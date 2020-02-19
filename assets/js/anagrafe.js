@@ -146,7 +146,6 @@ $(function () {
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     var a = 0;
-                    alert(jqXHR.responseText);
                 }
             });
             c++;
@@ -264,6 +263,74 @@ $(function () {
             downloadDataBar();
         });
     });
+    //
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/nome",
+        dataType: "json",
+        success: function (data) {
+            var arrNome = lines.split('\n');
+        }
+    });  
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/cognome",
+        dataType: "json",
+        success: function (data) {
+            var arrCognome = lines.split('\n');
+        }
+    });  
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/territorio",
+        dataType: "json",
+        success: function(data) {
+            var jsonRegioni=data;
+        }
+    })
+    for (var i = c; i < 200; i++) {
+        var nascita=Math.floor(Math.random() * (2020 - 1850 + 1) + 1850);
+        var dt = '{"nome": "' + nomi[Math.floor(Math.random()*nomi.length-1)] +'", "cognome": "' + cognomi[Math.floor(Math.random()*nomi.length-1)]
+                    + '", "anno_nascita": "' +
+                    nascita+"-"+Math.floor(Math.random() * 12)+"-"+Math.floor(Math.random() * 12);
+                     + '", "regione": "' + jsonRegioni.regioni[Math.random()*jsonRegioni.regioni]
+            + '","provincia": "' + jsonRegioni.regioni.provincia[Math.random()*jsonRegioni.regioni.provincia] + '", "comune": "' + jsonRegioni.regioni.provincia.comune[Math.random()*jsonRegioni.regioni.provincia.comune] + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
+            + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
+            + '", "codice": "' + "AU" + c + '"}';
+
+        $.ajax({
+            type: "POST",
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: dt,
+            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+            contentType: "application/json",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
+            dataType: "json",
+            success: function (data) {
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json",
+                    url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                    dataType: "json",
+                    success: function (data) {
+                        $.each(data, function (i, value) {
+                            persone.push(Object.assign({}, value));
+                        }); //Object.assign({}, value)
+                        downloadDataPie();
+                        c = persone.length;
+                    }
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var a = 0;
+                alert(jqXHR.responseText);
+            }
+        });
+        c++;
+    }
 });
 
 function downloadDataPie() {
@@ -348,14 +415,25 @@ function downloadDataBar() {
             //scorre tutte le residenze della persona
             for (var residenza in persone[persona].luoghi_residenza) {
                 //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
-                if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected && !controllo)
-                    for (var i = 0; i < 12; i++) datiBar[i]++;
-                //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
-                if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && !controllo) {
-                    var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
-                    addDataBar(mese);
+                if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected && !controllo) {
+                    if (persone[persona].luoghi_residenza.length > 1) {
+                        if (annoSelected == persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[0]) {
+                            var mese = persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[1];
+                            if (persone[persona].luoghi_residenza.length > 1 && residenza != 0)
+                                addDataBarResidenza(mese);
+                        }
+                        else
+                            for (var i = 0; i < 12; i++) { datiBar[i]++; controllo = true; }
+                    }
                 }
-                controllo = true;
+                //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
+                else if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && !controllo) {
+                    var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
+                    if (persone[persona].luoghi_residenza.length > 1 && residenza == 0) addDataBarResidenza(mese);
+                    else {
+                        addDataBar(mese);
+                    }
+                }
             }
         }
         addBarChart(comSelected);
@@ -413,7 +491,57 @@ function addDataBar(mese) {
             break;
     }
 }
-
+function addDataBarResidenza(mese) {
+    switch (mese) {
+        case "01":
+            datiBar[0]++;
+            break;
+        case "02":
+            for (var i = 0; i < 1; i++)
+                datiBar[i]++;
+            break;
+        case "03":
+            for (var i = 0; i < 2; i++)
+                datiBar[i]++;
+            break;
+        case "04":
+            for (var i = 0; i < 3; i++)
+                datiBar[i]++;
+            break;
+        case "05":
+            for (var i = 0; i < 4; i++)
+                datiBar[i]++;
+            break;
+        case "06":
+            for (var i = 0; i < 5; i++)
+                datiBar[i]++;
+            break;
+        case "07":
+            for (var i = 0; i < 6; i++)
+                datiBar[i]++;
+            break;
+        case "08":
+            for (var i = 0; i < 7; i++)
+                datiBar[i]++;
+            break;
+        case "09":
+            for (var i = 0; i < 8; i++)
+                datiBar[i]++;
+            break;
+        case "10":
+            for (var i = 0; i < 9; i++)
+                datiBar[i]++;
+            break;
+        case "11":
+            for (var i = 0; i < 10; i++)
+                datiBar[i]++;
+            break;
+        case "12":
+            for (var i = 0; i < 11; i++)
+                datiBar[i]++;
+            break;
+    }
+}
 function addPieChart() {
     if (chartPie != undefined)
         chartPie.destroy();

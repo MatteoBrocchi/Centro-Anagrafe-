@@ -98,7 +98,7 @@
                                         <th scope="col">Provincia <i class="fas fa-sort pl-3 order" id="provincia"></i>
                                         </th>
                                         <th scope="col">Comune <i class="fas fa-sort pl-3 order" id="comune"></i></th>
-                                        <th scope="col">Data di nascita <i class="fas fa-sort pl-3 order" id="anno"></i></th>
+                                        <th scope="col">Data Nascita <i class="fas fa-sort pl-3 order" id="anno"></i></th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
@@ -371,18 +371,10 @@
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Regione</label>
+                                <label>Indirizzo</label>
                             </div>
                             <div class="col-8">
-                                <input id="regionemod" type="text" class="form-control" placeholder="Emilia-Romagna">
-                            </div>
-                        </div>
-                        <div class="row pb-3">
-                            <div class="col-4 text-left">
-                                <label>Provincia</label>
-                            </div>
-                            <div class="col-8">
-                                <input id="provinciamod" type="text" class="form-control" placeholder="Rimini">
+                                <input id="viamod" type="text" class="form-control" placeholder="Via Girgio Pascoli">
                             </div>
                         </div>
                         <div class="row pb-3">
@@ -390,12 +382,34 @@
                                 <label>Comune</label>
                             </div>
                             <div class="col-8">
-                                <input id="comunemod" type="text" class="form-control" placeholder="Santarcangelo">
+                                <select class="text-center rounded" id="comunemod">
+                                    <option value="" hidden>Seleziona comune</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Anno di Nascita</label>
+                                <label>Provincia</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="text-center rounded" id="provinciamod">
+                                    <option value="" hidden>Seleziona provincia</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-4 text-left">
+                                <label>Regione</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="text-center rounded" id="regionemod">
+                                    <option value="" hidden>Seleziona regione</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-4 text-left">
+                                <label>Data di Nascita</label>
                             </div>
                             <div class="col-8">
                                 <input id="annomod" type="date" class="form-control">
@@ -403,12 +417,13 @@
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Indirizzo</label>
+                                <label>Data di rilascio documento</label>
                             </div>
                             <div class="col-8">
-                                <input id="viamod" type="text" class="form-control" placeholder="Via Girgio Pascoli">
+                                <input id="datadocumentomod" type="date" class="form-control">
                             </div>
                         </div>
+                        
                     </form>
                 </div>
                 <div class="modal-footer">
