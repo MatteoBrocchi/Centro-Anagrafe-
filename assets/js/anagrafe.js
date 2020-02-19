@@ -118,10 +118,10 @@ $(function () {
             /*persone[c] = new Persona(new cartaIdentita($('#nome-input').text().toString(), $('#cognome-input').text().toString(), 
             [$('#residenza').val().toString(), $('#provincia').val().toString(), $('#regione').val().toString()], 
             $('#indirizzo-input').val().toString(), new Date($('#anno-input').val().toString()), new Date($('#rilascio-input').val().toString()), c));*/
-            //regione provincia e codice////////////////
+            //regione provincia e codice
             var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString()
-                + '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione').text().toString()
-                + '","provincia": "' + $('#provincia').text().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
+                + '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione-input').val().toString()
+                + '","provincia": "' + $('#provincia-input').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString()
                 + '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString()
                 + '", "codice": "' + "AU" + persone.length + '"}';
             $.ajax({
