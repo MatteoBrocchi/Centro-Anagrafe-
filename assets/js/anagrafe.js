@@ -1,10 +1,10 @@
-var Residenza = /** @class */ (function () {
-    function Residenza() { }
-    Residenza.cambioResidenza = function (vecchioIndirizzo, nuovoIndirizzo, vecchiaResidenza, nuovaResidenza, persona) {
+var Residenza = /** @class */ (function() {
+    function Residenza() {}
+    Residenza.cambioResidenza = function(vecchioIndirizzo, nuovoIndirizzo, vecchiaResidenza, nuovaResidenza, persona) {
         if (persona.carta != undefined && persona.carta.tuttiDati[2][0] == vecchiaResidenza && persona.carta.tuttiDati[3] == vecchioIndirizzo) {
             var copia = JSON.stringify(persona);
             persona.carta = new cartaIdentita([persona.carta.tuttiDati[0], persona.carta.tuttiDati[1],
-            [nuovaResidenza, persona.carta.tuttiDati[2][1], persona.carta.tuttiDati[2][2]], nuovoIndirizzo, persona.carta.tuttiDati[4], persona.carta.tuttiDati[5], c
+                [nuovaResidenza, persona.carta.tuttiDati[2][1], persona.carta.tuttiDati[2][2]], nuovoIndirizzo, persona.carta.tuttiDati[4], persona.carta.tuttiDati[5], c
             ]);
             var a = JSON.parse(copia);
             a.residenza.a = new Date(Date.now());
@@ -13,17 +13,17 @@ var Residenza = /** @class */ (function () {
     };
     return Residenza;
 }());
-var Persona = /** @class */ (function () {
+var Persona = /** @class */ (function() {
     function Persona(carta) {
         this.carta = carta;
         this.residenza = new certificatoResidenza(new Date(Date.now()));
         this.nome = carta.tuttiDati[0];
         this.cognome = carta.tuttiDati[1];
     }
-    Persona.prototype.Prova = function () { return false; };
+    Persona.prototype.Prova = function() { return false; };
     return Persona;
 }());
-var Matrimonio = /** @class */ (function () {
+var Matrimonio = /** @class */ (function() {
     function Matrimonio(valore3) {
         this.nomeSposo = valore3[0];
         this.cognomeSposo = valore3[1];
@@ -33,7 +33,7 @@ var Matrimonio = /** @class */ (function () {
         this.comune = valore3[5];
     }
     Object.defineProperty(Matrimonio.prototype, "tuttiDati", {
-        get: function () {
+        get: function() {
             return [this.nomeSposo, this.cognomeSposo, this.nomeSposa, this.nomeSposa, this.data, this.comune];
         },
         enumerable: true,
@@ -41,13 +41,13 @@ var Matrimonio = /** @class */ (function () {
     });
     return Matrimonio;
 }());
-var certificatoResidenza = /** @class */ (function () {
+var certificatoResidenza = /** @class */ (function() {
     function certificatoResidenza(da) {
         this.da = da;
     }
     return certificatoResidenza;
 }());
-var cartaIdentita = /** @class */ (function () {
+var cartaIdentita = /** @class */ (function() {
     function cartaIdentita(valore) {
         this.nome = valore[0];
         this.cognome = valore[1];
@@ -58,7 +58,7 @@ var cartaIdentita = /** @class */ (function () {
         this.id = "AU" + valore[6];
     }
     Object.defineProperty(cartaIdentita.prototype, "tuttiDati", {
-        get: function () {
+        get: function() {
             return [this.nome, this.cognome, this.luogoNascita, this.indirizzo, this.annoNascita, this.annoRilascio, this.id];
         },
         enumerable: true,
@@ -77,60 +77,60 @@ var comSelected = "";
 var annoSelected = 0;
 var chartBar;
 
-$(function () {
+$(function() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
-        success: function (data) {
-            $.each(data, function (i, value) {
+        success: function(data) {
+            $.each(data, function(i, value) {
                 persone.push(Object.assign({}, value));
             }); //Object.assign({}, value)
             downloadDataPie();
         }
     });
-    $(".regioni").on("click", function () {
+    $(".regioni").on("click", function() {
         $(".regioni").css("color", "black");
     })
-    $(".province").on("click", function () {
+    $(".province").on("click", function() {
         $(".province").css("color", "black");
     })
-    $(".comuni").on("click", function () {
+    $(".comuni").on("click", function() {
         $(".comuni").css("color", "black");
     })
-    $(".anno").on("click", function () {
+    $(".anno").on("click", function() {
         $(".anno").css("color", "black");
     })
 
     for (let i = 1940; i < (new Date).getFullYear() + 1; i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
 
-    $(".regioni").on("change", function () {
+    $(".regioni").on("change", function() {
         provSelected = "";
         comSelected = "";
-        $(".regioni option:selected").each(function () {
+        $(".regioni option:selected").each(function() {
             regSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".province").attr("disabled", false);
     });
-    $(".province").on("change", function () {
+    $(".province").on("change", function() {
         comSelected = "";
-        $(".province option:selected").each(function () {
+        $(".province option:selected").each(function() {
             provSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".comuni").attr("disabled", false);
     });
-    $(".comuni").on("change", function () {
-        $(".comuni option:selected").each(function () {
+    $(".comuni").on("change", function() {
+        $(".comuni option:selected").each(function() {
             comSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".comuni").attr("disabled", false);
     });
-    $(".anno").on("change", function () {
-        $(".anno option:selected").each(function () {
+    $(".anno").on("change", function() {
+        $(".anno option:selected").each(function() {
             annoSelected = parseInt($(this).text());
             downloadDataBar();
         });
@@ -141,7 +141,7 @@ $(function () {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/nome",
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
             var arrNome = lines.split('\n');
         }
     });
@@ -150,7 +150,7 @@ $(function () {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/cognome",
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
             var arrCognome = lines.split('\n');
         }
     });
@@ -159,7 +159,7 @@ $(function () {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/territorio",
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
             var jsonRegioni = data;
         }
     })
@@ -171,21 +171,22 @@ function downloadDataPie() {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/territorio",
         dataType: "json",
-        success: function (data) {
-            $.each(data.regioni, function (i, value) {
+        success: function(data) {
+            $.each(data.regioni, function(i, value) {
                 regioni.push(value.nome);
             });
             for (var reg in regioni) {
                 var regione = regioni[reg];
                 var i = 0;
-                for (var persona in persone) if (persone[persona].data_morte == undefined && persone[persona].luoghi_residenza[0].regione == regione) i++;
+                for (var persona in persone)
+                    if (persone[persona].data_morte == undefined && persone[persona].luoghi_residenza[0].regione == regione) i++;
                 datiPie.push(i);
                 datiBar.push(i);
             }
             //avvio creazione grafico a torta
             addPieChart();
         },
-        error: function (xhr, status, error) {
+        error: function(xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
             console.log(err.Message);
             return err.Message;
@@ -224,8 +225,7 @@ function downloadDataBar() {
                             break;
                         }
                     }
-                }
-                else {
+                } else {
                     //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
                     if (persone[persona].luoghi_residenza[0].regione == regSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] < annoSelected)
                         for (var i = 0; i < 12; i++) datiBar[i]++;
@@ -243,17 +243,37 @@ function downloadDataBar() {
     else if (annoSelected != 0 && provSelected != "" && comSelected == "") {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         for (var persona in persone) {
-            if (persone[persona].data_morte != undefined) {
+            if (persone[persona].luoghi_residenza.length > 1) {
                 //scorre tutte le residenze della persona
-                for (var residenza in persone[persona].luoghi_residenza) {
-                    //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
-                    if (persone[persona].luoghi_residenza[residenza].provincia == provSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected)
-                        for (var i = 0; i < 12; i++) datiBar[i]++;
-                    //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
-                    if (persone[persona].luoghi_residenza[residenza].provincia == provSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected) {
+                for (residenza in persone[persona].luoghi_residenza) {
+                    if (persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected && persone[persona].luoghi_residenza[residenza].provincia == provSelected) {
+                        if (persone[persona].luoghi_residenza[parseInt(residenza) - 1] != undefined && annoSelected < persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[0]) {
+                            for (var i = 0; i < 12; i++) datiBar[i]++;
+                            break;
+                        } else if (residenza == 0) {
+                            for (var i = 0; i < 12; i++) datiBar[i]++;
+                            break;
+                        }
+                    }
+                    if (persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && persone[persona].luoghi_residenza[residenza].provincia == provSelected) {
                         var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
                         addDataBar(mese);
+                        break;
                     }
+                    if (persone[persona].luoghi_residenza[1 + parseInt(residenza)] != undefined && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && persone[persona].luoghi_residenza[residenza].provincia != provSelected && persone[persona].luoghi_residenza[parseInt(residenza) + 1].provincia == provSelected) {
+                        var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
+                        removeDataBar(mese);
+                        break;
+                    }
+                }
+            } else {
+                //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
+                if (persone[persona].luoghi_residenza[0].provincia == provSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] < annoSelected)
+                    for (var i = 0; i < 12; i++) datiBar[i]++;
+                //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
+                if (persone[persona].luoghi_residenza[0].provincia == provSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] == annoSelected) {
+                    var mese = persone[persona].luoghi_residenza[0].anno.split("-")[1];
+                    addDataBar(mese);
                 }
             }
         }
@@ -264,17 +284,37 @@ function downloadDataBar() {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         //scorre tutte le persone
         for (var persona in persone) {
-            if (persone[persona].data_morte != undefined) {
+            if (persone[persona].luoghi_residenza.length > 1) {
                 //scorre tutte le residenze della persona
-                for (var residenza in persone[persona].luoghi_residenza) {
-                    //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
-                    if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected)
-                        for (var i = 0; i < 12; i++) datiBar[i]++;
-                    //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
-                    if (persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected) {
+                for (residenza in persone[persona].luoghi_residenza) {
+                    if (persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected && persone[persona].luoghi_residenza[residenza].comune == comSelected) {
+                        if (persone[persona].luoghi_residenza[parseInt(residenza) - 1] != undefined && annoSelected < persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[0]) {
+                            for (var i = 0; i < 12; i++) datiBar[i]++;
+                            break;
+                        } else if (residenza == 0) {
+                            for (var i = 0; i < 12; i++) datiBar[i]++;
+                            break;
+                        }
+                    }
+                    if (persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && persone[persona].luoghi_residenza[residenza].comune == comSelected) {
                         var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
                         addDataBar(mese);
+                        break;
                     }
+                    if (persone[persona].luoghi_residenza[1 + parseInt(residenza)] != undefined && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && persone[persona].luoghi_residenza[residenza].comune == comSelected && persone[persona].luoghi_residenza[parseInt(residenza) + 1].comune == comSelected) {
+                        var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
+                        removeDataBar(mese);
+                        break;
+                    }
+                }
+            } else {
+                //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
+                if (persone[persona].luoghi_residenza[0].comune == comSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] < annoSelected)
+                    for (var i = 0; i < 12; i++) datiBar[i]++;
+                //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
+                if (persone[persona].luoghi_residenza[0].comune == comSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] == annoSelected) {
+                    var mese = persone[persona].luoghi_residenza[0].anno.split("-")[1];
+                    addDataBar(mese);
                 }
             }
         }
