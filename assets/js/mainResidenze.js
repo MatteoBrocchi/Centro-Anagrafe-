@@ -174,8 +174,9 @@ $(function() {
         if (array.length < (numShow * indicePartenza)) arrivo = array.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            let arrayData = array[i].luoghi_residenza[0].anno.split("-")[2] + "-" +  array[i].luoghi_residenza[0].anno.split("-")[1] + "-" + array[i].luoghi_residenza[0].anno.split("-")[0];
-            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[0].regione + "</td><td>" + array[i].luoghi_residenza[0].provincia + "</td><td>" + array[i].luoghi_residenza[0].comune + "</td><td>" + array[i].luoghi_residenza[0].indirizzo + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a></td></tr>");
+            let arrayData = array[i].anno_nascita.split("-")[2] + "-" +  array[i].anno_nascita.split("-")[1] + "-" +  array[i].anno_nascita.split("-")[0];
+            let lunghezzaResidenze = array[i].luoghi_residenza.length;
+            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[0].regione + "</td><td>" + array[i].luoghi_residenza[0].provincia + "</td><td>" + array[i].luoghi_residenza[0].comune + "</td><td>" + array[i].luoghi_residenza[0].indirizzo + "</td><td>" + array[i].luoghi_residenza[0].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a></td></tr>");
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/

@@ -326,22 +326,26 @@
                         <form>
                             <div class="row pb-3">
                                 <div class="col-4 text-left">
-                                    <label>Regione</label>
+                                    <label>Nome coniuge</label>
                                 </div>
                                 <div class="col-8">
-                                    <select class="regioni text-center rounded" id="regione">
-                                        <option value="" hidden>Seleziona regione</option>
-                                    </select>
+                                    <input id="editNuovoConiuge" type="text" class="form-control" placeholder="Nome">
                                 </div>
                             </div>
                             <div class="row pb-3">
                                 <div class="col-4 text-left">
-                                    <label>Provincia</label>
+                                    <label>Cognome coniuge</label>
                                 </div>
                                 <div class="col-8">
-                                    <select class="province text-center rounded" id="provincia">
-                                        <option value="" hidden>Seleziona provincia</option>
-                                    </select>
+                                    <input id="editcognomeNuovoConiuge" type="text" class="form-control" placeholder="Cognome">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-4 text-left">
+                                    <label>Data matrimonio</label>
+                                </div>
+                                <div class="col-8">
+                                    <input id="editdataNuovoMatrimonio" type="date" class="form-control">
                                 </div>
                             </div>
                             <div class="row pb-3">
@@ -349,25 +353,9 @@
                                     <label>Comune</label>
                                 </div>
                                 <div class="col-8">
-                                    <select class="comuni text-center rounded" id="comune">
+                                    <select class="comuni text-center rounded" id="editcomuneNuovoMatrimonio">
                                         <option value="" hidden>Seleziona comune</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="row pb-3">
-                                <div class="col-4 text-left">
-                                    <label>Indirizzo</label>
-                                </div>
-                                <div class="col-8">
-                                    <input id="viamod" type="text" class="form-control" placeholder="Via Girgio Pascoli">
-                                </div>
-                            </div>
-                            <div class="row pb-3">
-                                <div class="col-4 text-left">
-                                    <label>Anno di rilascio</label>
-                                </div>
-                                <div class="col-8">
-                                    <input id="annomod" type="date" class="form-control">
                                 </div>
                             </div>
                         </form>
@@ -389,7 +377,7 @@
                     </button>
                     </div>
                     <div class="modal-body">
-                        Vuoi davvero eliminare questa residenza?
+                        Vuoi davvero eliminare questo matrimonio?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary btnElimina" data-dismiss="modal">Elimina</button>

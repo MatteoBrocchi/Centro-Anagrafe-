@@ -3,7 +3,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-$(function() {
+$(function () {
     var posizioneCorrente = 1;
     var numeropagine;
     var persone = new Array();
@@ -19,9 +19,9 @@ $(function() {
         provinciaorder = false,
         comuneorder = false,
         annoorder = false;
-    var siteScroll = function() {
+    var siteScroll = function () {
         var title = false;
-        $(window).scroll(function() {
+        $(window).scroll(function () {
 
             var st = $(this).scrollTop();
 
@@ -46,8 +46,8 @@ $(function() {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
-        success: function(data) {
-            $.each(data, function(i, value) {
+        success: function (data) {
+            $.each(data, function (i, value) {
                 persone.push(Object.assign({}, value))
             });
             for (let i = 0; i < persone.length; i++) {
@@ -61,29 +61,29 @@ $(function() {
         }
     });
     $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/territorio",
-            dataType: "json",
-            success: function(data) {
-                $.each(data, function(i, value) {
-                    arrayTerritory.push(Object.assign({}, value))
-                    arrayTerritory = arrayTerritory[0];
-                    for (let h = 0; h < 20; h++) {
-                        $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
-                        for (let j = 0; j < arrayTerritory[h].province.length; j++) {
-                            $(".province").append(new Option(arrayTerritory[h].province[j].nome));
-                            for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
-                                $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
-                                $("#birthPlace").append(new Option(arrayTerritory[h].province[j].comuni[o]));
-                            }
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/territorio",
+        dataType: "json",
+        success: function (data) {
+            $.each(data, function (i, value) {
+                arrayTerritory.push(Object.assign({}, value))
+                arrayTerritory = arrayTerritory[0];
+                for (let h = 0; h < 20; h++) {
+                    $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
+                    for (let j = 0; j < arrayTerritory[h].province.length; j++) {
+                        $(".province").append(new Option(arrayTerritory[h].province[j].nome));
+                        for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
+                            $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                            $("#birthPlace").append(new Option(arrayTerritory[h].province[j].comuni[o]));
                         }
                     }
-                });
-            }
-        })
-        /*FILTRO REGIONI*/
-    $(document).on("change", ".regioni", function() {
+                }
+            });
+        }
+    })
+    /*FILTRO REGIONI*/
+    $(document).on("change", ".regioni", function () {
         $(".province").empty();
         $(".comuni").empty();
         $(".province").append(new Option("Seleziona provincia"));
@@ -101,46 +101,46 @@ $(function() {
         }
     })
     $(document).on("click")
-        /*FILTRO PROVINCE*/
-    $(document).on("change", ".province", function() {
-            $(".comuni").empty();
-            $(".comuni").append(new Option("Seleziona comune"));
-            var selectedProvince = $(".province").val();
-            for (var i = 0; i < 20; i++) {
-                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
-                    if (arrayTerritory[i].province[j].nome == selectedProvince) {
-                        $(".regioni").val(arrayTerritory[i].nome);
-                        for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                            $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                        }
-                    }
-                }
-            }
-        })
-        /*FILTRO COMUNI*/
-    $(document).on("change", ".comuni", function() {
-            var selectedDistrict = $(".comuni").val();
-            for (var i = 0; i < 20; i++) {
-                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+    /*FILTRO PROVINCE*/
+    $(document).on("change", ".province", function () {
+        $(".comuni").empty();
+        $(".comuni").append(new Option("Seleziona comune"));
+        var selectedProvince = $(".province").val();
+        for (var i = 0; i < 20; i++) {
+            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                if (arrayTerritory[i].province[j].nome == selectedProvince) {
+                    $(".regioni").val(arrayTerritory[i].nome);
                     for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                        if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
-                            $(".regioni").val(arrayTerritory[i].nome);
-                            $(".province").val(arrayTerritory[i].province[j].nome);
-                            $(".comuni").val(selectedDistrict);
-                        }
+                        $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
                     }
                 }
             }
-        })
-        /*CERCA*/
-    $(document).on("keyup", "#search", function() {
+        }
+    })
+    /*FILTRO COMUNI*/
+    $(document).on("change", ".comuni", function () {
+        var selectedDistrict = $(".comuni").val();
+        for (var i = 0; i < 20; i++) {
+            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                    if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+                        $(".regioni").val(arrayTerritory[i].nome);
+                        $(".province").val(arrayTerritory[i].province[j].nome);
+                        $(".comuni").val(selectedDistrict);
+                    }
+                }
+            }
+        }
+    })
+    /*CERCA*/
+    $(document).on("keyup", "#search", function () {
         cercaList.length = 0;
         AggiornaTabella();
         var i = 0;
         var val = $(this).val();
         if (val) {
             val = val.toLowerCase();
-            $.each(persone, function(_, obj) {
+            $.each(persone, function (_, obj) {
                 // console.log(val,obj.name.toLowerCase().indexOf(val),obj)
                 let lunghezzaResidenze = obj.matrimoni.length;
                 if (obj.nome.toLowerCase().indexOf(val) != -1 || obj.cognome.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].regione.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].provincia.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].comune.toLowerCase().indexOf(val) != -1 || obj.anno_nascita.toString().indexOf(val) > -1) {
@@ -176,12 +176,11 @@ $(function() {
         if (array.matrimoni.length < (numShow * indicePartenza)) arrivo = array.matrimoni.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            let arrayData = array.matrimoni[i].anno.split("-")[2] + "-" +  array.matrimoni[i].anno.split("-")[1] + "-" + array.matrimoni[i].anno.split("-")[0];
-            $("#persone").append("<tr><td>" + array.matrimoni[i].nome_coniuge + "</td><td>" + array.matrimoni[i].cognome_coniuge + "</td><td>" + arrayData + "</td><td>" + array.matrimoni[i].comune + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
+            $("#persone").append("<tr><td>" + array.matrimoni[i].nome_coniuge + "</td><td>" + array.matrimoni[i].cognome_coniuge + "</td><td>" + array.matrimoni[i].anno + "</td><td>" + array.matrimoni[i].comune + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + (i + 1) + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + (i + 1) + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
         }
     }
-    $(document).on("click", ".btnNuovoMatrimonio", function() {
-        dt = '{"nome_coniuge":"' + $('#nomeNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#cognomeNuovoConiuge').val().toString() + '","anno":"' + $('#dataNuovoMatrimonio').val().toString() + '","comune":"' + $('#comuneNuovoMatrimonio').val().toString()+ '"}';
+    $(document).on("click", ".btnNuovoMatrimonio", function () {
+        dt = '{"nome_coniuge":"' + $('#nomeNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#cognomeNuovoConiuge').val().toString() + '","anno":"' + $('#dataNuovoMatrimonio').val().toString() + '","comune":"' + $('#comuneNuovoMatrimonio').val().toString() + '"}';
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -191,8 +190,8 @@ $(function() {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/" + localStorage.getItem("idprova") + "/matrimonio/",
             dataType: "json",
-            success: function(data) {},
-            error: function(xhr, status, error) {
+            success: function (data) { },
+            error: function (xhr, status, error) {
                 $('#btnNuovoMatrimonio').modal('toggle');
                 document.getElementById("loading_screen").style.display = 'block';
                 AggiornaTabella();
@@ -202,8 +201,8 @@ $(function() {
                     contentType: "application/json",
                     url: "https://late-frost-5190.getsandbox.com/anagrafiche",
                     dataType: "json",
-                    success: function(data) {
-                        $.each(data, function(i, value) {
+                    success: function (data) {
+                        $.each(data, function (i, value) {
                             persone.push(Object.assign({}, value))
                         });
                         for (let i = 0; i < persone.length; i++) {
@@ -220,7 +219,7 @@ $(function() {
         })
     });
     /*AGGIUNTA RESIDENZA*/
-    $(document).on("click", ".btnAggiungiResidenza", function() {
+    $(document).on("click", ".btnAggiungiResidenza", function () {
         dt = '{"regione":"' + $('#regioneNuovaRes').val().toString() + '","provincia":"' + $('#provinciaNuovaRes').val().toString() + '","comune":"' + $('#comuneNuovaRes').val().toString() + '","indirizzo":"' + $('#indirizzoNuovaRes').val().toString() + '","anno_residenza":"' + $('#dataNuovaRes').val().toString() + '"}';
         $.ajax({
             type: "POST",
@@ -231,8 +230,8 @@ $(function() {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/" + localStorage.getItem("idprova") + "/residenza/",
             dataType: "json",
-            success: function(data) {},
-            error: function(xhr, status, error) {
+            success: function (data) { },
+            error: function (xhr, status, error) {
                 $('#modalNuovaResidenza').modal('toggle');
                 document.getElementById("loading_screen").style.display = 'block';
                 AggiornaTabella();
@@ -242,8 +241,8 @@ $(function() {
                     contentType: "application/json",
                     url: "https://late-frost-5190.getsandbox.com/anagrafiche",
                     dataType: "json",
-                    success: function(data) {
-                        $.each(data, function(i, value) {
+                    success: function (data) {
+                        $.each(data, function (i, value) {
                             persone.push(Object.assign({}, value))
                         });
                         for (let i = 0; i < persone.length; i++) {
@@ -260,7 +259,7 @@ $(function() {
         })
     });
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
-    $("#shownumber").change(function() {
+    $("#shownumber").change(function () {
         CalcPag(persone);
     });
     /*COMPARA*/
@@ -274,25 +273,19 @@ $(function() {
         return comparison;
     }
     /*EDIT*/
-    $(document).on("click", ".edit", function() {
-        idedit = $(this).attr("id");
-        for (let i = 0; i < persone.length; i++) {
-            if (persone[i].id == idedit) {
-                var trovato = persone[i];
-                break;
-            }
-        }
-        $("#nomemod").val(trovato.nome);
-        $("#cognomemod").val(trovato.cognome);
-        let lunghezzaResidenze = trovato.luoghi_residenza.length;
-        $("#comunemod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].comune);
-        $("#provinciamod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].provincia);
-        $("#regionemod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].regione);
-        $("#annomod").val(trovato.anno_nascita);
-        $("#viamod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].indirizzo);
+    var idriga;
+    var idPERSONALE;
+    $(document).on("click", ".edit", function () {
+        idriga = $(this).attr("id");
+        idPERSONALE = localStorage.getItem("idprova");
+
+        $("#editNuovoConiuge").val(persone.matrimoni[idriga - 1].nome_coniuge);
+        $("#editcognomeNuovoConiuge").val(persone.matrimoni[idriga - 1].cognome_coniuge);
+        $("#editdataNuovoMatrimonio").val(persone.matrimoni[idriga - 1].anno);
+        $("#editcomuneNuovoMatrimonio").val(persone.matrimoni[idriga - 1].comune);
     });
-    $(document).on("click", ".inviaModifica", function() {
-        dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '","indirizzo":"' + $('#viamod').val().toString() + '"}';
+    $(document).on("click", ".inviaModifica", function () {
+        dt = '{"nome_coniuge":"' + $('#editNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#editcognomeNuovoConiuge').val().toString() + '","anno":"' + $('#editdataNuovoMatrimonio').val().toString() + '","comune":"' + $('#editcomuneNuovoMatrimonio').val().toString() + '"}';
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -300,21 +293,9 @@ $(function() {
             /* Per poter aggiungere una entry bisogna prima autenticarsi. */
             contentType: "application/json",
             crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza/",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idPERSONALE + "/matrimonio/" + idriga + "/",
             dataType: "json",
-            success: function(data) {},
-        });
-        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
-        $.ajax({
-            type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
-            data: dt,
-            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
-            contentType: "application/json",
-            crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
-            dataType: "json",
-            success: function(data) {},
+            success: function (data) { },
         });
         $('#exampleModalEdit').modal('toggle');
         document.getElementById("loading_screen").style.display = 'block';
@@ -325,42 +306,47 @@ $(function() {
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche",
             dataType: "json",
-            success: function(data) {
-                $.each(data, function(i, value) {
+            success: function (data) {
+                $.each(data, function (i, value) {
                     persone.push(Object.assign({}, value))
-                    document.getElementById("loading_screen").style.display = 'none';
                 });
+                for (let i = 0; i < persone.length; i++) {
+                    if (persone[i].id == localStorage.getItem("idprova")) {
+                        persone = persone[i];
+                        i = persone.length;
+                    }
+                }
                 CalcPag(persone);
+                document.getElementById("loading_screen").style.display = 'none';
             }
         });
     });
 
     /*DELETE*/
-    $(document).on("click", ".delete", function() {
-        selectedID = $(this).attr("id");
+    $(document).on("click", ".delete", function () {
+        idriga = $(this).attr("id");
+        idPERSONALE = localStorage.getItem("idprova");
     });
-    $(document).on("click", ".btnElimina", function() {
+    $(document).on("click", ".btnElimina", function () {
         $.ajax({
             type: "DELETE",
             headers: { "Access-Control-Allow-Origin": "*" },
             /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
             contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + selectedID + "/",
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + idPERSONALE + "/matrimonio/"+idriga +"/",
             dataType: "json",
-        }).then(function(data) {
-            $(".bottoni .delete").each(function() {
-                if ($(this).attr("id") == selectedID) $(this).parent().parent().remove();
+        }).then(function (data) {
+            $(".bottoni .delete").each(function () {
+                if ($(this).attr("id") == idriga) $(this).parent().parent().remove();
             });
-        }, function(jqXHR, textStatus, errorThrown) {
-            let x = 0;
-            alert(jqXHR.responseText);
+        }, function (jqXHR, textStatus, errorThrown) {
+            $(".bottoni .delete").each(function () {
+                if ($(this).attr("id") == idriga) $(this).parent().parent().remove();
+            });
         })
     });
-    $(document).on("click", ".decesso", function() {
-
-        })
-        /*ORDINA*/
-    $(document).on("click", ".order", function() {
+    /*ORDINA*/
+    $(document).on("click", ".order", function () {
         var temp = new Array();
         var f = $(this).attr("id");
         switch (f) {
@@ -513,19 +499,19 @@ $(function() {
         }
     });
     /*CLICK PRECEDENTE*/
-    $(document).on("click", "#previous", function() {
+    $(document).on("click", "#previous", function () {
         if (posizioneCorrente == 1) posizioneCorrente++;
         posizioneCorrente--;
         StampaTabella(posizioneCorrente, $("#shownumber").val(), persone);
     });
     /*CLICK SUCCESSIVO*/
-    $(document).on("click", "#next", function() {
+    $(document).on("click", "#next", function () {
         if (posizioneCorrente == numeropagine) posizioneCorrente--;
         posizioneCorrente++;
         StampaTabella(posizioneCorrente, $("#shownumber").val(), persone);
     });
     /*CLICK NUMERO PAGINA*/
-    $(document).on("click", ".numeri>.page-link", function() {
+    $(document).on("click", ".numeri>.page-link", function () {
         var testo = $(this).text();
         posizioneCorrente = testo;
         StampaTabella(testo, $("#shownumber").val(), persone);
@@ -543,8 +529,8 @@ $(function() {
     });
 
     // Play initial animations on page load.
-    $window.on('load', function() {
-        window.setTimeout(function() {
+    $window.on('load', function () {
+        window.setTimeout(function () {
             $body.removeClass('is-preload');
         }, 100);
     });
@@ -560,20 +546,20 @@ $(function() {
 
     // Title Bar.
     $(
-            '<div id="titleBar">' +
-            '<a href="#navPanel" class="toggle"></a>' +
-            '</div>'
-        )
+        '<div id="titleBar">' +
+        '<a href="#navPanel" class="toggle"></a>' +
+        '</div>'
+    )
         .appendTo($body);
 
     // Panel.
     $(
-            '<div id="navPanel">' +
-            '<nav>' +
-            $('#nav').navList() +
-            '</nav>' +
-            '</div>'
-        )
+        '<div id="navPanel">' +
+        '<nav>' +
+        $('#nav').navList() +
+        '</nav>' +
+        '</div>'
+    )
         .appendTo($body)
         .panel({
             delay: 500,
