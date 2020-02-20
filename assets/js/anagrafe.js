@@ -346,9 +346,7 @@ function downloadDataPie() {
             for (var reg in regioni) {
                 var regione = regioni[reg];
                 var i = 0;
-                for (var persona in persone)
-                    if (persone[persona].data_morte == undefined)
-                        if (persone[persona].luoghi_residenza[0].regione == regione) i++;
+                for (var persona in persone) if (persone[persona].data_morte == undefined && persone[persona].luoghi_residenza[0].regione == regione) i++;
                 datiPie.push(i);
                 datiBar.push(i);
             }
@@ -367,17 +365,31 @@ function downloadDataBar() {
     //controlal se è stato selezionato anno e regione 
     if (annoSelected != 0 && regSelected != "" && provSelected == "") {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var residenza;
         //scorre tutte le persone
         for (var persona in persone) {
-            if (persone[persona].data_morte != "") {
-                //scorre tutte le residenze della persona
-                for (var residenza in persone[persona].luoghi_residenza) {
+            if (persone[persona].data_morte == undefined) {
+                if (persone[persona].luoghi_residenza.length > 1) {
+                    //scorre tutte le residenze della persona
+                    for (residenza in persone[persona].luoghi_residenza) {
+                        if (persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected && persone[persona].luoghi_residenza[residenza].regione == regSelected) {
+                            for (var i = 0; i < 12; i++) datiBar[i]++;
+                            break;
+                        }
+                        if (persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && persone[persona].luoghi_residenza[residenza].regione == regSelected) {
+                            var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
+                            addDataBar(mese);
+                            break;
+                        }
+                    }
+                }
+                else {
                     //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
-                    if (persone[persona].luoghi_residenza[residenza].regione == regSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected)
+                    if (persone[persona].luoghi_residenza[0].regione == regSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] < annoSelected)
                         for (var i = 0; i < 12; i++) datiBar[i]++;
                     //se l'anno è uguale a quello selezionato aggiunge fino al mese selezionato
-                    if (persone[persona].luoghi_residenza[residenza].regione == regSelected && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected) {
-                        var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
+                    if (persone[persona].luoghi_residenza[0].regione == regSelected && persone[persona].luoghi_residenza[0].anno.split("-")[0] == annoSelected) {
+                        var mese = persone[persona].luoghi_residenza[0].anno.split("-")[1];
                         addDataBar(mese);
                     }
                 }
@@ -389,7 +401,7 @@ function downloadDataBar() {
     else if (annoSelected != 0 && provSelected != "" && comSelected == "") {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         for (var persona in persone) {
-            if (persone[persona].data_morte != "") {
+            if (persone[persona].data_morte != undefined) {
                 //scorre tutte le residenze della persona
                 for (var residenza in persone[persona].luoghi_residenza) {
                     //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
@@ -410,7 +422,7 @@ function downloadDataBar() {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         //scorre tutte le persone
         for (var persona in persone) {
-            if (persone[persona].data_morte != "") {
+            if (persone[persona].data_morte != undefined) {
                 //scorre tutte le residenze della persona
                 for (var residenza in persone[persona].luoghi_residenza) {
                     //se l'anno è minore di quello selezionato aggiunge persona a tutti i mesi dell'anno
