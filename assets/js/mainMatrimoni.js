@@ -47,6 +47,7 @@ $(function() {
         dataType: "json",
         success: function(data) {
             $.each(data, function(i, value) {
+                if(value.matrimoni.length != 0 )
                 persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
@@ -169,8 +170,8 @@ $(function() {
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
             let arrayData = array[i].anno_nascita.split("-")[2] + "-" +  array[i].anno_nascita.split("-")[1] + "-" +  array[i].anno_nascita.split("-")[0];
-            let lunghezzaResidenze = array[i].luoghi_residenza.length;
-            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].indirizzo + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
+            let lunghezzaMatrimoni = array[i].matrimoni.length;
+            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].nome_coniuge + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].cognome_coniuge + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].anno + "</td><td>" + "CIAO" + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\" id=\"" + array[i].id + "\"></i></a></td></tr>");
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
