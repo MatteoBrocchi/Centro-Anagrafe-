@@ -143,7 +143,7 @@ $(function () {
             $.each(persone, function (_, obj) {
                 // console.log(val,obj.name.toLowerCase().indexOf(val),obj)
                 let lunghezzaResidenze = obj.matrimoni.length;
-                if (obj.nome.toLowerCase().indexOf(val) != -1 || obj.cognome.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].regione.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].provincia.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].comune.toLowerCase().indexOf(val) != -1 || obj.anno_nascita.toString().indexOf(val) > -1) {
+                if (obj.codice.toLowerCase().indexOf(val) != -1) {
                     cercaList[i] = obj;
                     i++;
                 }
@@ -180,7 +180,7 @@ $(function () {
         }
     }
     $(document).on("click", ".btnNuovoMatrimonio", function () {
-        dt = '{"nome_coniuge":"' + $('#nomeNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#cognomeNuovoConiuge').val().toString() + '","anno":"' + $('#dataNuovoMatrimonio').val().toString() + '","comune":"' + $('#comuneNuovoMatrimonio').val().toString() + $('#editcodicecarta').val().toString() + '"}';
+        dt = '{"nome_coniuge":"' + $('#nomeNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#cognomeNuovoConiuge').val().toString() + '","anno":"' + $('#dataNuovoMatrimonio').val().toString() + '","comune":"' + $('#comuneNuovoMatrimonio').val().toString() +'","codice":"'+ $('#editcodicecarta').val().toString() + '"}';
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -218,46 +218,7 @@ $(function () {
             }
         })
     });
-    /*AGGIUNTA RESIDENZA*/
-    $(document).on("click", ".btnAggiungiResidenza", function () {
-        dt = '{"regione":"' + $('#regioneNuovaRes').val().toString() + '","provincia":"' + $('#provinciaNuovaRes').val().toString() + '","comune":"' + $('#comuneNuovaRes').val().toString() + '","indirizzo":"' + $('#indirizzoNuovaRes').val().toString() + '","anno_residenza":"' + $('#dataNuovaRes').val().toString() + '"}';
-        $.ajax({
-            type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
-            data: dt,
-            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
-            contentType: "application/json",
-            crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/" + localStorage.getItem("idprova") + "/residenza/",
-            dataType: "json",
-            success: function (data) { },
-            error: function (xhr, status, error) {
-                $('#modalNuovaResidenza').modal('toggle');
-                document.getElementById("loading_screen").style.display = 'block';
-                AggiornaTabella();
-                persone = [];
-                $.ajax({
-                    type: "GET",
-                    contentType: "application/json",
-                    url: "https://late-frost-5190.getsandbox.com/anagrafiche",
-                    dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (i, value) {
-                            persone.push(Object.assign({}, value))
-                        });
-                        for (let i = 0; i < persone.length; i++) {
-                            if (persone[i].id == localStorage.getItem("idprova")) {
-                                persone = persone[i];
-                                i = persone.length;
-                            }
-                        }
-                        CalcPag(persone);
-                        document.getElementById("loading_screen").style.display = 'none';
-                    }
-                });
-            }
-        })
-    });
+   
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
     $("#shownumber").change(function () {
         CalcPag(persone);

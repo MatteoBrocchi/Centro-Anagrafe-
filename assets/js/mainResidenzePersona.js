@@ -276,9 +276,9 @@ $(function () {
                     persone.push(Object.assign({}, value))
                 });
                 for (let i = 0; i < persone.length; i++) {
-                    if (persone[i].id == localStorage.getItem("idprova")) {
-                        persone = persone[i];
-                        i = persone.length;
+                    if (obj.codice.toLowerCase().indexOf(val) != -1) {
+                        cercaList[i] = obj;
+                        i++;
                     }
                 }
                 CalcPag(persone);
