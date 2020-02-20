@@ -176,7 +176,8 @@ $(function() {
         if (array.luoghi_residenza.length < (numShow * indicePartenza)) arrivo = array.luoghi_residenza.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            $("#persone").append("<tr><td>" + array.luoghi_residenza[i].regione + "</td><td>" + array.luoghi_residenza[i].provincia + "</td><td>" + array.luoghi_residenza[i].comune + "</td><td>" + array.luoghi_residenza[i].indirizzo + "</td><td>" + array.luoghi_residenza[i].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
+            let arrayData = array.luoghi_residenza[i].anno.split("-")[2] + "-" +  array.luoghi_residenza[i].anno.split("-")[1] + "-" + array.luoghi_residenza[i].anno.split("-")[0];
+            $("#persone").append("<tr><td>" + array.luoghi_residenza[i].regione + "</td><td>" + array.luoghi_residenza[i].provincia + "</td><td>" + array.luoghi_residenza[i].comune + "</td><td>" + array.luoghi_residenza[i].indirizzo + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
         }
     }
 

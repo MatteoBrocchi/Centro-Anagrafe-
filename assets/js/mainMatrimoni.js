@@ -1,8 +1,3 @@
-/*
-	Dopetrope by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
 $(function() {
     var posizioneCorrente = 1;
     var numeropagine;
@@ -169,9 +164,8 @@ $(function() {
         if (array.length < (numShow * indicePartenza)) arrivo = array.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            let arrayData = array[i].anno_nascita.split("-")[2] + "-" +  array[i].anno_nascita.split("-")[1] + "-" +  array[i].anno_nascita.split("-")[0];
-            let lunghezzaMatrimoni = array[i].matrimoni.length;
-            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].matrimoni[0].nome_coniuge + "</td><td>" + array[i].matrimoni[0].cognome_coniuge + "</td><td>" + array[i].matrimoni[0].anno + "</td><td>" + array[i].matrimoni[0].comune + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\" id=\"" + array[i].id + "\"></i></a></td></tr>");
+            let arrayData = array[i].matrimoni[0].anno.split("-")[2] + "-" +  array[i].matrimoni[0].anno.split("-")[1] + "-" + array[i].matrimoni[0].anno.split("-")[0];
+            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].matrimoni[0].nome_coniuge + "</td><td>" + array[i].matrimoni[0].cognome_coniuge + "</td><td>" + arrayData + "</td><td>" + array[i].matrimoni[0].comune + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\" id=\"" + array[i].id + "\"></i></a></td></tr>");
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
