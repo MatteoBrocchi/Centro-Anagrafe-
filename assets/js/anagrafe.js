@@ -205,12 +205,22 @@ function downloadDataBar() {
                     //scorre tutte le residenze della persona
                     for (residenza in persone[persona].luoghi_residenza) {
                         if (persone[persona].luoghi_residenza[residenza].anno.split("-")[0] < annoSelected && persone[persona].luoghi_residenza[residenza].regione == regSelected) {
-                            for (var i = 0; i < 12; i++) datiBar[i]++;
-                            break;
+                            if (persone[persona].luoghi_residenza[parseInt(residenza) - 1] != undefined && annoSelected < persone[persona].luoghi_residenza[residenza - 1].anno.split("-")[0]) {
+                                for (var i = 0; i < 12; i++) datiBar[i]++;
+                                break;
+                            } else if (residenza == 0) {
+                                for (var i = 0; i < 12; i++) datiBar[i]++;
+                                break;
+                            }
                         }
                         if (persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && persone[persona].luoghi_residenza[residenza].regione == regSelected) {
                             var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
                             addDataBar(mese);
+                            break;
+                        }
+                        if (persone[persona].luoghi_residenza[1 + parseInt(residenza)] != undefined && persone[persona].luoghi_residenza[residenza].anno.split("-")[0] == annoSelected && persone[persona].luoghi_residenza[residenza].regione != regSelected && persone[persona].luoghi_residenza[parseInt(residenza) + 1].regione == regSelected) {
+                            var mese = persone[persona].luoghi_residenza[residenza].anno.split("-")[1];
+                            removeDataBar(mese);
                             break;
                         }
                     }
@@ -371,6 +381,58 @@ function addDataBarResidenza(mese) {
             break;
         case "12":
             for (var i = 0; i < 11; i++)
+                datiBar[i]++;
+            break;
+    }
+}
+
+function removeDataBar(mese) {
+    switch (mese) {
+        case "01":
+            datiBar[0]++;
+            break;
+        case "02":
+            for (var i = 0; i < 2; i++)
+                datiBar[i]++;
+            break;
+        case "03":
+            for (var i = 0; i < 3; i++)
+                datiBar[i]++;
+            break;
+        case "04":
+            for (var i = 0; i < 4; i++)
+                datiBar[i]++;
+            break;
+        case "05":
+            for (var i = 0; i < 5; i++)
+                datiBar[i]++;
+            break;
+        case "06":
+            for (var i = 0; i < 6; i++)
+                datiBar[i]++;
+            break;
+        case "07":
+            for (var i = 0; i < 7; i++)
+                datiBar[i]++;
+            break;
+        case "08":
+            for (var i = 0; i < 8; i++)
+                datiBar[i]++;
+            break;
+        case "09":
+            for (var i = 0; i < 9; i++)
+                datiBar[i]++;
+            break;
+        case "10":
+            for (var i = 0; i < 10; i++)
+                datiBar[i]++;
+            break;
+        case "11":
+            for (var i = 0; i < 11; i++)
+                datiBar[i]++;
+            break;
+        case "12":
+            for (var i = 0; i < 12; i++)
                 datiBar[i]++;
             break;
     }
