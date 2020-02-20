@@ -171,7 +171,7 @@ $(function() {
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
             let arrayData = array[i].anno_nascita.split("-")[2] + "-" +  array[i].anno_nascita.split("-")[1] + "-" +  array[i].anno_nascita.split("-")[0];
             let lunghezzaMatrimoni = array[i].matrimoni.length;
-            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].nome_coniuge + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].cognome_coniuge + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].anno + "</td><td>" + "CIAO" + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\" id=\"" + array[i].id + "\"></i></a></td></tr>");
+            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].nome_coniuge + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].cognome_coniuge + "</td><td>" + array[i].matrimoni[lunghezzaMatrimoni-1].anno + "</td><td>" + "CIAO" + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\" id=\"" + array[i].id + "\"></i></a></td></tr>");
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
@@ -273,9 +273,9 @@ $(document).on("click", ".inviaModifica", function() {
             alert(jqXHR.responseText);
         })
     });
-    $(document).on("click", ".decesso", function() {
-
-        })
+    $(document).on("click", ".wedding", function () {
+        localStorage.setItem("idprova", $(this).attr("id"))
+    });
         /*ORDINA*/
     $(document).on("click", ".order", function() {
         var temp = new Array();
