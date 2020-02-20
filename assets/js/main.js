@@ -2,9 +2,9 @@
 	Dopetrope by HTML5 UP
 	html5up.net | @ajlkn
     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-    
+
 */
-$(function () {
+$(function() {
     var posizioneCorrente = 1;
     var numeropagine;
     var persone = new Array();
@@ -19,9 +19,9 @@ $(function () {
         provinciaorder = false,
         comuneorder = false,
         annoorder = false;
-    var siteScroll = function () {
+    var siteScroll = function() {
         var title = false;
-        $(window).scroll(function () {
+        $(window).scroll(function() {
 
             var st = $(this).scrollTop();
 
@@ -46,8 +46,8 @@ $(function () {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
-        success: function (data) {
-            $.each(data, function (i, value) {
+        success: function(data) {
+            $.each(data, function(i, value) {
                 persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
@@ -55,137 +55,137 @@ $(function () {
         }
     });
     $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "https://late-frost-5190.getsandbox.com/territorio",
-        dataType: "json",
-        success: function (data) {
-            $.each(data, function (i, value) {
-                arrayTerritory.push(Object.assign({}, value))
-                arrayTerritory = arrayTerritory[0];
-                for (let h = 0; h < 20; h++) {
-                    $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
-                    $("#regionemod").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
-                    for (let j = 0; j < arrayTerritory[h].province.length; j++) {
-                        $(".province").append(new Option(arrayTerritory[h].province[j].nome));
-                        $("#provinciamod").append(new Option(arrayTerritory[h].province[j].nome));
-                        for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
-                            $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
-                            $("#comunemod").append(new Option(arrayTerritory[h].province[j].comuni[o]));
-                            $("#birthPlace").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+            type: "GET",
+            contentType: "application/json",
+            url: "https://late-frost-5190.getsandbox.com/territorio",
+            dataType: "json",
+            success: function(data) {
+                $.each(data, function(i, value) {
+                    arrayTerritory.push(Object.assign({}, value))
+                    arrayTerritory = arrayTerritory[0];
+                    for (let h = 0; h < 20; h++) {
+                        $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
+                        $("#regionemod").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
+                        for (let j = 0; j < arrayTerritory[h].province.length; j++) {
+                            $(".province").append(new Option(arrayTerritory[h].province[j].nome));
+                            $("#provinciamod").append(new Option(arrayTerritory[h].province[j].nome));
+                            for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
+                                $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                                $("#comunemod").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                                $("#birthPlace").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                            }
+                        }
+                    }
+                });
+            }
+        })
+        /*FILTRO REGIONI*/
+    $(document).on("change", ".regioni", function() {
+            $(".province").empty();
+            $(".comuni").empty();
+            $(".province").append(new Option("Seleziona provincia"));
+            $(".comuni").append(new Option("Seleziona comune"));
+            var selectedRegion = $(".regioni").val();
+            for (var i = 0; i < 20; i++) {
+                if (arrayTerritory[i].nome == selectedRegion) {
+                    for (let j = 0; j < arrayTerritory[i].province.length; j++) {
+                        $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
+                        for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                            $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
                         }
                     }
                 }
-            });
-        }
-    })
-    /*FILTRO REGIONI*/
-    $(document).on("change", ".regioni", function () {
-        $(".province").empty();
-        $(".comuni").empty();
-        $(".province").append(new Option("Seleziona provincia"));
-        $(".comuni").append(new Option("Seleziona comune"));
-        var selectedRegion = $(".regioni").val();
-        for (var i = 0; i < 20; i++) {
-            if (arrayTerritory[i].nome == selectedRegion) {
-                for (let j = 0; j < arrayTerritory[i].province.length; j++) {
-                    $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
-                    for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                        $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                    }
-                }
             }
-        }
-    })
-    /*FILTRO PROVINCE*/
-    $(document).on("change", ".province", function () {
-        $(".comuni").empty();
-        $(".comuni").append(new Option("Seleziona comune"));
-        var selectedProvince = $(".province").val();
-        for (var i = 0; i < 20; i++) {
-            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
-                if (arrayTerritory[i].province[j].nome == selectedProvince) {
-                    $(".regioni").val(arrayTerritory[i].nome);
-                    for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                        $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                    }
-                }
-            }
-        }
-    })
-    /*FILTRO COMUNI*/
-    $(document).on("change", ".comuni", function () {
-        var selectedDistrict = $(".comuni").val();
-        for (var i = 0; i < 20; i++) {
-            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
-                for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                    if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+        })
+        /*FILTRO PROVINCE*/
+    $(document).on("change", ".province", function() {
+            $(".comuni").empty();
+            $(".comuni").append(new Option("Seleziona comune"));
+            var selectedProvince = $(".province").val();
+            for (var i = 0; i < 20; i++) {
+                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                    if (arrayTerritory[i].province[j].nome == selectedProvince) {
                         $(".regioni").val(arrayTerritory[i].nome);
-                        $(".province").val(arrayTerritory[i].province[j].nome);
-                        $(".comuni").val(selectedDistrict);
+                        for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                            $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
+                        }
                     }
                 }
             }
-        }
-    })
-    /*FILTRO REGIONI*/
-    $(document).on("change", "#regionemod", function () {
-        $("#provinciamod").empty();
-        $("#comunemod").empty();
-        $("#provinicamod").append(new Option("Seleziona provincia"));
-        $("#comunemod").append(new Option("Seleziona comune"));
-        var selectedRegion = $("#regionemod").val();
-        for (var i = 0; i < 20; i++) {
-            if (arrayTerritory[i].nome == selectedRegion) {
-                for (let j = 0; j < arrayTerritory[i].province.length; j++) {
-                    $("#provinciamod").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
-                    for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                        $("#comunemod").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
-                    }
-                }
-            }
-        }
-    })
-    /*FILTRO PROVINCE*/
-    $(document).on("change", "#provinciamod", function () {
-        $("#comunemod").empty();
-        $("#comunemod").append(new Option("Seleziona comune"));
-        var selectedProvince = $("#provinciamod").val();
-        for (var i = 0; i < 20; i++) {
-            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
-                if (arrayTerritory[i].province[j].nome == selectedProvince) {
-                    $("#regionemod").val(arrayTerritory[i].nome);
+        })
+        /*FILTRO COMUNI*/
+    $(document).on("change", ".comuni", function() {
+            var selectedDistrict = $(".comuni").val();
+            for (var i = 0; i < 20; i++) {
+                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
                     for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                        $("#comunemod").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
+                        if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+                            $(".regioni").val(arrayTerritory[i].nome);
+                            $(".province").val(arrayTerritory[i].province[j].nome);
+                            $(".comuni").val(selectedDistrict);
+                        }
                     }
                 }
             }
-        }
-    })
-    /*FILTRO COMUNI*/
-    $(document).on("change", "#comunemod", function () {
-        var selectedDistrict = $("#comunemod").val();
-        for (var i = 0; i < 20; i++) {
-            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
-                for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                    if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+        })
+        /*FILTRO REGIONI*/
+    $(document).on("change", "#regionemod", function() {
+            $("#provinciamod").empty();
+            $("#comunemod").empty();
+            $("#provinicamod").append(new Option("Seleziona provincia"));
+            $("#comunemod").append(new Option("Seleziona comune"));
+            var selectedRegion = $("#regionemod").val();
+            for (var i = 0; i < 20; i++) {
+                if (arrayTerritory[i].nome == selectedRegion) {
+                    for (let j = 0; j < arrayTerritory[i].province.length; j++) {
+                        $("#provinciamod").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
+                        for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                            $("#comunemod").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
+                        }
+                    }
+                }
+            }
+        })
+        /*FILTRO PROVINCE*/
+    $(document).on("change", "#provinciamod", function() {
+            $("#comunemod").empty();
+            $("#comunemod").append(new Option("Seleziona comune"));
+            var selectedProvince = $("#provinciamod").val();
+            for (var i = 0; i < 20; i++) {
+                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                    if (arrayTerritory[i].province[j].nome == selectedProvince) {
                         $("#regionemod").val(arrayTerritory[i].nome);
-                        $("#provinciamod").val(arrayTerritory[i].province[j].nome);
-                        $("#comunemod").val(selectedDistrict);
+                        for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                            $("#comunemod").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
+                        }
                     }
                 }
             }
-        }
-    })
-    /*CERCA*/
-    $(document).on("keyup", "#search", function () {
+        })
+        /*FILTRO COMUNI*/
+    $(document).on("change", "#comunemod", function() {
+            var selectedDistrict = $("#comunemod").val();
+            for (var i = 0; i < 20; i++) {
+                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                    for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                        if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+                            $("#regionemod").val(arrayTerritory[i].nome);
+                            $("#provinciamod").val(arrayTerritory[i].province[j].nome);
+                            $("#comunemod").val(selectedDistrict);
+                        }
+                    }
+                }
+            }
+        })
+        /*CERCA*/
+    $(document).on("keyup", "#search", function() {
         cercaList.length = 0;
         AggiornaTabella();
         var i = 0;
         var val = $(this).val();
         if (val) {
             val = val.toLowerCase();
-            $.each(persone, function (_, obj) {
+            $.each(persone, function(_, obj) {
                 // console.log(val,obj.name.toLowerCase().indexOf(val),obj)
                 let lunghezzaResidenze = obj.luoghi_residenza.length;
                 if (obj.nome.toLowerCase().indexOf(val) != -1 || obj.cognome.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].regione.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].provincia.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].comune.toLowerCase().indexOf(val) != -1 || obj.anno_nascita.toString().indexOf(val) > -1) {
@@ -222,13 +222,13 @@ $(function () {
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
             let arrayData = array[i].anno_nascita.split("-")[2] + "-" + array[i].anno_nascita.split("-")[1] + "-" + array[i].anno_nascita.split("-")[0];
             let lunghezzaResidenze = array[i].luoghi_residenza.length;
-            if (array[i].data_morte == undefined) $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" id=\"" + array[i].id + "\" title=\"Add Matrimonio\"></i></a><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
-            else $("#persone").append("<tr><td style='text-decoration: line-through'>" + array[i].nome + "</td><td style='text-decoration: line-through'>" + array[i].cognome + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td style='text-decoration: line-through'>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\"data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" id=\"" + array[i].id + "\" title=\"Add Matrimonio\"></i></a><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorteConfermata\"></i></td></tr>");
+            if (array[i].data_morte == undefined) $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" id=\"" + array[i].id + "\" title=\"Matrimoni Personali\"></i></a><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
+            else $("#persone").append("<tr><td style='text-decoration: line-through'>" + array[i].nome + "</td><td style='text-decoration: line-through'>" + array[i].cognome + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td style='text-decoration: line-through'>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\"data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" id=\"" + array[i].id + "\" title=\"Matrimoni Personali\"></i></a><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorteConfermata\"></i></td></tr>");
 
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
-    $("#shownumber").change(function () {
+    $("#shownumber").change(function() {
         CalcPag(persone);
     });
     /*COMPARA*/
@@ -242,7 +242,7 @@ $(function () {
         return comparison;
     }
     /*EDIT*/
-    $(document).on("click", ".edit", function () {
+    $(document).on("click", ".edit", function() {
         idedit = $(this).attr("id");
         for (let i = 0; i < persone.length; i++) {
             if (persone[i].id == idedit) {
@@ -261,7 +261,7 @@ $(function () {
         $("#datadocumentomod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].anno);
 
     });
-    $(document).on("click", ".inviaModifica", function () {
+    $(document).on("click", ".inviaModifica", function() {
         dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '","indirizzo":"' + $('#viamod').val().toString() + '","anno":"' + $('#datadocumentomod').val().toString() + '"}';
         $.ajax({
             type: "POST",
@@ -272,7 +272,7 @@ $(function () {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza/",
             dataType: "json",
-            success: function (data) { },
+            success: function(data) {},
         });
         dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
         $.ajax({
@@ -284,7 +284,7 @@ $(function () {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
             dataType: "json",
-            success: function (data) { },
+            success: function(data) {},
         });
         $('#exampleModalEdit').modal('toggle');
         document.getElementById("loading_screen").style.display = 'block';
@@ -296,8 +296,8 @@ $(function () {
             url: "https://late-frost-5190.getsandbox.com/anagrafiche",
             dataType: "json",
             async: false,
-            success: function (data) {
-                $.each(data, function (i, value) {
+            success: function(data) {
+                $.each(data, function(i, value) {
                     persone.push(Object.assign({}, value))
                     document.getElementById("loading_screen").style.display = 'none';
                 });
@@ -306,31 +306,31 @@ $(function () {
         });
     });
     /*ADD PERSONA*/
-    $(document).on("click", ".btnAddID", function () {
-        $('#exampleModalCenter').modal('toggle');
-        document.getElementById("loading_screen").style.display = 'block';
-        AggiornaTabella();
-        persone = [];
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche",
-            dataType: "json",
-            async: false,
-            success: function (data) {
-                $.each(data, function (i, value) {
-                    persone.push(Object.assign({}, value))
-                    document.getElementById("loading_screen").style.display = 'none';
-                });
-                CalcPag(persone);
-            }
-        });
-    })
-    /*DELETE*/
-    $(document).on("click", ".delete", function () {
+    $(document).on("click", ".btnAddID", function() {
+            $('#exampleModalCenter').modal('toggle');
+            document.getElementById("loading_screen").style.display = 'block';
+            AggiornaTabella();
+            persone = [];
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                dataType: "json",
+                async: false,
+                success: function(data) {
+                    $.each(data, function(i, value) {
+                        persone.push(Object.assign({}, value))
+                        document.getElementById("loading_screen").style.display = 'none';
+                    });
+                    CalcPag(persone);
+                }
+            });
+        })
+        /*DELETE*/
+    $(document).on("click", ".delete", function() {
         selectedID = $(this).attr("id");
     });
-    $(document).on("click", ".btnElimina", function () {
+    $(document).on("click", ".btnElimina", function() {
         $.ajax({
             type: "DELETE",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -338,26 +338,26 @@ $(function () {
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + selectedID + "/",
             dataType: "json",
-        }).then(function (data) {
-            $(".bottoni .delete").each(function () {
+        }).then(function(data) {
+            $(".bottoni .delete").each(function() {
                 if ($(this).attr("id") == selectedID) $(this).parent().parent().remove();
             });
-        }, function (jqXHR, textStatus, errorThrown) {
+        }, function(jqXHR, textStatus, errorThrown) {
             let x = 0;
             alert(jqXHR.responseText);
         })
     });
 
     /*DECESSO*/
-    $(document).on("click", ".morte", function () {
+    $(document).on("click", ".morte", function() {
         selectedID = $(this).attr("id");
         selectedEL = $(this);
         $("#morteText").children().remove();
         $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
     });
-    $(document).on("click", ".btnConfirmDeath", function () {
+    $(document).on("click", ".btnConfirmDeath", function() {
         selectedEL.parent().siblings().css("text-decoration", "line-through");
-        $(selectedEL.siblings()).each(function (i) {
+        $(selectedEL.siblings()).each(function(i) {
             if (i != 0) $(this).attr("data-target", "");
         })
         dt = $("#datamorte").val();
@@ -389,15 +389,15 @@ $(function () {
     }
 
     /*ADD RESIDENZA*/
-    $(document).on("click", ".home", function () {
+    $(document).on("click", ".home", function() {
         localStorage.setItem("idprova", $(this).attr("id"))
     });
     /*ADD MATRIMONIO*/
-    $(document).on("click", ".wedding", function () {
+    $(document).on("click", ".wedding", function() {
         localStorage.setItem("idprova", $(this).attr("id"))
     });
     /*ORDINA*/
-    $(document).on("click", ".order", function () {
+    $(document).on("click", ".order", function() {
         var temp = new Array();
         var f = $(this).attr("id");
         switch (f) {
@@ -550,19 +550,19 @@ $(function () {
         }
     });
     /*CLICK PRECEDENTE*/
-    $(document).on("click", "#previous", function () {
+    $(document).on("click", "#previous", function() {
         if (posizioneCorrente == 1) posizioneCorrente++;
         posizioneCorrente--;
         StampaTabella(posizioneCorrente, $("#shownumber").val(), persone);
     });
     /*CLICK SUCCESSIVO*/
-    $(document).on("click", "#next", function () {
+    $(document).on("click", "#next", function() {
         if (posizioneCorrente == numeropagine) posizioneCorrente--;
         posizioneCorrente++;
         StampaTabella(posizioneCorrente, $("#shownumber").val(), persone);
     });
     /*CLICK NUMERO PAGINA*/
-    $(document).on("click", ".numeri>.page-link", function () {
+    $(document).on("click", ".numeri>.page-link", function() {
         var testo = $(this).text();
         posizioneCorrente = testo;
         StampaTabella(testo, $("#shownumber").val(), persone);
@@ -580,8 +580,8 @@ $(function () {
     });
 
     // Play initial animations on page load.
-    $window.on('load', function () {
-        window.setTimeout(function () {
+    $window.on('load', function() {
+        window.setTimeout(function() {
             $body.removeClass('is-preload');
         }, 100);
     });
@@ -597,20 +597,20 @@ $(function () {
 
     // Title Bar.
     $(
-        '<div id="titleBar">' +
-        '<a href="#navPanel" class="toggle"></a>' +
-        '</div>'
-    )
+            '<div id="titleBar">' +
+            '<a href="#navPanel" class="toggle"></a>' +
+            '</div>'
+        )
         .appendTo($body);
 
     // Panel.
     $(
-        '<div id="navPanel">' +
-        '<nav>' +
-        $('#nav').navList() +
-        '</nav>' +
-        '</div>'
-    )
+            '<div id="navPanel">' +
+            '<nav>' +
+            $('#nav').navList() +
+            '</nav>' +
+            '</div>'
+        )
         .appendTo($body)
         .panel({
             delay: 500,
