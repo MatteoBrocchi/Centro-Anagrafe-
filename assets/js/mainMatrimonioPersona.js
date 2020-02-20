@@ -176,8 +176,8 @@ $(function () {
         if (array.matrimoni.length < (numShow * indicePartenza)) arrivo = array.matrimoni.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            $("#persone").append("<tr><td>" + array.matrimoni[i].nome_coniuge + "</td><td>" + array.matrimoni[i].cognome_coniuge + "</td><td>" + array.matrimoni[i].anno + "</td><td>" + array.matrimoni[i].comune + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + (i + 1) + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + (i + 1) + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
-        }
+            let arrayData = array.matrimoni[i].anno.split("-")[2] + "-" +  array.matrimoni[i].anno.split("-")[1] + "-" + array.matrimoni[i].anno.split("-")[0];
+            $("#persone").append("<tr><td>" + array.matrimoni[i].nome_coniuge + "</td><td>" + array.matrimoni[i].cognome_coniuge + "</td><td>" + arrayData + "</td><td>" + array.matrimoni[i].comune + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");        }
     }
     $(document).on("click", ".btnNuovoMatrimonio", function () {
         dt = '{"nome_coniuge":"' + $('#nomeNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#cognomeNuovoConiuge').val().toString() + '","anno":"' + $('#dataNuovoMatrimonio').val().toString() + '","comune":"' + $('#comuneNuovoMatrimonio').val().toString() + $('#editcodicecarta').val().toString() + '"}';
