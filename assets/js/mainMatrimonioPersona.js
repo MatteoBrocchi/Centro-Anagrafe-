@@ -179,7 +179,45 @@ $(function() {
             $("#persone").append("<tr><td>" + array.matrimoni[i].nome_coniuge + "</td><td>" + array.matrimoni[i].cognome_coniuge + "</td><td>" + array.matrimoni[i].anno + "</td><td>" + array.matrimoni[i].comune + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#modalEliminaRes\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array.id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i></td></tr>");
         }
     }
-
+    $(document).on("click", ".btnNuovoMatrimonio", function() {
+        dt = '{"nome_coniuge":"' + $('#nomeNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#cognomeNuovoConiuge').val().toString() + '","anno":"' + $('#dataNuovoMatrimonio').val().toString() + '","comune":"' + $('#comuneNuovoMatrimonio').val().toString()+ '"}';
+        $.ajax({
+            type: "POST",
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: dt,
+            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+            contentType: "application/json",
+            crossDomain: true,
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/" + localStorage.getItem("idprova") + "/matrimonio/",
+            dataType: "json",
+            success: function(data) {},
+            error: function(xhr, status, error) {
+                $('#btnNuovoMatrimonio').modal('toggle');
+                document.getElementById("loading_screen").style.display = 'block';
+                AggiornaTabella();
+                persone = [];
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json",
+                    url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                    dataType: "json",
+                    success: function(data) {
+                        $.each(data, function(i, value) {
+                            persone.push(Object.assign({}, value))
+                        });
+                        for (let i = 0; i < persone.length; i++) {
+                            if (persone[i].id == localStorage.getItem("idprova")) {
+                                persone = persone[i];
+                                i = persone.length;
+                            }
+                        }
+                        CalcPag(persone);
+                        document.getElementById("loading_screen").style.display = 'none';
+                    }
+                });
+            }
+        })
+    });
     /*AGGIUNTA RESIDENZA*/
     $(document).on("click", ".btnAggiungiResidenza", function() {
         dt = '{"regione":"' + $('#regioneNuovaRes').val().toString() + '","provincia":"' + $('#provinciaNuovaRes').val().toString() + '","comune":"' + $('#comuneNuovaRes').val().toString() + '","indirizzo":"' + $('#indirizzoNuovaRes').val().toString() + '","anno_residenza":"' + $('#dataNuovaRes').val().toString() + '"}';
