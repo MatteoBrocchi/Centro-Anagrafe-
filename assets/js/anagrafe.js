@@ -66,7 +66,6 @@ var cartaIdentita = /** @class */ (function () {
     });
     return cartaIdentita;
 }());
-var c = 0;
 var persone = new Array();
 var datiPie = new Array();
 var datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -86,7 +85,6 @@ $(function () {
         dataType: "json",
         success: function (data) {
             $.each(data, function (i, value) {
-                c = value.id + 1;
                 persone.push(Object.assign({}, value));
             }); //Object.assign({}, value)
             downloadDataPie();
@@ -106,133 +104,7 @@ $(function () {
     })
 
     for (let i = 1940; i < (new Date).getFullYear() + 1; i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
-    //creazione carta d'identità
-    $('.btnAddID').on('click', function () { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
-        var check = true;
-        //controllo che il form sia stato completato
-        $('#form1 input').each(function () {
-            if ($(this).val() === '')
-                check = false;
-        });
-        if (check) {
-            //regione provincia e codice
-            var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString() +
-                '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione-input').val().toString() +
-                '","provincia": "' + $('#provincia-input').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString() +
-                '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString() +
-                '", "codice": "' + "AU" + c + '"}';
-            $.ajax({
-                type: "POST",
-                headers: { "Access-Control-Allow-Origin": "*" },
-                data: dt,
-                /* Per poter aggiungere una entry bisogna prima autenticarsi. */
-                contentType: "application/json",
-                url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
-                dataType: "json",
-                success: function (data) {
-                    $.ajax({
-                        type: "GET",
-                        contentType: "application/json",
-                        url: "https://late-frost-5190.getsandbox.com/anagrafiche",
-                        dataType: "json",
-                        success: function (data) {
-                            $.each(data, function (i, value) {
-                                persone.push(Object.assign({}, value));
-                            }); //Object.assign({}, value)
-                            downloadDataPie();
-                            c = persone.length;
-                        }
-                    });
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    var a = 0;
-                }
-            });
-            c++;
-        } else
-            alert("Compila tutti i campi");
-        $('#form1').trigger("reset");
-    });
-    //cambio residenza
-    $('#form2 button').on('click', function () {
-        var check = true;
-        //controllo che il form sia stato completato
-        $('#form2 input').each(function () {
-            if ($(this).val() === '')
-                check = false;
-        });
-        if (check) {
-            var esiste = false;
-            for (var i = 0; i < persone.length; i++) {
-                if (persone[i].nome == $('#nome2').val().toString() &&
-                    persone[i].cognome == $('#cognome2').val().toString() &&
-                    persone[i].carta.luogoNascita[0] == $('#vecchiaresidenza').val().toString() &&
-                    persone[i].carta.indirizzo == $('#vecchioindirizzo').val().toString()) {
-                    persone[c++] = Residenza.cambioResidenza(persone[i].carta.indirizzo, $('#nuovoindirizzo').val().toString(), persone[i].carta.luogoNascita[0], $('#nuovaresidenza').val().toString(), persone[i]);
-                    localStorage.setItem("persone", JSON.stringify(persone));
-                    break;
-                }
-            };
-        } else
-            alert("Compila tutti i campi");
-        $('#form2').trigger("reset");
-    });
-    $('#form3 button').on('click', function () {
-        var check = true;
-        //controllo che il form sia stato completato
-        $('#form3 input').each(function () {
-            if ($(this).val() === '')
-                check = false;
-        });
-        if (check) {
-            var appoggio = [1, 1];
-            var esiste = false;
-            for (var i = 0; i < persone.length; i++) {
-                if (persone[i].nome == $('#nome3').val().toString() && persone[i].cognome == $('#cognome3').val().toString()) {
-                    if (appoggio[0] == 1)
-                        appoggio[0] = persone[i];
-                    else if (appoggio[1] == 1 && appoggio[0].identificativo != persone[i].identificativo)
-                        appoggio[1] = persone[i];
-                }
-                if (persone[i].nome == $('#nome4').val().toString() && persone[i].cognome == $('#cognome4').val().toString()) {
-                    if (appoggio[0] == 1)
-                        appoggio[0] = persone[i];
-                    else if (appoggio[1] == 1 && appoggio[0].identificativo != persone[i].identificativo)
-                        appoggio[1] = persone[i];
-                }
-                if (appoggio[1] != 1) {
-                    appoggio[0].sposo = appoggio[1].identificativo;
-                    appoggio[1].sposo = appoggio[0].identificativo;
-                    esiste = true;
-                    break;
-                }
-            };
-            if (!esiste)
-                alert("utente non trovato");
-            localStorage.setItem("persone", JSON.stringify(persone));
-        } else
-            alert("Compila tutti i campi");
-        $('#form3').trigger("reset");
-    });
-    $('#form6 button').on('click', function () {
-        var check = true;
-        //controllo che il form sia stato completato
-        $('#form6 input').each(function () {
-            if ($(this).val() === '')
-                check = false;
-        });
-        if (check) {
-            for (var i = 0; i < persone.length; i++) {
-                if (persone[i].nome == $('#nome7').val().toString() && persone[i].cognome == $('#cognome7').val().toString()) {
-                    persone[i].residenza.a = new Date(Date.now());
-                    break;
-                }
-            }
-            localStorage.setItem("persone", JSON.stringify(persone));
-        } else
-            alert("Compila tutti i campi");
-        $('#form6').trigger("reset");
-    });
+
     $(".regioni").on("change", function () {
         provSelected = "";
         comSelected = "";
