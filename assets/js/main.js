@@ -2,7 +2,7 @@
 	Dopetrope by HTML5 UP
 	html5up.net | @ajlkn
     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-    
+
 */
 $(function() {
     var posizioneCorrente = 1;
@@ -222,8 +222,8 @@ $(function() {
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
             let arrayData = array[i].anno_nascita.split("-")[2] + "-" + array[i].anno_nascita.split("-")[1] + "-" + array[i].anno_nascita.split("-")[0];
             let lunghezzaResidenze = array[i].luoghi_residenza.length;
-            if (array[i].data_morte == undefined) $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
-            else $("#persone").append("<tr><td style='text-decoration: line-through'>" + array[i].nome + "</td><td style='text-decoration: line-through'>" + array[i].cognome + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td style='text-decoration: line-through'>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\"data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\"></i><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\"></i><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorteConfermata\"></i></td></tr>");
+            if (array[i].data_morte == undefined) $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#exampleModalEdit\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" id=\"" + array[i].id + "\" title=\"Matrimoni Personali\"></i></a><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorte\"></i></td></tr>");
+            else $("#persone").append("<tr><td style='text-decoration: line-through'>" + array[i].nome + "</td><td style='text-decoration: line-through'>" + array[i].cognome + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].regione + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].provincia + "</td><td style='text-decoration: line-through'>" + array[i].luoghi_residenza[lunghezzaResidenze - 1].comune + "</td><td style='text-decoration: line-through'>" + arrayData + "</td><td class=\"d-flex justify-content-center bottoni\"><i class=\"fas fa-trash-alt delete rounded\" title=\"Elimina\" id=\"" + array[i].id + "\" data-toggle=\"modal\"data-target=\"#exampleModal\"></i><i class=\"fas fa-edit edit rounded\" title=\"Modifica\" id=\"" + array[i].id + "\" data-toggle=\"modal\"></i><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" id=\"" + array[i].id + "\" title=\"Matrimoni Personali\"></i></a><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Residenza\" id=\"" + array[i].id + "\"></i></a><i class=\"fas fa-skull morte rounded\" title=\"Decesso\" id=\"" + array[i].id + "\" data-toggle=\"modal\" data-target=\"#modalMorteConfermata\"></i></td></tr>");
 
         }
     }
@@ -388,8 +388,12 @@ $(function() {
         }
     }
 
-    /*ORDINA*/
+    /*ADD RESIDENZA*/
     $(document).on("click", ".home", function() {
+        localStorage.setItem("idprova", $(this).attr("id"))
+    });
+    /*ADD MATRIMONIO*/
+    $(document).on("click", ".wedding", function() {
         localStorage.setItem("idprova", $(this).attr("id"))
     });
     /*ORDINA*/
