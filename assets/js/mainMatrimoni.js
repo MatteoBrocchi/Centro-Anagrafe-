@@ -164,7 +164,7 @@ $(function () {
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
             let arrayData = array[i].anno_nascita.split("-")[2] + "-" + array[i].anno_nascita.split("-")[1] + "-" + array[i].anno_nascita.split("-")[0];
-            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].matrimoni[0].nome_coniuge + "</td><td>" + array[i].matrimoni[0].cognome_coniuge + "</td><td>" + arrayData + "</td><td>" + array[i].matrimoni[0].comune + "<td class=\"d-flex justify-content-center bottoni\"><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" title=\"Add Matrimonio\" id=\"" + array[i].id + "\"></i></a></td></tr>");
+            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].matrimoni[0].nome_coniuge + "</td><td>" + array[i].matrimoni[0].cognome_coniuge + "</td><td>" + arrayData + "</td><td>" + array[i].matrimoni[0].comune + "<td class=\"d-flex justify-content-center bottoni\"><a href=\"indexMatrimonioPersona.html\"><i class=\"fas fa-church wedding rounded\" title=\" Matrimonio\" id=\"" + array[i].id + "\"></i></a></td></tr>");
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/

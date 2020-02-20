@@ -196,7 +196,7 @@ $(function() {
             $.each(persone, function(_, obj) {
                 // console.log(val,obj.name.toLowerCase().indexOf(val),obj)
                 let lunghezzaResidenze = obj.luoghi_residenza.length;
-                if (obj.nome.toLowerCase().indexOf(val) != -1 || obj.cognome.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].regione.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].provincia.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].comune.toLowerCase().indexOf(val) != -1 || obj.anno_nascita.toString().indexOf(val) > -1) {
+                if (obj.luoghi_residenza[lunghezzaResidenze - 1].regione.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].provincia.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].comune.toLowerCase().indexOf(val) != -1 || obj.luoghi_residenza[lunghezzaResidenze - 1].anno.toLowerCase().indexOf(val) > -1 ||obj.luoghi_residenza[lunghezzaResidenze - 1].indirizzo.toLowerCase().indexOf(val) != -1 ) {
                     cercaList[i] = obj;
                     i++;
                 }
@@ -329,9 +329,9 @@ $(function() {
                     persone.push(Object.assign({}, value))
                 });
                 for (let i = 0; i < persone.length; i++) {
-                    if (obj.codice.toLowerCase().indexOf(val) != -1) {
-                        cercaList[i] = obj;
-                        i++;
+                    if (persone[i].id == localStorage.getItem("idprova")) {
+                        persone = persone[i];
+                        i = persone.length;
                     }
                 }
                 CalcPag(persone);
