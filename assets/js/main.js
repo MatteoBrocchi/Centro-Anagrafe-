@@ -510,7 +510,7 @@ $(function() {
     /*STAMPA DECESSO MODAL*/
     function morteText(idPersona) {
         for (let i = 0; i < persone.length; i++) {
-            if (persone[i].id == idPersona) {
+            if (persone[i].id == idPersona && persone[i].data_morte != undefined) {
                 let arrayData = persone[i].data_morte.split("-")[2] + "-" + persone[i].data_morte.split("-")[1] + "-" + persone[i].data_morte.split("-")[0];
                 return arrayData;
             }
