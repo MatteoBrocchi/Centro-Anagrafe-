@@ -299,9 +299,9 @@ $(function() {
             success: function(data) {
                 $.each(data, function(i, value) {
                     persone.push(Object.assign({}, value))
-                    document.getElementById("loading_screen").style.display = 'none';
                 });
                 CalcPag(persone);
+                document.getElementById("loading_screen").style.display = 'none';
             }
         });
     });

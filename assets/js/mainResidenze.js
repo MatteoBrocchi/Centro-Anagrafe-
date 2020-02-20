@@ -48,7 +48,7 @@ $(function() {
         dataType: "json",
         success: function(data) {
             $.each(data, function(i, value) {
-                persone.push(Object.assign({}, value))
+                if(value.data_morte == undefined) persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
             document.getElementById("loading_screen").style.display = 'none';

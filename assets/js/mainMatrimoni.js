@@ -1,8 +1,3 @@
-/*
-	Dopetrope by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
 $(function() {
     var posizioneCorrente = 1;
     var numeropagine;
@@ -47,8 +42,7 @@ $(function() {
         dataType: "json",
         success: function(data) {
             $.each(data, function(i, value) {
-                if(value.matrimoni.length != 0 )
-                persone.push(Object.assign({}, value))
+                if(value.matrimoni.length != 0 && value.data_morte == undefined) persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
             document.getElementById("loading_screen").style.display = 'none';
