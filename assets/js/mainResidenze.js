@@ -11,7 +11,7 @@ $(function() {
     var arrayTerritory = new Array();
     var idedit;
     var selectedID;
-    var numero=localStorage.getItem("idprova");
+    var numero = localStorage.getItem("idprova");
     /*FALSE ORDINATO CRESCENTE TRUE DECRESCENTE*/
     var nomeorder = false,
         cognomeorder = false,
@@ -48,7 +48,7 @@ $(function() {
         dataType: "json",
         success: function(data) {
             $.each(data, function(i, value) {
-                if(value.data_morte == undefined) persone.push(Object.assign({}, value))
+                if (value.data_morte == undefined) persone.push(Object.assign({}, value))
             });
             CalcPag(persone);
             document.getElementById("loading_screen").style.display = 'none';
@@ -113,25 +113,25 @@ $(function() {
         })
         /*FILTRO COMUNI*/
     $(document).on("change", ".comuni", function() {
-            var selectedDistrict = $(".comuni").val();
-            for (var i = 0; i < 20; i++) {
-                for (var j = 0; j < arrayTerritory[i].province.length; j++) {
-                    for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
-                        if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
-                            $(".regioni").val(arrayTerritory[i].nome);
-                            $(".province").val(arrayTerritory[i].province[j].nome);
-                            $(".comuni").val(selectedDistrict);
-                        }
+        var selectedDistrict = $(".comuni").val();
+        for (var i = 0; i < 20; i++) {
+            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                    if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+                        $(".regioni").val(arrayTerritory[i].nome);
+                        $(".province").val(arrayTerritory[i].province[j].nome);
+                        $(".comuni").val(selectedDistrict);
                     }
                 }
             }
-        });
-        /* INVIO ID NELL'ALTRA PAGINA */
-        $(document).on("click", ".home", function() {
-            localStorage.setItem("idprova",$(this).attr("id"))
-         });
-        
-        /*CERCA*/
+        }
+    });
+    /* INVIO ID NELL'ALTRA PAGINA */
+    $(document).on("click", ".home", function() {
+        localStorage.setItem("idprova", $(this).attr("id"))
+    });
+
+    /*CERCA*/
     $(document).on("keyup", "#search", function() {
         cercaList.length = 0;
         AggiornaTabella();
@@ -174,9 +174,9 @@ $(function() {
         if (array.length < (numShow * indicePartenza)) arrivo = array.length;
         else arrivo = (numShow * indicePartenza);
         for (let i = ((indicePartenza * numShow) - numShow); i < arrivo; i++) {
-            let arrayData = array[i].anno_nascita.split("-")[2] + "-" +  array[i].anno_nascita.split("-")[1] + "-" +  array[i].anno_nascita.split("-")[0];
+            let arrayData = array[i].anno_nascita.split("-")[2] + "-" + array[i].anno_nascita.split("-")[1] + "-" + array[i].anno_nascita.split("-")[0];
             let lunghezzaResidenze = array[i].luoghi_residenza.length;
-            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[0].regione + "</td><td>" + array[i].luoghi_residenza[0].provincia + "</td><td>" + array[i].luoghi_residenza[0].comune + "</td><td>" + array[i].luoghi_residenza[0].indirizzo + "</td><td>" + array[i].luoghi_residenza[0].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Add Residenza\" id=\"" + array[i].id + "\"></i></a></td></tr>");
+            $("#persone").append("<tr><td>" + array[i].nome + "</td><td>" + array[i].cognome + "</td><td>" + array[i].luoghi_residenza[0].regione + "</td><td>" + array[i].luoghi_residenza[0].provincia + "</td><td>" + array[i].luoghi_residenza[0].comune + "</td><td>" + array[i].luoghi_residenza[0].indirizzo + "</td><td>" + array[i].luoghi_residenza[0].anno + "</td><td class=\"d-flex justify-content-center bottoni\"><a href=\"indexResidenzePersona.html\"><i class=\"fas fa-home home rounded\" title=\"Residenze\" id=\"" + array[i].id + "\"></i></a></td></tr>");
         }
     }
     /*CONTROLLA CAMBIO NUM DI NOMI DA VEDERE NELLA PAGINA*/
@@ -212,7 +212,7 @@ $(function() {
         $("#viamod").val(trovato.luoghi_residenza[lunghezzaResidenze - 1].indirizzo);
     });
     $(document).on("click", ".inviaModifica", function() {
-        dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() +'","indirizzo":"'+ $('#viamod').val().toString() + '"}';
+        dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '","indirizzo":"' + $('#viamod').val().toString() + '"}';
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -222,8 +222,7 @@ $(function() {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza/",
             dataType: "json",
-            success: function(data) {
-            },
+            success: function(data) {},
         });
         dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
         $.ajax({
@@ -235,13 +234,12 @@ $(function() {
             crossDomain: true,
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
             dataType: "json",
-            success: function(data) {
-            },
+            success: function(data) {},
         });
         $('#exampleModalEdit').modal('toggle');
         document.getElementById("loading_screen").style.display = 'block';
         AggiornaTabella();
-        persone=[];
+        persone = [];
         $.ajax({
             type: "GET",
             contentType: "application/json",

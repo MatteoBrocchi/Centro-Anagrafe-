@@ -180,7 +180,7 @@ $(function () {
         }
     }
     $(document).on("click", ".btnNuovoMatrimonio", function () {
-        dt = '{"nome_coniuge":"' + $('#nomeNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#cognomeNuovoConiuge').val().toString() + '","anno":"' + $('#dataNuovoMatrimonio').val().toString() + '","comune":"' + $('#comuneNuovoMatrimonio').val().toString() + '"}';
+        dt = '{"nome_coniuge":"' + $('#nomeNuovoConiuge').val().toString() + '","cognome_coniuge":"' + $('#cognomeNuovoConiuge').val().toString() + '","anno":"' + $('#dataNuovoMatrimonio').val().toString() + '","comune":"' + $('#comuneNuovoMatrimonio').val().toString() + $('#editcodicecarta').val().toString() + '"}';
         $.ajax({
             type: "POST",
             headers: { "Access-Control-Allow-Origin": "*" },
