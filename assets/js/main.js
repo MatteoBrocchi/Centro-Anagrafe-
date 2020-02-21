@@ -537,15 +537,13 @@ $(function() {
     $(document).on("click", ".morte", function() {
         selectedID = $(this).attr("id");
         selectedEL = $(this);
-        for (let i = 0; i < persone.length; i++) {
-            if (persone[i].id != selectedID && persone[i].data_morte != undefined) {
-                $("#morteText").children().remove();
-                $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
-            }
+        if (persone[foundPerson(selectedID)].data_morte != undefined) {
+            $("#morteText").children().remove();
+            $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
         }
     });
     $(document).on("click", ".btnConfirmDeath", function() {
-        if ($("#datamorte").val() > persone[selectedID].anno_nascita) {
+        if ($("#datamorte").val() > persone[foundPerson(selectedID)].anno_nascita) {
             selectedEL.parent().siblings().css("text-decoration", "line-through");
             $(selectedEL.siblings()).each(function(i) {
                 if (i != 0) $(this).attr("data-target", "");
@@ -577,6 +575,14 @@ $(function() {
             if (persone[i].id == idPersona && persone[i].data_morte != undefined) {
                 let arrayData = persone[i].data_morte.split("-")[2] + "-" + persone[i].data_morte.split("-")[1] + "-" + persone[i].data_morte.split("-")[0];
                 return arrayData;
+            }
+        }
+    }
+    /*TROVA PERSONA */
+    function foundPerson(idPersona) {
+        for (let i = 0; i < persone.length; i++) {
+            if (persone[i].id == idPersona) {
+                return i;
             }
         }
     }
