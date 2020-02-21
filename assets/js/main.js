@@ -537,30 +537,34 @@ $(function() {
     $(document).on("click", ".morte", function() {
         selectedID = $(this).attr("id");
         selectedEL = $(this);
-        $("#morteText").children().remove();
-        $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
     });
     $(document).on("click", ".btnConfirmDeath", function() {
-        selectedEL.parent().siblings().css("text-decoration", "line-through");
-        $(selectedEL.siblings()).each(function(i) {
-            if (i != 0) $(this).attr("data-target", "");
-        })
-        dt = $("#datamorte").val();
-        $.ajax({
-            type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
-            data: '{"data_morte":"' + dt + '"}"',
-            /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
-            contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + selectedID + "/",
-            dataType: "json",
-        })
-        $('#modalMorte').modal('toggle');
-        selectedEL.attr("data-target", "#modalMorteConfermata");
-        for (let i = 0; i < persone.length; i++) {
-            if (persone[i].id == selectedID) {
-                persone[i].data_morte = dt;
+        if ($("#datamorte").val() > persone[selectedID].anno_nascita) {
+            selectedEL.parent().siblings().css("text-decoration", "line-through");
+            $(selectedEL.siblings()).each(function(i) {
+                if (i != 0) $(this).attr("data-target", "");
+            })
+            dt = $("#datamorte").val();
+            $.ajax({
+                type: "POST",
+                headers: { "Access-Control-Allow-Origin": "*" },
+                data: '{"data_morte":"' + dt + '"}"',
+                /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
+                contentType: "application/json",
+                url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + selectedID + "/",
+                dataType: "json",
+            })
+            $('#modalMorte').modal('toggle');
+            selectedEL.attr("data-target", "#modalMorteConfermata");
+            for (let i = 0; i < persone.length; i++) {
+                if (persone[i].id == selectedID) {
+                    persone[i].data_morte = dt;
+                }
             }
+            $("#morteText").children().remove();
+            $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
+        } else {
+            $('#datamorte').popover('show');
         }
     });
     /*STAMPA DECESSO MODAL*/
