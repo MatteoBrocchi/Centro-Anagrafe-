@@ -195,6 +195,8 @@ $(function () {
             downloadDataBar();
         });
     });
+    //
+
 });
 
 function downloadDataPie() {
@@ -248,7 +250,7 @@ function downloadDataPie() {
 }
 
 function downloadDataBar() {
-    //controlal se è stato selezionato anno e regione 
+    //controlal se è stato selezionato anno e regione
     if (annoSelected != 0 && regSelected != "" && provSelected == "") {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         var residenza;
@@ -330,7 +332,7 @@ function downloadDataBar() {
                 }
             }
         }
-        addBarChart("provincia di " + provSelected);
+        addBarChart(provSelected);
     }
     //oppure anno e comune
     else if (annoSelected != 0 && comSelected != "") {
@@ -371,7 +373,7 @@ function downloadDataBar() {
                 }
             }
         }
-        addBarChart("comune di " + comSelected);
+        addBarChart(comSelected);
     }
 }
 
@@ -616,8 +618,8 @@ function addBarChart(luogo) {
     // Ridimensionamento dei grafici
     $("#myChart").parent().removeClass("d-none");
     $("#myChart").parent().addClass("d-flex");
-    $("#myChartPie").parent().removeClass("col-md-12");
-    $("#myChartPie").parent().addClass("col-md-6");
+    $("#myChartPie").parent().removeClass("col-lg-12");
+    $("#myChartPie").parent().addClass("col-lg-6");
 
     luogo = "Popolazione " + luogo;
     if (chartBar != undefined)
