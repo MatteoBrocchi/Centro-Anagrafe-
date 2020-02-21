@@ -538,7 +538,7 @@ function addBarChart(luogo) {
     $("#myChartPie").parent().removeClass("col-md-12");
     $("#myChartPie").parent().addClass("col-md-6");
 
-    luogo = "Popolazione " + luogo;
+    luogo = "Popolazione annuale " + luogo;
     if (chartBar != undefined)
         chartBar.destroy();
     for (var i = 0; i < datiBar.length; i++) {
