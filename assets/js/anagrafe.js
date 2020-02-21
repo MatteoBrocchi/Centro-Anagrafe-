@@ -563,8 +563,8 @@ function addBarChart(luogo) {
     // Ridimensionamento dei grafici
     $("#myChart").parent().removeClass("d-none");
     $("#myChart").parent().addClass("d-flex");
-    $("#myChartPie").parent().removeClass("col-md-12");
-    $("#myChartPie").parent().addClass("col-md-6");
+    $("#myChartPie").parent().removeClass("col-lg-12");
+    $("#myChartPie").parent().addClass("col-lg-6");
 
     luogo = "Popolazione " + luogo;
     if (chartBar != undefined)
