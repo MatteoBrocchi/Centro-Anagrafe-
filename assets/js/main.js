@@ -424,7 +424,6 @@ $(function() {
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche",
             dataType: "json",
-            async: false,
             success: function(data) {
                 $.each(data, function(i, value) {
                     persone.push(Object.assign({}, value))
@@ -445,7 +444,6 @@ $(function() {
                 contentType: "application/json",
                 url: "https://late-frost-5190.getsandbox.com/anagrafiche",
                 dataType: "json",
-                async: false,
                 success: function(data) {
                     $.each(data, function(i, value) {
                         persone.push(Object.assign({}, value))
@@ -454,7 +452,62 @@ $(function() {
                     CalcPag(persone);
                 }
             });
-        })
+        });
+        $(document).on("click", ".tutti", function() {
+            persone=[];
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                dataType: "json",
+                success: function(data) {
+                    $.each(data, function(i, value) {
+                        persone.push(Object.assign({}, value))
+                        c = value.id + 1;
+                    });
+                    CalcPag(persone);
+                    document.getElementById("loading_screen").style.display = 'none';
+                }
+            });
+        });
+        $(document).on("click", ".vivi", function() {
+            persone=[];
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                dataType: "json",
+                success: function(data) {
+                    $.each(data, function(i, value) {
+                        if(value.data_morte==undefined){
+                        persone.push(Object.assign({}, value))
+                        c = value.id + 1;
+                        }
+                    });
+                    CalcPag(persone);
+                    document.getElementById("loading_screen").style.display = 'none';
+                }
+            });
+        });
+        $(document).on("click", ".morti", function() {
+            persone=[];
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                dataType: "json",
+                success: function(data) {
+                    $.each(data, function(i, value) {
+                        if(value.data_morte!=undefined){
+                        persone.push(Object.assign({}, value))
+                        c = value.id + 1;
+                        }
+                    });
+                    CalcPag(persone);
+                    document.getElementById("loading_screen").style.display = 'none';
+                }
+            });
+        });
         /*DELETE*/
     $(document).on("click", ".delete", function() {
         selectedID = $(this).attr("id");
@@ -742,7 +795,6 @@ $(function() {
         )
         .appendTo($body)
         .panel({
-            delay: 500,
             hideOnClick: true,
             hideOnSwipe: true,
             resetScroll: true,
