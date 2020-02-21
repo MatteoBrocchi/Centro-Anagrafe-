@@ -60,6 +60,29 @@ $(function() {
                         }
                     });
                     c++;
+
+                    $('#exampleModalCenter').modal('toggle');
+                    document.getElementById("loading_screen").style.display = 'block';
+                    AggiornaTabella();
+                    persone = [];
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json",
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Cache-Control": "no-store"
+                        },
+                        url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                        dataType: "json",
+                        success: function(data) {
+                            $.each(data, function(i, value) {
+                                persone.push(Object.assign({}, value))
+                                document.getElementById("loading_screen").style.display = 'none';
+                            });
+                            CalcPag(persone);
+                        }
+                    });
+
                 } else
                     alert("Compila tutti i campi");
                 $('#form1').trigger("reset");
@@ -545,27 +568,7 @@ $(function() {
             var letters = /^[A-Za-z]+$/;
             if ($("#nome-input").val().toString().match(letters)) {
                 if ($('#cognome-input').val().toString().match(letters)) {
-                    $('#exampleModalCenter').modal('toggle');
-                    document.getElementById("loading_screen").style.display = 'block';
-                    AggiornaTabella();
-                    persone = [];
-                    $.ajax({
-                        type: "GET",
-                        contentType: "application/json",
-                        headers: {
-                            "Access-Control-Allow-Origin": "*",
-                            "Cache-Control": "no-store"
-                        },
-                        url: "https://late-frost-5190.getsandbox.com/anagrafiche",
-                        dataType: "json",
-                        success: function(data) {
-                            $.each(data, function(i, value) {
-                                persone.push(Object.assign({}, value))
-                                document.getElementById("loading_screen").style.display = 'none';
-                            });
-                            CalcPag(persone);
-                        }
-                    });
+
                 }
             }
         })
