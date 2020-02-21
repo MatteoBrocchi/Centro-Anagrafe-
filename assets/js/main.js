@@ -424,7 +424,6 @@ $(function() {
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche",
             dataType: "json",
-            async: false,
             success: function(data) {
                 $.each(data, function(i, value) {
                     persone.push(Object.assign({}, value))
@@ -445,7 +444,6 @@ $(function() {
                 contentType: "application/json",
                 url: "https://late-frost-5190.getsandbox.com/anagrafiche",
                 dataType: "json",
-                async: false,
                 success: function(data) {
                     $.each(data, function(i, value) {
                         persone.push(Object.assign({}, value))
@@ -742,7 +740,6 @@ $(function() {
         )
         .appendTo($body)
         .panel({
-            delay: 500,
             hideOnClick: true,
             hideOnSwipe: true,
             resetScroll: true,
