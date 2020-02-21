@@ -195,8 +195,55 @@ $(function () {
             downloadDataBar();
         });
     });
-    //
-
+    /*FILTRO REGIONI*/
+    $(document).on("change", ".regioni", function () {
+        $(".province").empty();
+        $(".comuni").empty();
+        $(".province").append(new Option("Seleziona provincia"));
+        $(".comuni").append(new Option("Seleziona comune"));
+        var selectedRegion = $(".regioni").val();
+        for (var i = 0; i < 20; i++) {
+            if (arrayTerritory[i].nome == selectedRegion) {
+                for (let j = 0; j < arrayTerritory[i].province.length; j++) {
+                    $(".province").append(new Option(arrayTerritory[i].province[j].nome, arrayTerritory[i].province[j].nome));
+                    for (let o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                        $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
+                    }
+                }
+            }
+        }
+    })
+    /*FILTRO PROVINCE*/
+    $(document).on("change", ".province", function () {
+        $(".comuni").empty();
+        $(".comuni").append(new Option("Seleziona comune"));
+        var selectedProvince = $(".province").val();
+        for (var i = 0; i < 20; i++) {
+            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                if (arrayTerritory[i].province[j].nome == selectedProvince) {
+                    $(".regioni").val(arrayTerritory[i].nome);
+                    for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                        $(".comuni").append(new Option(arrayTerritory[i].province[j].comuni[o], arrayTerritory[i].province[j].comuni[o]));
+                    }
+                }
+            }
+        }
+    })
+    /*FILTRO COMUNI*/
+    $(document).on("change", ".comuni", function () {
+        var selectedDistrict = $(".comuni").val();
+        for (var i = 0; i < 20; i++) {
+            for (var j = 0; j < arrayTerritory[i].province.length; j++) {
+                for (var o = 0; o < arrayTerritory[i].province[j].comuni.length; o++) {
+                    if (arrayTerritory[i].province[j].comuni[o] == selectedDistrict) {
+                        $(".regioni").val(arrayTerritory[i].nome);
+                        $(".province").val(arrayTerritory[i].province[j].nome);
+                        $(".comuni").val(selectedDistrict);
+                    }
+                }
+            }
+        }
+    })
 });
 
 function downloadDataPie() {
@@ -332,7 +379,7 @@ function downloadDataBar() {
                 }
             }
         }
-        addBarChart(provSelected);
+        addBarChart("provincia di " + provSelected);
     }
     //oppure anno e comune
     else if (annoSelected != 0 && comSelected != "") {
@@ -373,7 +420,7 @@ function downloadDataBar() {
                 }
             }
         }
-        addBarChart(comSelected);
+        addBarChart("comune di " + comSelected);
     }
 }
 
@@ -621,7 +668,7 @@ function addBarChart(luogo) {
     $("#myChartPie").parent().removeClass("col-lg-12");
     $("#myChartPie").parent().addClass("col-lg-6");
 
-    luogo = "Popolazione " + luogo;
+    luogo = "Popolazione annuale " + luogo;
     if (chartBar != undefined)
         chartBar.destroy();
     for (var i = 0; i < datiBar.length; i++) {
