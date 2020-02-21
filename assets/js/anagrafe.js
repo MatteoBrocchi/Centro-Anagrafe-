@@ -135,6 +135,34 @@ $(function() {
             downloadDataBar();
         });
     });
+    //
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/nome",
+        dataType: "json",
+        success: function(data) {
+            var arrNome = lines.split('\n');
+        }
+    });
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/cognome",
+        dataType: "json",
+        success: function(data) {
+            var arrCognome = lines.split('\n');
+        }
+    });
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "https://late-frost-5190.getsandbox.com/territorio",
+        dataType: "json",
+        success: function(data) {
+            var jsonRegioni = data;
+        }
+    })
 });
 
 function downloadDataPie() {
@@ -249,7 +277,7 @@ function downloadDataBar() {
                 }
             }
         }
-        addBarChart("provincia di " + provSelected);
+        addBarChart(provSelected);
     }
     //oppure anno e comune
     else if (annoSelected != 0 && comSelected != "") {
@@ -290,7 +318,7 @@ function downloadDataBar() {
                 }
             }
         }
-        addBarChart("comune di " + comSelected);
+        addBarChart(comSelected);
     }
 }
 
@@ -538,7 +566,7 @@ function addBarChart(luogo) {
     $("#myChartPie").parent().removeClass("col-md-12");
     $("#myChartPie").parent().addClass("col-md-6");
 
-    luogo = "Popolazione annuale " + luogo;
+    luogo = "Popolazione " + luogo;
     if (chartBar != undefined)
         chartBar.destroy();
     for (var i = 0; i < datiBar.length; i++) {
