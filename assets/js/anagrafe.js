@@ -135,34 +135,6 @@ $(function() {
             downloadDataBar();
         });
     });
-    //
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "https://late-frost-5190.getsandbox.com/nome",
-        dataType: "json",
-        success: function(data) {
-            var arrNome = lines.split('\n');
-        }
-    });
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "https://late-frost-5190.getsandbox.com/cognome",
-        dataType: "json",
-        success: function(data) {
-            var arrCognome = lines.split('\n');
-        }
-    });
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "https://late-frost-5190.getsandbox.com/territorio",
-        dataType: "json",
-        success: function(data) {
-            var jsonRegioni = data;
-        }
-    })
 });
 
 function downloadDataPie() {
