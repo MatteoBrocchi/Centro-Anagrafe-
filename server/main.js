@@ -12,6 +12,8 @@ var anagrafiche = state.anagrafiche;
 var territorio = require("territorio.json");
 var auth = require("auth.js");
 var settings = require("settings.js");
+var Hashes = require("./crypto/hashes.js");
+var SHA512 = new Hashes.SHA512;
 
 /*
     # 0 0 0 0 0 0 * * * * * * * * 0 0 0 0 0 0 0 0 #
@@ -28,6 +30,8 @@ Sandbox.define('/anagrafiche','GET', function(req, res) {
         return res.send(400, 'Invalid content type, expected application/json');
     }
     
+    res.header("Access-Control-Allow-Origin", "*");
+    
     // Set the type of response, sets the content type.
     res.type('application/json');
     
@@ -43,6 +47,8 @@ Sandbox.define("/anagrafiche/{regione}", "GET", function(req, res) {
     if(!req.is("application/json")) {
         return res.send(400, "Invalid content type, expected application/json");
     }
+    
+    res.header("Access-Control-Allow-Origin", "*");
     
     res.type("application/json");
     
@@ -369,13 +375,19 @@ Sandbox.define("/users/register/", "POST", function(req, res) {
     if (req.body.isInvalid || !req.is("application/json")) {
         return res.json(400, req.body);
     }
-    var username = req.body.username;
     
-    if(auth.findUser(username) !== undefined){
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    var username = req.body.username;
+    if(_.has(req.body, "username") && _.has(req.body, "password")) {
+        if(auth.findUser(username) !== undefined){
         return auth.returnError(res, 400, "User already exists");
     }
-    usersList.push(req.body);
-    res.send(200, "Utente registrato!");
+        req.body.password = SHA512.hex(req.body.password);
+        auth.usersList.push(req.body);
+        res.send(200, "Utente registrato!");
+    }
+    return auth.returnError(res, 400, "Errore nella richiesta.");
 });
 
 Sandbox.define('/territorio','GET', function(req, res) {
@@ -383,6 +395,8 @@ Sandbox.define('/territorio','GET', function(req, res) {
     if (!req.is('application/json')) {
         return res.send(400, 'Invalid content type, expected application/json');
     }
+    
+    res.header("Access-Control-Allow-Origin", "*");
     
     // Set the type of response, sets the content type.
     res.type('application/json');
@@ -394,25 +408,27 @@ Sandbox.define('/territorio','GET', function(req, res) {
     res.json(territorio);
 });
 
-/*
 Sandbox.define('/users/login/', 'POST', function(req, res) {
     if (req.body.isInvalid) {
         return res.json(400, req.body);
     }
     
-    var username = req.body.username;
-    var user = auth.findUser(username);
+    if(_.has(req.body, "username") && _.has(req.body, "password")){
+        var username = req.body.username;
+        var user = auth.findUser(username);
 
-    //if password matches, create session and cookie
-    if(user.password == req.body.password){
-        var sessionId = auth.guid();
-        auth.sessionsList[sessionId] = username;
-        res.header("Set-Cookie","sessionId="+sessionId);
-        return res.send(200, "Utente autenticato! - Header di sessione settato: " + sessionId);
+        //if password matches, create session and cookie
+        if(user.password == SHA512.hex(req.body.password)){
+            var sessionId = auth.guid();
+            auth.sessionsList[sessionId] = username;
+            res.header("Set-Cookie","sessionId="+sessionId);
+            return res.send(200, "Utente autenticato! - Header di sessione settato: " + sessionId);
 
-    }else{
-        return returnError(res, 401, "Credenziali Invalide");
+        }else{
+            return auth.returnError(res, 401, "Credenziali Invalide");
+        }
     }
+    return auth.returnError(res, 400, "Errore nella richiesta.");
     
 });
-*/
+
