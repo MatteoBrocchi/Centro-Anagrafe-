@@ -136,33 +136,7 @@ $(function() {
         });
     });
     //
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "https://late-frost-5190.getsandbox.com/nome",
-        dataType: "json",
-        success: function(data) {
-            var arrNome = lines.split('\n');
-        }
-    });
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "https://late-frost-5190.getsandbox.com/cognome",
-        dataType: "json",
-        success: function(data) {
-            var arrCognome = lines.split('\n');
-        }
-    });
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "https://late-frost-5190.getsandbox.com/territorio",
-        dataType: "json",
-        success: function(data) {
-            var jsonRegioni = data;
-        }
-    })
+
 });
 
 function downloadDataPie() {
@@ -195,7 +169,7 @@ function downloadDataPie() {
 }
 
 function downloadDataBar() {
-    //controlal se è stato selezionato anno e regione 
+    //controlal se è stato selezionato anno e regione
     if (annoSelected != 0 && regSelected != "" && provSelected == "") {
         datiBar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         var residenza;
