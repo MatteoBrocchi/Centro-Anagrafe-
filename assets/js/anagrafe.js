@@ -1,10 +1,10 @@
-var Residenza = /** @class */ (function() {
-    function Residenza() {}
-    Residenza.cambioResidenza = function(vecchioIndirizzo, nuovoIndirizzo, vecchiaResidenza, nuovaResidenza, persona) {
+var Residenza = /** @class */ (function () {
+    function Residenza() { }
+    Residenza.cambioResidenza = function (vecchioIndirizzo, nuovoIndirizzo, vecchiaResidenza, nuovaResidenza, persona) {
         if (persona.carta != undefined && persona.carta.tuttiDati[2][0] == vecchiaResidenza && persona.carta.tuttiDati[3] == vecchioIndirizzo) {
             var copia = JSON.stringify(persona);
             persona.carta = new cartaIdentita([persona.carta.tuttiDati[0], persona.carta.tuttiDati[1],
-                [nuovaResidenza, persona.carta.tuttiDati[2][1], persona.carta.tuttiDati[2][2]], nuovoIndirizzo, persona.carta.tuttiDati[4], persona.carta.tuttiDati[5], c
+            [nuovaResidenza, persona.carta.tuttiDati[2][1], persona.carta.tuttiDati[2][2]], nuovoIndirizzo, persona.carta.tuttiDati[4], persona.carta.tuttiDati[5], c
             ]);
             var a = JSON.parse(copia);
             a.residenza.a = new Date(Date.now());
@@ -13,17 +13,17 @@ var Residenza = /** @class */ (function() {
     };
     return Residenza;
 }());
-var Persona = /** @class */ (function() {
+var Persona = /** @class */ (function () {
     function Persona(carta) {
         this.carta = carta;
         this.residenza = new certificatoResidenza(new Date(Date.now()));
         this.nome = carta.tuttiDati[0];
         this.cognome = carta.tuttiDati[1];
     }
-    Persona.prototype.Prova = function() { return false; };
+    Persona.prototype.Prova = function () { return false; };
     return Persona;
 }());
-var Matrimonio = /** @class */ (function() {
+var Matrimonio = /** @class */ (function () {
     function Matrimonio(valore3) {
         this.nomeSposo = valore3[0];
         this.cognomeSposo = valore3[1];
@@ -33,7 +33,7 @@ var Matrimonio = /** @class */ (function() {
         this.comune = valore3[5];
     }
     Object.defineProperty(Matrimonio.prototype, "tuttiDati", {
-        get: function() {
+        get: function () {
             return [this.nomeSposo, this.cognomeSposo, this.nomeSposa, this.nomeSposa, this.data, this.comune];
         },
         enumerable: true,
@@ -41,13 +41,13 @@ var Matrimonio = /** @class */ (function() {
     });
     return Matrimonio;
 }());
-var certificatoResidenza = /** @class */ (function() {
+var certificatoResidenza = /** @class */ (function () {
     function certificatoResidenza(da) {
         this.da = da;
     }
     return certificatoResidenza;
 }());
-var cartaIdentita = /** @class */ (function() {
+var cartaIdentita = /** @class */ (function () {
     function cartaIdentita(valore) {
         this.nome = valore[0];
         this.cognome = valore[1];
@@ -58,7 +58,7 @@ var cartaIdentita = /** @class */ (function() {
         this.id = "AU" + valore[6];
     }
     Object.defineProperty(cartaIdentita.prototype, "tuttiDati", {
-        get: function() {
+        get: function () {
             return [this.nome, this.cognome, this.luogoNascita, this.indirizzo, this.annoNascita, this.annoRilascio, this.id];
         },
         enumerable: true,
@@ -76,61 +76,121 @@ var provSelected = "";
 var comSelected = "";
 var annoSelected = 0;
 var chartBar;
+var arrayTerritory = new Array();
 
-$(function() {
+$(function () {
     $.ajax({
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "no-store"
+        },
         type: "GET",
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
-        success: function(data) {
-            $.each(data, function(i, value) {
+        success: function (data) {
+            $.each(data, function (i, value) {
                 persone.push(Object.assign({}, value));
-            }); //Object.assign({}, value)
+            });
             downloadDataPie();
+            document.getElementById("loading_screen").style.display = 'none';
         }
     });
-    $(".regioni").on("click", function() {
+    siteScroll();
+    var $window = $(window),
+        $body = $('body');
+
+    // Breakpoints.
+    breakpoints({
+        xlarge: ['1281px', '1680px'],
+        large: ['981px', '1280px'],
+        medium: ['737px', '980px'],
+        small: [null, '736px']
+    });
+
+    // Play initial animations on page load.
+    $window.on('load', function () {
+        window.setTimeout(function () {
+            $body.removeClass('is-preload');
+        }, 100);
+    });
+
+    // Dropdowns.
+    $('#nav > ul').dropotron({
+        mode: 'fade',
+        noOpenerFade: true,
+        alignment: 'center'
+    });
+
+    // Nav.
+
+    // Title Bar.
+    $(
+        '<div id="titleBar">' +
+        '<a href="#navPanel" class="toggle"></a>' +
+        '</div>'
+    )
+        .appendTo($body);
+
+    // Panel.
+    $(
+        '<div id="navPanel">' +
+        '<nav>' +
+        $('#nav').navList() +
+        '</nav>' +
+        '</div>'
+    )
+        .appendTo($body)
+        .panel({
+            hideOnClick: true,
+            hideOnSwipe: true,
+            resetScroll: true,
+            resetForms: true,
+            side: 'left',
+            target: $body,
+            visibleClass: 'navPanel-visible'
+        });
+    $(".regioni").on("click", function () {
         $(".regioni").css("color", "black");
     })
-    $(".province").on("click", function() {
+    $(".province").on("click", function () {
         $(".province").css("color", "black");
     })
-    $(".comuni").on("click", function() {
+    $(".comuni").on("click", function () {
         $(".comuni").css("color", "black");
     })
-    $(".anno").on("click", function() {
+    $(".anno").on("click", function () {
         $(".anno").css("color", "black");
     })
 
     for (let i = 1940; i < (new Date).getFullYear() + 1; i++) $(".anno").append("<option value='" + i + "'>" + i + "</option>");
 
-    $(".regioni").on("change", function() {
+    $(".regioni").on("change", function () {
         provSelected = "";
         comSelected = "";
-        $(".regioni option:selected").each(function() {
+        $(".regioni option:selected").each(function () {
             regSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".province").attr("disabled", false);
     });
-    $(".province").on("change", function() {
+    $(".province").on("change", function () {
         comSelected = "";
-        $(".province option:selected").each(function() {
+        $(".province option:selected").each(function () {
             provSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".comuni").attr("disabled", false);
     });
-    $(".comuni").on("change", function() {
-        $(".comuni option:selected").each(function() {
+    $(".comuni").on("change", function () {
+        $(".comuni option:selected").each(function () {
             comSelected = $(this).text().toString();
             downloadDataBar();
         });
         $(".comuni").attr("disabled", false);
     });
-    $(".anno").on("change", function() {
-        $(".anno option:selected").each(function() {
+    $(".anno").on("change", function () {
+        $(".anno option:selected").each(function () {
             annoSelected = parseInt($(this).text());
             downloadDataBar();
         });
@@ -143,8 +203,29 @@ function downloadDataPie() {
         contentType: "application/json",
         url: "https://late-frost-5190.getsandbox.com/territorio",
         dataType: "json",
-        success: function(data) {
-            $.each(data.regioni, function(i, value) {
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "no-store"
+        },
+        success: function (data) {
+            $.each(data, function (i, value) {
+                arrayTerritory.push(Object.assign({}, value))
+                arrayTerritory = arrayTerritory[0];
+                for (let h = 0; h < 20; h++) {
+                    $(".regioni").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
+                    $("#regionemod").append(new Option(arrayTerritory[h].nome, arrayTerritory[h].nome));
+                    for (let j = 0; j < arrayTerritory[h].province.length; j++) {
+                        $(".province").append(new Option(arrayTerritory[h].province[j].nome));
+                        $("#provinciamod").append(new Option(arrayTerritory[h].province[j].nome));
+                        for (let o = 0; o < arrayTerritory[h].province[j].comuni.length; o++) {
+                            $(".comuni").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                            $("#comunemod").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                            $("#birthPlace").append(new Option(arrayTerritory[h].province[j].comuni[o]));
+                        }
+                    }
+                }
+            });
+            $.each(data.regioni, function (i, value) {
                 regioni.push(value.nome);
             });
             for (var reg in regioni) {
@@ -158,7 +239,7 @@ function downloadDataPie() {
             //avvio creazione grafico a torta
             addPieChart();
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
             console.log(err.Message);
             return err.Message;
@@ -623,3 +704,26 @@ function addBarChart(luogo) {
         }
     });
 }
+
+var siteScroll = function () {
+    var title = false;
+    $(window).scroll(function () {
+
+        var st = $(this).scrollTop();
+
+        if (st > 100) {
+            if (!title) {
+                $("#nav>ul").prepend("<li class='titolo'>Ufficio Anagrafe</li>")
+                title = true;
+            }
+            $('#nav').addClass('shrink');
+        } else {
+            if (title) {
+                $("#nav>ul").find(":first").remove();
+                title = false;
+            }
+            $('#nav').removeClass('shrink');
+        }
+
+    })
+};
