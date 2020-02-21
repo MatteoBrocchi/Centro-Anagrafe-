@@ -249,7 +249,7 @@ function downloadDataBar() {
                 }
             }
         }
-        addBarChart(provSelected);
+        addBarChart("provincia di " + provSelected);
     }
     //oppure anno e comune
     else if (annoSelected != 0 && comSelected != "") {
@@ -290,7 +290,7 @@ function downloadDataBar() {
                 }
             }
         }
-        addBarChart(comSelected);
+        addBarChart("comune di " + comSelected);
     }
 }
 
