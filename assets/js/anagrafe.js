@@ -633,7 +633,7 @@ function addPieChart() {
         options: {
             title: {
                 display: true,
-                text: "Popolazione regioni",
+                text: "Popolazione regioni attuale",
                 fontSize: 45
             },
             legend: {
@@ -648,7 +648,7 @@ function addPieChart() {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    top: 0
+                    top: 20
                 }
             },
             tooltips: {
