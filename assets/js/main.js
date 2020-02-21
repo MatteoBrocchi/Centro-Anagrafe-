@@ -537,6 +537,12 @@ $(function() {
     $(document).on("click", ".morte", function() {
         selectedID = $(this).attr("id");
         selectedEL = $(this);
+        for (let i = 0; i < persone.length; i++) {
+            if (persone[i].id != selectedID && persone[i].data_morte != undefined) {
+                $("#morteText").children().remove();
+                $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
+            }
+        }
     });
     $(document).on("click", ".btnConfirmDeath", function() {
         if ($("#datamorte").val() > persone[selectedID].anno_nascita) {
@@ -561,8 +567,6 @@ $(function() {
                     persone[i].data_morte = dt;
                 }
             }
-            $("#morteText").children().remove();
-            $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
         } else {
             $('#datamorte').popover('show');
         }
