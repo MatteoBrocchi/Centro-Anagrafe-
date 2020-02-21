@@ -221,7 +221,7 @@ Sandbox.define("/anagrafiche/edit/{id}/matrimonio/{n}/", "POST", function(req, r
             if (_.has(req.body, "cognome_coniuge")) _.find(anagrafiche, ["id", parseInt(req.params.id)]).matrimoni[req.params.n - 1].cognome_coniuge = req.body.cognome_coniuge;
             if (_.has(req.body, "anno")) _.find(anagrafiche, ["id", parseInt(req.params.id)]).matrimoni[req.params.n - 1].anno = req.body.anno;
             if (_.has(req.body, "comune")) _.find(anagrafiche, ["id", parseInt(req.params.id)]).matrimoni[req.params.n - 1].comune = req.body.comune;
-            if (_.has(req.body, "comune")) _.find(anagrafiche, ["id", parseInt(req.params.id)]).matrimoni[req.params.n - 1].codice = req.body.codice;
+            if (_.has(req.body, "codice")) _.find(anagrafiche, ["id", parseInt(req.params.id)]).matrimoni[req.params.n - 1].codice = req.body.codice;
             return res.send(200, "Matrimonio modificato!");
         }
     return res.send(400, "Errore nella richiesta.");
@@ -285,6 +285,25 @@ Sandbox.define("/anagrafiche/remove/{id}/matrimonio/{n}/", "DELETE", function(re
     
     if (_.has(req.params, "id") && _.has(req.params, "n"))
     {
+        /*
+         for(var anagrafica in anagrafiche) {
+             if( _.has(anagrafiche[anagrafica].matrimoni, ["codice", _.find(anagrafiche, ["codice", _.find(anagrafiche, ["id", parseInt(req.params.id)]).codice] )])) {
+                 for(var i = 0; i < anagrafiche[anagrafica].matrimoni.lenght; i++) {
+                     if(anagrafiche[anagrafica].matrimoni[i].codice == _.find(anagrafiche, ["id", parseInt(req.params.id)]).codice) {
+                         anagrafiche[anagrafica].matrimoni.unshift(i, 1);
+                     }
+                 }
+             }
+         }
+         */
+         for(var anagrafica in anagrafiche) {
+             for(var matrimonio in anagrafiche[anagrafica].matrimoni) {
+                 if( anagrafiche[anagrafica].matrimoni[matrimonio].codice == _.find(anagrafiche, ["id", parseInt(req.params.id)]).codice ) {
+                     anagrafiche[anagrafica].matrimoni.splice(matrimonio, 1);
+                 }
+             }
+         }
+         
          _.find(anagrafiche, ["id", parseInt(req.params.id)]).matrimoni.splice(req.params.n - 1, 1);
          return res.send(200, "Matrimonio eliminato!");
     }
@@ -431,4 +450,3 @@ Sandbox.define('/users/login/', 'POST', function(req, res) {
     return auth.returnError(res, 400, "Errore nella richiesta.");
     
 });
-
