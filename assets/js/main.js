@@ -7,56 +7,70 @@
 var c = 0;
 $(function() {
     //creazione carta d'identità
-    $('.btnAddID').on('click', function () { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
+    $('.btnAddID').on('click', function() { //METTERE BOTTONE DELL'AGGIUNTA PERSONA
         var check = true;
         //controllo che il form sia stato completato
-        $('#form1 input').each(function () {
+        $('#form1 input').each(function() {
             if ($(this).val() === '')
                 check = false;
         });
-        if (check) {
-            //regione provincia e codice
-            var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString() +
-                '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione-input').val().toString() +
-                '","provincia": "' + $('#provincia-input').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString() +
-                '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString() +
-                '", "codice": "' + "AU" + c + '"}';
-            $.ajax({
-                type: "POST",
-                headers: { "Access-Control-Allow-Origin": "*" },
-                data: dt,
-                /* Per poter aggiungere una entry bisogna prima autenticarsi. */
-                contentType: "application/json",
-                url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
-                dataType: "json",
-                success: function (data) {
+        $('#nome-input').popover('hide');
+        $('#cognome-input').popover('hide');
+        var letters = /^[A-Za-z]+$/;
+        if ($("#nome-input").val().toString().match(letters)) {
+            if ($('#cognome-input').val().toString().match(letters)) {
+                if (check) {
+                    //regione provincia e codice
+                    var dt = '{"nome": "' + $("#nome-input").val().toString() + '", "cognome": "' + $('#cognome-input').val().toString() +
+                        '", "anno_nascita": "' + $('#anno-input').val().toString() + '", "regione": "' + $('#regione-input').val().toString() +
+                        '","provincia": "' + $('#provincia-input').val().toString() + '", "comune": "' + $('#residenza').val().toString() + '", "anno_residenza": "' + $('#rilascio-input').val().toString() +
+                        '", "indirizzo": "' + $('#indirizzo-input').val().toString() + '", "anno_rilascio": "' + $('#rilascio-input').val().toString() +
+                        '", "codice": "' + "AU" + c + '"}';
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Cache-Control": "no-store"
+                        },
+                        data: dt,
+                        /* Per poter aggiungere una entry bisogna prima autenticarsi. */
                         contentType: "application/json",
-                        url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                        url: "https://late-frost-5190.getsandbox.com/anagrafiche/add/",
                         dataType: "json",
-                        success: function (data) {
-                            $.each(data, function (i, value) {
-                                persone.push(Object.assign({}, value));
-                            }); //Object.assign({}, value)
-                            downloadDataPie();
+                        success: function(data) {
+                            $.ajax({
+                                headers: {
+                                    "Access-Control-Allow-Origin": "*",
+                                    "Cache-Control": "no-store"
+                                },
+                                type: "GET",
+                                contentType: "application/json",
+                                url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                                dataType: "json",
+                                success: function(data) {
+                                    $.each(data, function(i, value) {
+                                        persone.push(Object.assign({}, value));
+                                    }); //Object.assign({}, value)
+                                    downloadDataPie();
+                                }
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            var a = 0;
                         }
                     });
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    var a = 0;
-                }
-            });
-            c++;
-        } else
-            alert("Compila tutti i campi");
-        $('#form1').trigger("reset");
+                    c++;
+                } else
+                    alert("Compila tutti i campi");
+                $('#form1').trigger("reset");
+            } else $('#cognome-input').popover('show');
+        } else $('#nome-input').popover('show');
     });
     //cambio residenza
-    $('#form2 button').on('click', function () {
+    $('#form2 button').on('click', function() {
         var check = true;
         //controllo che il form sia stato completato
-        $('#form2 input').each(function () {
+        $('#form2 input').each(function() {
             if ($(this).val() === '')
                 check = false;
         });
@@ -76,10 +90,10 @@ $(function() {
             alert("Compila tutti i campi");
         $('#form2').trigger("reset");
     });
-    $('#form3 button').on('click', function () {
+    $('#form3 button').on('click', function() {
         var check = true;
         //controllo che il form sia stato completato
-        $('#form3 input').each(function () {
+        $('#form3 input').each(function() {
             if ($(this).val() === '')
                 check = false;
         });
@@ -113,10 +127,10 @@ $(function() {
             alert("Compila tutti i campi");
         $('#form3').trigger("reset");
     });
-    $('#form6 button').on('click', function () {
+    $('#form6 button').on('click', function() {
         var check = true;
         //controllo che il form sia stato completato
-        $('#form6 input').each(function () {
+        $('#form6 input').each(function() {
             if ($(this).val() === '')
                 check = false;
         });
@@ -172,6 +186,10 @@ $(function() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "no-store"
+        },
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
         success: function(data) {
@@ -186,6 +204,10 @@ $(function() {
     $.ajax({
             type: "GET",
             contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             url: "https://late-frost-5190.getsandbox.com/territorio",
             dataType: "json",
             success: function(data) {
@@ -370,6 +392,74 @@ $(function() {
         }
         return comparison;
     }
+
+    $(document).on("click", ".tutti", function() {
+        persone = [];
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+            dataType: "json",
+            success: function(data) {
+                $.each(data, function(i, value) {
+                    persone.push(Object.assign({}, value))
+                    c = value.id + 1;
+                });
+                CalcPag(persone);
+                document.getElementById("loading_screen").style.display = 'none';
+            }
+        });
+    });
+    $(document).on("click", ".vivi", function() {
+        persone = [];
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+            dataType: "json",
+            success: function(data) {
+                $.each(data, function(i, value) {
+                    if (value.data_morte == undefined) {
+                        persone.push(Object.assign({}, value))
+                        c = value.id + 1;
+                    }
+                });
+                CalcPag(persone);
+                document.getElementById("loading_screen").style.display = 'none';
+            }
+        });
+    });
+    $(document).on("click", ".morti", function() {
+        persone = [];
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
+            url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+            dataType: "json",
+            success: function(data) {
+                $.each(data, function(i, value) {
+                    if (value.data_morte != undefined) {
+                        persone.push(Object.assign({}, value))
+                        c = value.id + 1;
+                    }
+                });
+                CalcPag(persone);
+                document.getElementById("loading_screen").style.display = 'none';
+            }
+        });
+    });
     /*EDIT*/
     $(document).on("click", ".edit", function() {
         idedit = $(this).attr("id");
@@ -391,69 +481,93 @@ $(function() {
 
     });
     $(document).on("click", ".inviaModifica", function() {
-        dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '","indirizzo":"' + $('#viamod').val().toString() + '","anno":"' + $('#datadocumentomod').val().toString() + '"}';
-        $.ajax({
-            type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
-            data: dt,
-            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
-            contentType: "application/json",
-            crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza/",
-            dataType: "json",
-            success: function(data) {},
-        });
-        dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
-        $.ajax({
-            type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
-            data: dt,
-            /* Per poter aggiungere una entry bisogna prima autenticarsi. */
-            contentType: "application/json",
-            crossDomain: true,
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
-            dataType: "json",
-            success: function(data) {},
-        });
-        $('#exampleModalEdit').modal('toggle');
-        document.getElementById("loading_screen").style.display = 'block';
-        AggiornaTabella();
-        persone = [];
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche",
-            dataType: "json",
-            async: false,
-            success: function(data) {
-                $.each(data, function(i, value) {
-                    persone.push(Object.assign({}, value))
+        $('#nomemod').popover('hide');
+        $('#cognomemod').popover('hide');
+        var letters = /^[A-Za-z]+$/;
+        if ($("#nomemod").val().toString().match(letters)) {
+            if ($('#cognomemod').val().toString().match(letters)) {
+                dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '","indirizzo":"' + $('#viamod').val().toString() + '","anno":"' + $('#datadocumentomod').val().toString() + '"}';
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Cache-Control": "no-store"
+                    },
+                    data: dt,
+                    /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+                    contentType: "application/json",
+                    crossDomain: true,
+                    url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/residenza/",
+                    dataType: "json",
+                    success: function(data) {},
                 });
-                CalcPag(persone);
-                document.getElementById("loading_screen").style.display = 'none';
-            }
-        });
+                dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Cache-Control": "no-store"
+                    },
+                    data: dt,
+                    /* Per poter aggiungere una entry bisogna prima autenticarsi. */
+                    contentType: "application/json",
+                    crossDomain: true,
+                    url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + idedit + "/",
+                    dataType: "json",
+                    success: function(data) {},
+                });
+                $('#exampleModalEdit').modal('toggle');
+                document.getElementById("loading_screen").style.display = 'block';
+                AggiornaTabella();
+                persone = [];
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json",
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Cache-Control": "no-store"
+                    },
+                    url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                    dataType: "json",
+                    success: function(data) {
+                        $.each(data, function(i, value) {
+                            persone.push(Object.assign({}, value))
+                        });
+                        CalcPag(persone);
+                        document.getElementById("loading_screen").style.display = 'none';
+                    }
+                });
+            } else $('#cognomemod').popover('show');
+        } else $('#nomemod').popover('show');
     });
     /*ADD PERSONA*/
     $(document).on("click", ".btnAddID", function() {
-            $('#exampleModalCenter').modal('toggle');
-            document.getElementById("loading_screen").style.display = 'block';
-            AggiornaTabella();
-            persone = [];
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "https://late-frost-5190.getsandbox.com/anagrafiche",
-                dataType: "json",
-                async: false,
-                success: function(data) {
-                    $.each(data, function(i, value) {
-                        persone.push(Object.assign({}, value))
-                        document.getElementById("loading_screen").style.display = 'none';
+            var letters = /^[A-Za-z]+$/;
+            if ($("#nome-input").val().toString().match(letters)) {
+                if ($('#cognome-input').val().toString().match(letters)) {
+                    $('#exampleModalCenter').modal('toggle');
+                    document.getElementById("loading_screen").style.display = 'block';
+                    AggiornaTabella();
+                    persone = [];
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json",
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Cache-Control": "no-store"
+                        },
+                        url: "https://late-frost-5190.getsandbox.com/anagrafiche",
+                        dataType: "json",
+                        success: function(data) {
+                            $.each(data, function(i, value) {
+                                persone.push(Object.assign({}, value))
+                                document.getElementById("loading_screen").style.display = 'none';
+                            });
+                            CalcPag(persone);
+                        }
                     });
-                    CalcPag(persone);
                 }
-            });
+            }
         })
         /*DELETE*/
     $(document).on("click", ".delete", function() {
@@ -462,7 +576,10 @@ $(function() {
     $(document).on("click", ".btnElimina", function() {
         $.ajax({
             type: "DELETE",
-            headers: { "Access-Control-Allow-Origin": "*" },
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + selectedID + "/",
@@ -481,30 +598,39 @@ $(function() {
     $(document).on("click", ".morte", function() {
         selectedID = $(this).attr("id");
         selectedEL = $(this);
-        $("#morteText").children().remove();
-        $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
+        if (persone[foundPerson(selectedID)].data_morte != undefined) {
+            $("#morteText").children().remove();
+            $("#morteText").append("<label>Data di morte <span style='font-weight: 700'>" + morteText(selectedID) + "</span></label>");
+        }
     });
     $(document).on("click", ".btnConfirmDeath", function() {
-        selectedEL.parent().siblings().css("text-decoration", "line-through");
-        $(selectedEL.siblings()).each(function(i) {
-            if (i != 0) $(this).attr("data-target", "");
-        })
-        dt = $("#datamorte").val();
-        $.ajax({
-            type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
-            data: '{"data_morte":"' + dt + '"}"',
-            /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
-            contentType: "application/json",
-            url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + selectedID + "/",
-            dataType: "json",
-        })
-        $('#modalMorte').modal('toggle');
-        selectedEL.attr("data-target", "#modalMorteConfermata");
-        for (let i = 0; i < persone.length; i++) {
-            if (persone[i].id == selectedID) {
-                persone[i].data_morte = dt;
+        if ($("#datamorte").val() > persone[foundPerson(selectedID)].anno_nascita) {
+            selectedEL.parent().siblings().css("text-decoration", "line-through");
+            $(selectedEL.siblings()).each(function(i) {
+                if (i != 0) $(this).attr("data-target", "");
+            })
+            dt = $("#datamorte").val();
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Cache-Control": "no-store"
+                },
+                data: '{"data_morte":"' + dt + '"}"',
+                /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
+                contentType: "application/json",
+                url: "https://late-frost-5190.getsandbox.com/anagrafiche/edit/" + selectedID + "/",
+                dataType: "json",
+            })
+            $('#modalMorte').modal('toggle');
+            selectedEL.attr("data-target", "#modalMorteConfermata");
+            for (let i = 0; i < persone.length; i++) {
+                if (persone[i].id == selectedID) {
+                    persone[i].data_morte = dt;
+                }
             }
+        } else {
+            $('#datamorte').popover('show');
         }
     });
     /*STAMPA DECESSO MODAL*/
@@ -513,6 +639,14 @@ $(function() {
             if (persone[i].id == idPersona && persone[i].data_morte != undefined) {
                 let arrayData = persone[i].data_morte.split("-")[2] + "-" + persone[i].data_morte.split("-")[1] + "-" + persone[i].data_morte.split("-")[0];
                 return arrayData;
+            }
+        }
+    }
+    /*TROVA PERSONA */
+    function foundPerson(idPersona) {
+        for (let i = 0; i < persone.length; i++) {
+            if (persone[i].id == idPersona) {
+                return i;
             }
         }
     }
