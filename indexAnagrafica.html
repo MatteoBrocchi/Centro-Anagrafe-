@@ -59,7 +59,7 @@
                         <section id="tabella">
                             <div class="row justify-content-center text-center">
                                 <div class="col-md-5 aos-init aos-animate" data-aos="fade-up">
-                                    <h2 class="section-heading animated fadeIn delay-1s mb-0">Tabella </h2>
+                                    <h2 class="section-heading animated fadeIn delay-1s mb-0">Elenco Persone</h2>
                                 </div>
                             </div>
                             <div id="loading_screen" class="row justify-content-center text-center">
@@ -75,7 +75,20 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-4"></div>
+                                <div class="col-md-6 col-4">
+                                    <div class="btn-group dropup">
+                                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Fitri
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item py-0 tutti" href="#">Tutti</a>
+                                            <div class="dropdown-divider my-1"></div>
+                                            <a class="dropdown-item py-0 vivi" href="#">Vivi</a>
+                                            <div class="dropdown-divider my-1"></div>
+                                            <a class="dropdown-item py-0 morti" href="#">Morti</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-1 col-1 d-flex justify-content-center align-item-center">
                                     <button type="button" class="btn btn-success rounded-circle" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-plus"></i></button>
                                 </div>
@@ -331,7 +344,7 @@
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Data di rilascio</label>
+                                <label>Data di rilascio carta di identità</label>
                             </div>
                             <div class="col-8">
                                 <input type="date" class="form-control" id="rilascio-input">
@@ -418,7 +431,7 @@
                         </div>
                         <div class="row pb-3">
                             <div class="col-4 text-left">
-                                <label>Data di rilascio documento</label>
+                                <label>Data di rilascio carta di identità</label>
                             </div>
                             <div class="col-8">
                                 <input id="datadocumentomod" type="date" class="form-control">
