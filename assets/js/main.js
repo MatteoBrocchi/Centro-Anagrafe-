@@ -23,7 +23,10 @@ $(function() {
                 '", "codice": "' + "AU" + c + '"}';
             $.ajax({
                 type: "POST",
-                headers: { "Access-Control-Allow-Origin": "*" },
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Cache-Control": "no-store"
+                },
                 data: dt,
                 /* Per poter aggiungere una entry bisogna prima autenticarsi. */
                 contentType: "application/json",
@@ -31,6 +34,10 @@ $(function() {
                 dataType: "json",
                 success: function(data) {
                     $.ajax({
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Cache-Control": "no-store"
+                        },
                         type: "GET",
                         contentType: "application/json",
                         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
@@ -172,6 +179,10 @@ $(function() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "no-store"
+        },
         url: "https://late-frost-5190.getsandbox.com/anagrafiche",
         dataType: "json",
         success: function(data) {
@@ -186,6 +197,10 @@ $(function() {
     $.ajax({
             type: "GET",
             contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             url: "https://late-frost-5190.getsandbox.com/territorio",
             dataType: "json",
             success: function(data) {
@@ -376,6 +391,10 @@ $(function() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             url: "https://late-frost-5190.getsandbox.com/anagrafiche",
             dataType: "json",
             success: function(data) {
@@ -393,6 +412,10 @@ $(function() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             url: "https://late-frost-5190.getsandbox.com/anagrafiche",
             dataType: "json",
             success: function(data) {
@@ -412,6 +435,10 @@ $(function() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             url: "https://late-frost-5190.getsandbox.com/anagrafiche",
             dataType: "json",
             success: function(data) {
@@ -450,7 +477,10 @@ $(function() {
         dt = '{"regione":"' + $('#regionemod').val().toString() + '","provincia":"' + $('#provinciamod').val().toString() + '","comune":"' + $('#comunemod').val().toString() + '","indirizzo":"' + $('#viamod').val().toString() + '","anno":"' + $('#datadocumentomod').val().toString() + '"}';
         $.ajax({
             type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             data: dt,
             /* Per poter aggiungere una entry bisogna prima autenticarsi. */
             contentType: "application/json",
@@ -462,7 +492,10 @@ $(function() {
         dt = '{"nome":"' + $("#nomemod").val().toString() + '","cognome":"' + $('#cognomemod').val().toString() + '","anno_nascita":"' + $('#annomod').val().toString() + '","anno_residenza":"2020"}';
         $.ajax({
             type: "POST",
-            headers: { "Access-Control-Allow-Origin": "*" },
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             data: dt,
             /* Per poter aggiungere una entry bisogna prima autenticarsi. */
             contentType: "application/json",
@@ -478,9 +511,12 @@ $(function() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             url: "https://late-frost-5190.getsandbox.com/anagrafiche",
             dataType: "json",
-            async: false,
             success: function(data) {
                 $.each(data, function(i, value) {
                     persone.push(Object.assign({}, value))
@@ -499,9 +535,12 @@ $(function() {
             $.ajax({
                 type: "GET",
                 contentType: "application/json",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Cache-Control": "no-store"
+                },
                 url: "https://late-frost-5190.getsandbox.com/anagrafiche",
                 dataType: "json",
-                async: false,
                 success: function(data) {
                     $.each(data, function(i, value) {
                         persone.push(Object.assign({}, value))
@@ -518,7 +557,10 @@ $(function() {
     $(document).on("click", ".btnElimina", function() {
         $.ajax({
             type: "DELETE",
-            headers: { "Access-Control-Allow-Origin": "*" },
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-store"
+            },
             /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
             contentType: "application/json",
             url: "https://late-frost-5190.getsandbox.com/anagrafiche/remove/" + selectedID + "/",
@@ -551,7 +593,10 @@ $(function() {
             dt = $("#datamorte").val();
             $.ajax({
                 type: "POST",
-                headers: { "Access-Control-Allow-Origin": "*" },
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Cache-Control": "no-store"
+                },
                 data: '{"data_morte":"' + dt + '"}"',
                 /* Per poter rimuovere una entry bisogna prima autenticarsi con un'account di amministratore. */
                 contentType: "application/json",
